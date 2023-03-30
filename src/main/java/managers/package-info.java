@@ -5,4 +5,4 @@
  * @author MarcelodeOliveiraSan
  *
  */
-package core.cucumber;
+package managers;
