@@ -6,21 +6,19 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.CucumberOptions.SnippetType;
 
-@CucumberOptions(
-		features = { "src/test/resources/features/form-submit.feature" },
-		glue = { "steps" },
-		plugin = {"pretty" },
+@CucumberOptions(features = { "src/test/resources/features/form-submit.feature" }, 
+glue = {
+		"steps", "testutils"
+		,//"src/test/java/testutils/"
+		}, plugin = { "pretty" },
 
 		snippets = SnippetType.UNDERSCORE,
 
 		monochrome = true,
 
-		dryRun = false,
-		strict = false
-)
+		dryRun = false, strict = true)
 
 @RunWith(Cucumber.class)
 public class RunnerTest {
-
 
 }

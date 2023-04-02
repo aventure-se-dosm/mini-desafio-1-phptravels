@@ -15,12 +15,13 @@ Funcionalidade: Enviar formulário
   #Exemplos:
   #| nome            | sobrenome | email                           | empresa           |
   #| "Dmitr Vladmir" | "Markolv" | "automation.dvmrkolv@gmail.com" | "KGB"             |
-  Cenário: envio as informações com sucesso
+
+  Cenário: 0001 envio as informações com sucesso
     Dado que estou na página de demonstração
-    E eu insiro o nome do usuário "Dmitr Vladmir"
+    Quando eu insiro o nome do usuário "Dmitr Vladmir"
     E insiro o sobrenome "Markolv"
     E insiro o e-mail "automation.dvmrkolv@gmail.com"
     E insiro o nome de sua empresa "KGB"
     E soluciono o enigma
-    Quando clico em submeter
+    E clico em submeter
     Então As informações foram enviadas com sucesso!
