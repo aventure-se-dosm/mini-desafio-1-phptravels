@@ -14,7 +14,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import io.cucumber.core.api.Scenario;
-import io.cucumber.core.event.Status;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.pt.Dado;
@@ -40,6 +39,10 @@ public class FormSubmitStep<T extends BasePage> {
 	private void testHasPassed() {
 		this.status = true;
 
+	}
+
+	public WebDriver getDriver() {
+		return driver;
 	}
 
 	public FormSubmitStep() {
@@ -87,11 +90,18 @@ public class FormSubmitStep<T extends BasePage> {
 		driver = WebDriverManager.getInstance("Chrome").create();
 		System.out.println("Passou pelo inicializaDriver");
 		System.out.println("Passou pelo inicializaDriver");
+		setScreenshoter();
+	}
+
+	private void setScreenshoter() {
+		this.screeenshoter = new Screenshoter(driver);
+
 	}
 
 	@Dado("que estou na página de demonstração")
 	public void que_estou_na_página_de_demonstração() {
 		driver.get(START_URL);
+
 	}
 
 	@Quando("eu insiro o nome do usuário {string}")
@@ -179,33 +189,35 @@ public class FormSubmitStep<T extends BasePage> {
 		return result.toString();
 	}
 
-	private static String stringDaData() {
-
-		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
-
-	}
-
-	public static void makeScreenshot(String destination, String filename, String extension) {
-
-		File shot;
-		shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-		try {
-			FileUtils.copyFile(shot, new File((destination + filename + extension)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
+//	private static String stringDaData() {
+//
+//		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
+//
+//	}
+//
+//	public static void makeScreenshot(String destination, String filename, String extension) {
+//
+//		File shot;
+//		shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+//
+//		try {
+//			FileUtils.copyFile(shot, new File((destination + filename + extension)));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	@After
 	public static void takeScreenshot(Scenario s) {
 
-		
-		String result = (s.getStatus() == Status.PASSED ? "SUCESSO" : "FALHOU");
-		String id = s.getName().split(" ")[0];
-		String shotFileName = String.join("_", id, stringDaData(), result);
-		makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
+		Screenshoter.takeScreenshot(s);
+
+//		
+//		String result = (s.getStatus() == Status.PASSED ? "SUCESSO" : "FALHOU");
+//		String id = s.getName().split(" ")[0];
+//		String shotFileName = String.join("_", id, stringDaData(), result);
+//		makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
 
 	}
 }
