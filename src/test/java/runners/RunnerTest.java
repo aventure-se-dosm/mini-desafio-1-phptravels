@@ -6,11 +6,8 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.CucumberOptions.SnippetType;
 
-@CucumberOptions(features = { "src/test/resources/features/form-submit.feature" }, 
-glue = {
-		"steps", "testutils"
-		,//"src/test/java/testutils/"
-		}, plugin = { "pretty" },
+@CucumberOptions(features = { "src/test/resources/features/form-submit.feature" }, glue = { "steps", "testutils",// "src/test/java/testutils/"
+}, plugin = { "pretty" },
 
 		snippets = SnippetType.UNDERSCORE,
 

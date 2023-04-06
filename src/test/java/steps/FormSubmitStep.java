@@ -1,15 +1,7 @@
 package steps;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -21,10 +13,11 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import pages.BasePage;
+import managers.DriverManager;
+import pages.FormSubmitPage;
 import testutils.Screenshoter;
 
-public class FormSubmitStep<T extends BasePage> {
+public class FormSubmitStep{
 
 	private static final String START_URL = "https://phptravels.com/demo/";
 	private static WebDriver driver;
@@ -41,16 +34,8 @@ public class FormSubmitStep<T extends BasePage> {
 
 	}
 
-	public WebDriver getDriver() {
-		return driver;
-	}
 
-	public FormSubmitStep() {
-		// driver = getDriver();
-		this.status = false;
-
-	}
-
+	
 	// Injeção: quedê o PC?
 	// @FindBy(css = "input.first_name")
 	public WebElement nameInput;
@@ -82,8 +67,15 @@ public class FormSubmitStep<T extends BasePage> {
 	// @FindBy(xpath = "//strong[contains(.,'Thank you!')]")
 	public WebElement thankYouMessage;
 
-//	@FindBy(css = "p.text-center.cw")
+	//@FindBy(css = "p.text-center.cw")
 	public WebElement confirmationMailCheckMessage;
+	
+	private static FormSubmitPage page;
+	
+	public FormSubmitStep() {
+		driver = DriverManager.getDriver();
+		page = new FormSubmitPage(driver);
+	}
 
 	@Before
 	public void acessaPagina() {
@@ -95,13 +87,11 @@ public class FormSubmitStep<T extends BasePage> {
 
 	private void setScreenshoter() {
 		this.screeenshoter = new Screenshoter(driver);
-
 	}
 
 	@Dado("que estou na página de demonstração")
 	public void que_estou_na_página_de_demonstração() {
 		driver.get(START_URL);
-
 	}
 
 	@Quando("eu insiro o nome do usuário {string}")
@@ -120,9 +110,11 @@ public class FormSubmitStep<T extends BasePage> {
 
 	@E("insiro o sobrenome {string}")
 	public void insiro_o_sobrenome(String surname) {
-		surnameInput = driver.findElement(By.cssSelector("input.last_name"));
-		surnameInput.click();
-		surnameInput.sendKeys(surname);
+//		surnameInput = driver.findElement(By.cssSelector("input.last_name"));
+//		surnameInput.click();
+//		surnameInput.sendKeys(surname);
+		
+		page.preencheNome(surname);
 	}
 
 	@E("insiro o e-mail {string}")
@@ -148,17 +140,13 @@ public class FormSubmitStep<T extends BasePage> {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		submitButton = driver.findElement(By.id("demo"));
 		submitButton = submitButton.findElement(By.xpath("./../*"));
 		submitButton.click();
-//		try {
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+
+		
 
 	}
 
@@ -172,8 +160,6 @@ public class FormSubmitStep<T extends BasePage> {
 		confirmationMailCheckMessage = driver.findElement(By.cssSelector("p.text-center.cw"));
 		Assert.assertTrue(confirmationMailCheckMessage.isDisplayed());
 		testHasPassed();
-
-//		takeScreenshot();
 
 	}
 
@@ -189,35 +175,9 @@ public class FormSubmitStep<T extends BasePage> {
 		return result.toString();
 	}
 
-//	private static String stringDaData() {
-//
-//		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
-//
-//	}
-//
-//	public static void makeScreenshot(String destination, String filename, String extension) {
-//
-//		File shot;
-//		shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-//
-//		try {
-//			FileUtils.copyFile(shot, new File((destination + filename + extension)));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
 
 	@After
 	public static void takeScreenshot(Scenario s) {
-
 		Screenshoter.takeScreenshot(s);
-
-//		
-//		String result = (s.getStatus() == Status.PASSED ? "SUCESSO" : "FALHOU");
-//		String id = s.getName().split(" ")[0];
-//		String shotFileName = String.join("_", id, stringDaData(), result);
-//		makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
-
 	}
 }
