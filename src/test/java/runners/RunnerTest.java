@@ -8,8 +8,10 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 
 @CucumberOptions(features = { "src/test/resources/features/form-submit.feature" }, 
 glue = {
-		"steps", "testutils"
-		,//"src/test/java/testutils/"
+		"steps", 
+		"testutils",
+		"pages",
+		//"src/test/java/testutils/"
 		}, plugin = { "pretty" },
 
 		snippets = SnippetType.UNDERSCORE,

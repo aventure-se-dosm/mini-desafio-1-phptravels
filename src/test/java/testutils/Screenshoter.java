@@ -13,38 +13,49 @@ import org.openqa.selenium.WebDriver;
 //não acho uma boa mexer com a data aqui!
 public class Screenshoter {
 
-	private final static String DEFAULT_EXTENSION = ".png";
-	private final static String DEFAULT_DESTINATION_DIRECTORY = "./target/Screenshots/";
-	private final static String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_hh_mm_ss";
-	private static WebDriver driver;
-	
-	public void Screenshot(WebDriver webDriver){
-	    Screenshoter.driver = webDriver;
+	private final String DEFAULT_EXTENSION = ".png";
+	private final String DEFAULT_DESTINATION_DIRECTORY = "./target/Screenshots/";
+	private String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_hh_mm_ss";
+	private WebDriver driver;
+
+	public  Screenshoter (WebDriver webDriver) {
+		this.driver = webDriver;
 	}
 
-	private static String stringDaData() {
+	private String stringDaData() {
 
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
 
 	}
 
-	public static void makeScreenshot(String destination, String filename) {
+	public void makeScreenshot(String destination, String filename) {
 
 		File shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
 		try {
-			FileUtils.copyFile(shot, new File((destination + filename)));
+			FileUtils.copyFile(shot, new File((destination + filename + DEFAULT_EXTENSION)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public static void takeScreenshot(Boolean status) {
+	public void takeScreenshot(Boolean status) {
 
 		String result = (status.booleanValue() ? "SUCESSO" : "FALHOU");
 		String shotFileName = String.join("_", stringDaData(), result, DEFAULT_EXTENSION);
 		makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName);
+	}
+
+	public void makeScreenshot(String destination, String shotFileName, String defaultExtension) {
+		File shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+		try {
+			FileUtils.copyFile(shot, new File((destination + shotFileName + defaultExtension)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

@@ -1,14 +1,16 @@
 package steps;
 
-import static managers.DriverManager.setupWebDrivers;
-
+import org.junit.After;
 import org.junit.BeforeClass;
+import org.openqa.selenium.WebDriver;
 
 public class Hooks {
 
 	@BeforeClass
 	public static void setupClass() {
-		setupWebDrivers();
+		//setupWebDrivers();
+		//DriverManager.setNewChromeDriver();
 	}
+	
 
 }
