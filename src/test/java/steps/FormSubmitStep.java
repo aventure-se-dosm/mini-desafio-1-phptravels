@@ -2,6 +2,7 @@ package steps;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,6 +24,7 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import pages.BasePage;
+import pages.FormSubmitPage;
 import testutils.Screenshoter;
 
 public class FormSubmitStep<T extends BasePage> {
@@ -31,60 +33,34 @@ public class FormSubmitStep<T extends BasePage> {
 	private static WebDriver driver;
 
 	public static Boolean status;
-	private Screenshoter screeenshoter;
+
 
 	private final static String DEFAULT_EXTENSION = ".png";
 	private final static String DEFAULT_DESTINATION_DIRECTORY = "./target/Screenshots/";
 	private final static String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_hh_mm_ss";
 
-	private void testHasPassed() {
-		this.status = true;
-
-	}
 
 	public FormSubmitStep() {
-		// driver = getDriver();
-		this.status = false;
-
 	}
-
-	// Injeção: quedê o PC?
-	// @FindBy(css = "input.first_name")
-	public WebElement nameInput;
-
-	// @FindBy(css = "input.last_name")
-	public WebElement surnameInput;
-
-	// @FindBy(css = "input.business_name")
-	public WebElement businessNameInput;
-
-	// @FindBy(css = "input.email")
-	public WebElement emailInput;
-
-	// @FindBy(css = "h2.mw100")
-	public WebElement enigmaExpression;
-
-	// @FindBy(id = "numb1")
-	public WebElement numb1;
-
-	// @FindBy(id = "numb2")
-	public WebElement numb2;
-
-	// @FindBy(id = "number")
-	public WebElement solutionInput;
-
-	// @FindBy(id = "demo")
-	public WebElement submitButton;
-
-	// @FindBy(xpath = "//strong[contains(.,'Thank you!')]")
-	public WebElement thankYouMessage;
-
-//	@FindBy(css = "p.text-center.cw")
-	public WebElement confirmationMailCheckMessage;
-
+	
+	private static WebElement nameInput;
+	private WebElement surnameInput;
+	private WebElement businessNameInput;
+	private WebElement emailInput;
+	private WebElement enigmaExpression;
+	private WebElement numb1;
+	private WebElement numb2;
+	private WebElement solutionInput;
+	private WebElement submitButton;
+	private WebElement thankYouMessage;
+	private WebElement confirmationMailCheckMessage;
+	private FormSubmitPage page;
+	
 	@Before
 	public void acessaPagina() {
 		driver = WebDriverManager.getInstance("Chrome").create();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
 		System.out.println("Passou pelo inicializaDriver");
 		System.out.println("Passou pelo inicializaDriver");
 	}
@@ -96,10 +72,11 @@ public class FormSubmitStep<T extends BasePage> {
 
 	@Quando("eu insiro o nome do usuário {string}")
 	public void eu_insiro_o_nome_do_usuário(String name) {
+	
+		
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		nameInput = driver.findElement(By.cssSelector("input.first_name"));
@@ -161,7 +138,7 @@ public class FormSubmitStep<T extends BasePage> {
 		}
 		confirmationMailCheckMessage = driver.findElement(By.cssSelector("p.text-center.cw"));
 		Assert.assertTrue(confirmationMailCheckMessage.isDisplayed());
-		testHasPassed();
+	//	testHasPassed();
 
 //		takeScreenshot();
 
@@ -180,9 +157,7 @@ public class FormSubmitStep<T extends BasePage> {
 	}
 
 	private static String stringDaData() {
-
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
-
 	}
 
 	public static void makeScreenshot(String destination, String filename, String extension) {
@@ -200,12 +175,9 @@ public class FormSubmitStep<T extends BasePage> {
 
 	@After
 	public static void takeScreenshot(Scenario s) {
-
-		
 		String result = (s.getStatus() == Status.PASSED ? "SUCESSO" : "FALHOU");
 		String id = s.getName().split(" ")[0];
 		String shotFileName = String.join("_", id, stringDaData(), result);
 		makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
-
 	}
 }
