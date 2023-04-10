@@ -1,6 +1,6 @@
 package managers;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 
@@ -9,10 +9,10 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;;
 
 public class DriverManager {
 
-	private static final DriverManagerType DEFAULT_DRIVER = DriverManagerType.CHROME;
+	private final DriverManagerType DEFAULT_DRIVER = DriverManagerType.CHROME;
 
 	// ele deixará de ser estático quando trabalharmos com contexto!
-	private static WebDriver driver;
+	private WebDriver driver;
 
 	private DriverManager() {
 
@@ -26,7 +26,7 @@ public class DriverManager {
 
 	}
 
-	public static WebDriver getDriver() {
+	public WebDriver getDriver() {
 		if (driver == null) {
 			setDriver(DEFAULT_DRIVER);
 		}
@@ -34,9 +34,9 @@ public class DriverManager {
 		return driver;
 	}
 
-	private static void setDriver(DriverManagerType defaultDriver) {
+	private void setDriver(DriverManagerType defaultDriver) {
 		driver = WebDriverManager.getInstance(defaultDriver).timeout(30000).getWebDriver();
-
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
 	}
 }

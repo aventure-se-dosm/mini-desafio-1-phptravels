@@ -1,7 +1,5 @@
 package testutils;
 
-import static managers.DriverManager.getDriver;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
