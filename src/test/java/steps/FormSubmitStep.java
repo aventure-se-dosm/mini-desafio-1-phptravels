@@ -78,7 +78,7 @@ public class FormSubmitStep {
 	@After
 	public void takeScreenshot(Scenario s) {
 		Screenshoter screenshoter = new Screenshoter(driver);
-		String result = (s.getStatus() == Status.PASSED ? "SUCESSO" : "FALHOU");
+		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
 		String id = s.getName().split(" ")[0];
 		String shotFileName = String.join("_", id, stringDaData(), result);
 		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
