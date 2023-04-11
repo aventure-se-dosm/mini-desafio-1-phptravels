@@ -4,18 +4,6 @@ Funcionalidade: Enviar formulário
   Eu desejo preencher o formuário da página
   Para enviar as informações com sucesso
 
-  #Esquema de Cenário: enviar as informações inseridas com sucesso
-  #Dado que estou na página de demonstração
-  #Quando eu insiro o nome do usuário <nome>
-  #E insiro o sobrenome <sobrenome>
-  #E insiro o e-mail <email>
-  #E insiro o nome de sua empresa <empresa>
-  #]
-  #
-  #Exemplos:
-  #| nome            | sobrenome | email                           | empresa           |
-  #| "Dmitr Vladmir" | "Markolv" | "automation.dvmrkolv@gmail.com" | "KGB"             |
-
   Cenário: 0001 envio as informações com sucesso
     Dado que estou na página de demonstração
     Quando eu insiro o nome do usuário "Dmitr Vladmir"

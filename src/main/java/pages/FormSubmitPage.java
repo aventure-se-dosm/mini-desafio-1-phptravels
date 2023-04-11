@@ -1,14 +1,7 @@
 package pages;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,22 +12,15 @@ import org.openqa.selenium.support.ui.FluentWait;
 
 public class FormSubmitPage {
 
-	// for screenshot functionality only
 	private final WebDriver driver;
 
-	private FluentWait<WebDriver> elemIsPresent;
+	private FluentWait<WebDriver> elemIsPresent, isElemClickable;
 
-	private final static String DEFAULT_EXTENSION = ".png";
-	private final static String DEFAULT_DESTINATION_DIRECTORY = "./target/Screenshots/";
-	private final static String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_hh_mm_ss";
-
-	// the passed driver would be also necessariy if not screeshoting though.
 	public FormSubmitPage(WebDriver driver) {
-
-		// for screenshot functionality only
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 		elemIsPresent = new FluentWait<WebDriver>(this.driver);
+		isElemClickable = new FluentWait<WebDriver>(this.driver);
 	}
 
 	@FindBy(css = "input.first_name")
@@ -70,77 +56,45 @@ public class FormSubmitPage {
 	@FindBy(css = "p.text-center.cw")
 	public WebElement confirmationMailCheckMessage;
 
-	// ...algum construtor ...
+	@FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
+	public WebElement pageLoadingPaceActivity;
 
 	public void escreveNome(String nome) {
+		elemIsPresent.pollingEvery(Duration.ofMillis(100)).withTimeout(Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOf(nameInput));
 		nameInput.sendKeys(nome);
 	}
-
 	public void escreveSobrenome(String sobrenome) {
 		surnameInput.sendKeys(sobrenome);
 	}
-
 	public void escreveCompania(String companhia) {
 		businessNameInput.sendKeys(companhia);
 	}
-
 	public void escreveEmail(String email) {
 		emailInput.sendKeys(email);
 	}
-
-	public void escreveResultado(String resultado) {
-		solutionInput.sendKeys(resultado);
+	public void escreveResultado() {
+		solutionInput.sendKeys(solveEnigma());
 	}
-
 	public void submitForm() {
+		isElemClickable.pollingEvery(Duration.ofMillis(250)).withTimeout(Duration.ofMinutes(1))
+				.until(ExpectedConditions.elementToBeClickable(submitButton));
+		
 		submitButton.click();
-
-		// pôr espera adequada!
-//		try {
-//		Thread.sleep(3000);
-//	} catch (InterruptedException e) {
-//		e.printStackTrace();
-//	}
 	}
-
-	// ele deveria ser mais espertinho: capturar o sinal
-	// pra depois decidir qual operação realizar.
-	private String solveEnigma() {
-		Integer result = 0;
-
-		result += Integer.parseInt(numb1.getText());
-		result += Integer.parseInt(numb2.getText());
-
-		return result.toString();
-	}
-
-	private String stringDaData() {
-		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
-	}
-
-	public void makeScreenshot(String destination, String filename, String extension) {
-
-		File shot;
-		shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-		try {
-			FileUtils.copyFile(shot, new File((destination + filename + extension)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public boolean formHasBeenSubmitedSuccessifully() {
-		// TODO Auto-generated method stub
 		try {
 			elemIsPresent.pollingEvery(Duration.ofMillis(250)).withTimeout(Duration.ofMinutes(1))
 					.until(ExpectedConditions.visibilityOf(confirmationMailCheckMessage));
-
 			return true;
-
 		} catch (TimeoutException texcp) {
 			return false;
 		}
+	}
+	private String solveEnigma() {
+		Integer result = 0;
+		result += Integer.parseInt(numb1.getText());
+		result += Integer.parseInt(numb2.getText());
+		return result.toString();
 	}
 }
