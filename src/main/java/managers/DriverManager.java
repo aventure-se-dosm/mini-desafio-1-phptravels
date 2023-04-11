@@ -4,15 +4,20 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.config.DriverManagerType;;
+import io.github.bonigarcia.wdm.config.DriverManagerType;
+import io.github.bonigarcia.wdm.managers.ChromiumDriverManager;;
 
 public class DriverManager {
 
 	private final static DriverManagerType DEFAULT_DRIVER = DriverManagerType.CHROME;
 
-	// ele deixará de ser estático quando trabalharmos com contexto!
 	private WebDriver driver;
 
 	public DriverManager() {
@@ -22,38 +27,52 @@ public class DriverManager {
 	}
 
 	public static void setupWebDrivers() {
-
 		for (DriverManagerType dmt : DriverManagerType.values()) {
 			WebDriverManager.getInstance(dmt).setup();
 		}
-
 	}
 
 	public WebDriver getDriver() {
 		if (driver == null) {
 			driver = setDriver(DEFAULT_DRIVER);
 		}
-
 		return driver;
 	}
 
-	private WebDriver setDriver(DriverManagerType selectedtDriver) {
-//		driver = WebDriverManager.getInstance(selectedtDriver).timeout(30000).getWebDriver();
-		driver = new ChromeDriver();
-//      driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(2));
+	public WebDriver setDriver(DriverManagerType selectedtDriver) {
+		driver = getSelectedDriver(selectedtDriver);
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
 		return driver;
+	}
 
+	public static WebDriver getSelectedDriver(DriverManagerType driverType) {
+		switch (driverType) {
+			case EDGE: {
+				return new EdgeDriver();
+			}
+			case FIREFOX: {
+				return new FirefoxDriver();
+			}
+			case IEXPLORER: {
+				return new InternetExplorerDriver();
+			}
+			case OPERA: {
+				return new OperaDriver();
+			}
+	
+			case SAFARI: {
+				return new SafariDriver();
+			}
+			case CHROME:
+			default: {
+				return new ChromeDriver();
+			}
+		}
 	}
 
 	public static WebDriver setNewChromeDriver() {
 		WebDriver chDriver = WebDriverManager.getInstance(DriverManagerType.CHROME).timeout(30000).getWebDriver();
-
-//		WebDriver chDriver = new ChromeDriver();
-		// chDriver.manage().timeouts().implicitlyWait(Duration.ofMinutes(2));
 		chDriver.manage().timeouts().implicitlyWait(2, TimeUnit.MINUTES);
-
 		return chDriver;
-
 	}
 }
