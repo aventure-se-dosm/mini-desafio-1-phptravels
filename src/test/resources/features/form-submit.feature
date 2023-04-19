@@ -4,12 +4,41 @@ Funcionalidade: Enviar formulário
   Eu desejo preencher o formuário da página
   Para enviar as informações com sucesso
 
-  Cenário: 0001 envio as informações com sucesso
-    Dado que estou na página de demonstração
-    Quando eu insiro o nome do usuário "Dmitr Vladmir"
-    E insiro o sobrenome "Markolv"
-    E insiro o e-mail "automation.dvmrkolv@gmail.com"
-    E insiro o nome de sua empresa "KGB"
-    E soluciono o enigma
-    E clico em submeter
-    Então As informações foram enviadas com sucesso!
+  Fundo: obtem as informações do usuario
+
+  Esquema do Cenário: formulário enviado com sucesso
+    * o usuário escolhido é de índice <indice>
+    * que estou na página de demonstração
+    * eu insiro o nome do usuário
+    * insiro o sobrenome
+    * insiro o e-mail
+    * insiro o nome de sua empresa
+    * soluciono o enigma
+    * clico em submeter
+    * As informações foram enviadas com sucesso!
+
+    Exemplos: 
+      | indice |
+      | 1      |
+      | 2      |
+      | 3      |
+      | 4      |
+      | 5      |
+      | 6      |
+      | 7      |
+
+  @EmptyEnigmaField
+  Esquema do Cenário: erro do campo para a solução do enigma estar vazio
+    * o usuário escolhido é de índice <indices>
+    * que estou na página de demonstração
+    * eu insiro o nome do usuário
+    * insiro o sobrenome
+    * insiro o e-mail
+    * insiro o nome de sua empresa
+    * clico em submeter
+    * Um alerta é exibido com a mensagem "Please input result number"
+
+    @EmptyEnigmaField
+    Exemplos: 
+      | indices |
+      | 8       |
