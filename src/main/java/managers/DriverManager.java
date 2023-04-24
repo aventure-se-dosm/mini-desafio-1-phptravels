@@ -11,8 +11,7 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.config.DriverManagerType;
-import io.github.bonigarcia.wdm.managers.ChromiumDriverManager;;
+import io.github.bonigarcia.wdm.config.DriverManagerType;;
 
 public class DriverManager {
 
@@ -39,6 +38,14 @@ public class DriverManager {
 		return driver;
 	}
 
+	public WebDriver getDriver(WebDriver extDriver) {
+		if (extDriver == null) {
+			//detectar o tipo de driver renová-lo pelo tipo mais específico.
+		extDriver = new ChromeDriver();
+	}
+		return extDriver;
+	}
+
 	public WebDriver setDriver(DriverManagerType selectedtDriver) {
 		driver = getSelectedDriver(selectedtDriver);
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
@@ -46,33 +53,34 @@ public class DriverManager {
 	}
 
 	public static WebDriver getSelectedDriver(DriverManagerType driverType) {
+
 		switch (driverType) {
-			case EDGE: {
-				return new EdgeDriver();
-			}
-			case FIREFOX: {
-				return new FirefoxDriver();
-			}
-			case IEXPLORER: {
-				return new InternetExplorerDriver();
-			}
-			case OPERA: {
-				return new OperaDriver();
-			}
-	
-			case SAFARI: {
-				return new SafariDriver();
-			}
-			case CHROME:
-			default: {
-				return new ChromeDriver();
-			}
+		case EDGE: {
+			return new EdgeDriver();
+		}
+		case FIREFOX: {
+			return new FirefoxDriver();
+		}
+		case IEXPLORER: {
+			return new InternetExplorerDriver();
+		}
+		case OPERA: {
+			return new OperaDriver();
+		}
+
+		case SAFARI: {
+			return new SafariDriver();
+		}
+		case CHROME:
+		default: {
+			return new ChromeDriver();
+		}
 		}
 	}
 
 	public static WebDriver setNewChromeDriver() {
-		WebDriver chDriver = WebDriverManager.getInstance(DriverManagerType.CHROME).timeout(30000).getWebDriver();
-		chDriver.manage().timeouts().implicitlyWait(2, TimeUnit.MINUTES);
-		return chDriver;
+		WebDriver extDriver =  new ChromeDriver();
+		extDriver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
+		return extDriver;
 	}
 }

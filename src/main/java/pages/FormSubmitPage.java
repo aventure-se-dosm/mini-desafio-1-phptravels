@@ -8,9 +8,12 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+
+import TestDataTypes.UserFormDTO;
 
 public class FormSubmitPage {
 
@@ -25,7 +28,7 @@ public class FormSubmitPage {
 		isElemClickable = new FluentWait<WebDriver>(this.driver);
 	}
 
-	@FindBy(css = "input.first_name")
+	@FindBys( { @FindBy(css = "input.last_name")})
 	public WebElement nameInput;
 
 	@FindBy(css = "input.last_name")
@@ -61,8 +64,11 @@ public class FormSubmitPage {
 	@FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
 	public WebElement pageLoadingPaceActivity;
 
-	public void preencheFormCompleto() {
-
+	public void preencheFormCompleto(UserFormDTO userFormDTO) {
+		escreveNome(userFormDTO.getName());
+		escreveSobrenome(userFormDTO.getSurname());
+		escreveCompania(userFormDTO.getBusinessName());
+        escreveEmail(userFormDTO.getEmail());	
 	}
 
 	public void escreveNome(String nome) {

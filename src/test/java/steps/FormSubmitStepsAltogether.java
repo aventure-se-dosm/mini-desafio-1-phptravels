@@ -17,7 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-import entities.dto.UserFormDTO;
+import TestDataTypes.UserFormDTO;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.core.event.Status;
 import io.cucumber.java.After;
@@ -31,7 +31,7 @@ import managers.DriverManager;
 import pages.FormSubmitPage;
 import testutils.Screenshoter;
 
-public class FormSubmitStep {
+public class FormSubmitStepsAltogether {
 
 	private static final String START_URL = "https://phptravels.com/demo";
 	private WebDriver driver;
@@ -48,8 +48,9 @@ public class FormSubmitStep {
 	XSSFWorkbook wb;
 	XSSFSheet sheet;
 	XSSFRow currentRow;
+	UserFormDTO userFormDTO;
 
-	public FormSubmitStep() {
+	public FormSubmitStepsAltogether() {
 		if (driver == null)
 			this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -61,7 +62,8 @@ public class FormSubmitStep {
 	public void acessaPagina() {
 
 		if (driver == null)
-			this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+			// this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+			this.driver = DriverManager.setNewChromeDriver();
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		System.out.println("Passou pelo inicializaDriver");
@@ -86,11 +88,15 @@ public class FormSubmitStep {
 		sheet = wb.getSheetAt(0);
 		userFormList = new ArrayList<>();
 		Iterator<Row> rowIterator = sheet.iterator();
-		rowIterator.hasNext();
+		//faz este next para pular o HEADER da planilha
+		//deve ter jeito melhor.
+		rowIterator.next();
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			userFormList.add(new UserFormDTO(row));
 		}
+		
+		
 
 	}
 
@@ -105,26 +111,31 @@ public class FormSubmitStep {
 		driver.get(START_URL);
 	}
 
-	@E("eu insiro o nome do usuário")
-	public void euInsiroONomeDoUsuárioDeÍndice() {
-
-		page.escreveNome(userForm.getName());
-	}
-
-	@E("insiro o sobrenome")
-	public void insiroOSobrenome() {
-		page.escreveSobrenome(userForm.getSurname());
-	}
-
-	@E("insiro o e-mail")
-	public void insiroOEmail() {
-		page.escreveEmail(userForm.getEmail());
-	}
-
-	@E("insiro o nome de sua empresa")
-	public void insiro_o_nome_de_sua_empresa() {
-		page.escreveCompania(userForm.getBusinessName());
-	}
+	@Quando("eu insiro as informações do usuário")
+	public void euInsiroAsInformaçõesDoUsuário() {
+		page.preencheFormCompleto(userFormList.iterator().next());		
+}
+//
+//	@E("eu insiro o nome do usuário")
+//	public void euInsiroONomeDoUsuárioDeÍndice() {
+//
+//		page.escreveNome(userForm.getName());
+//	}
+//
+//	@E("insiro o sobrenome")
+//	public void insiroOSobrenome() {
+//		page.escreveSobrenome(userForm.getSurname());
+//	}
+//
+//	@E("insiro o e-mail")
+//	public void insiroOEmail() {
+//		page.escreveEmail(userForm.getEmail());
+//	}
+//
+//	@E("insiro o nome de sua empresa")
+//	public void insiro_o_nome_de_sua_empresa() {
+//		page.escreveCompania(userForm.getBusinessName());
+//	}
 
 	@Quando("soluciono o enigma")
 	public void solucionoOEnigma() {
@@ -167,7 +178,6 @@ public class FormSubmitStep {
 		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
 		wb.close();
 		driver.close();
-
 	}
 
 }
