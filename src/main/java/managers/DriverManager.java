@@ -7,12 +7,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
-import io.github.bonigarcia.wdm.managers.ChromiumDriverManager;;
+import io.github.bonigarcia.wdm.managers.OperaDriverManager;;
 
 public class DriverManager {
 
@@ -57,7 +56,7 @@ public class DriverManager {
 				return new InternetExplorerDriver();
 			}
 			case OPERA: {
-				return new OperaDriver();
+				return new OperaDriverManager().getWebDriver();
 			}
 	
 			case SAFARI: {
