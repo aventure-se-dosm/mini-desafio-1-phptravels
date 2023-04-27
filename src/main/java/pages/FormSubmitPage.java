@@ -28,7 +28,7 @@ public class FormSubmitPage {
 		isElemClickable = new FluentWait<WebDriver>(this.driver);
 	}
 
-	@FindBys( { @FindBy(css = "input.last_name")})
+	@FindBys( { @FindBy(css = "input.first_name")})
 	public WebElement nameInput;
 
 	@FindBy(css = "input.last_name")

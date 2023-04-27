@@ -7,7 +7,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -40,9 +39,9 @@ public class DriverManager {
 
 	public WebDriver getDriver(WebDriver extDriver) {
 		if (extDriver == null) {
-			//detectar o tipo de driver renová-lo pelo tipo mais específico.
-		extDriver = new ChromeDriver();
-	}
+			// detectar o tipo de driver renová-lo pelo tipo mais específico.
+			extDriver = new ChromeDriver();
+		}
 		return extDriver;
 	}
 
@@ -64,9 +63,6 @@ public class DriverManager {
 		case IEXPLORER: {
 			return new InternetExplorerDriver();
 		}
-		case OPERA: {
-			return new OperaDriver();
-		}
 
 		case SAFARI: {
 			return new SafariDriver();
@@ -76,10 +72,11 @@ public class DriverManager {
 			return new ChromeDriver();
 		}
 		}
+
 	}
 
 	public static WebDriver setNewChromeDriver() {
-		WebDriver extDriver =  new ChromeDriver();
+		WebDriver extDriver = new ChromeDriver();
 		extDriver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
 		return extDriver;
 	}
