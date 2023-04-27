@@ -1,5 +1,6 @@
 #project folders
 /target/
+/evidencia/*
 
 # Compiled class file
 *.class

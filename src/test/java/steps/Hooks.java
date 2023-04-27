@@ -1,14 +1,10 @@
 package steps;
 
-import static managers.DriverManager.setupWebDrivers;
-
 import org.junit.BeforeClass;
 
-public class Hooks {
+import io.cucumber.java.After;
 
-	@BeforeClass
-	public static void setupClass() {
-		setupWebDrivers();
-	}
+public class Hooks {
+	
 
 }

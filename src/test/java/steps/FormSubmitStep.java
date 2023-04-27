@@ -1,19 +1,23 @@
 package steps;
 
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
+import entities.dto.UserFormDTO;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.core.event.Status;
 import io.cucumber.java.After;
@@ -22,162 +26,150 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import pages.BasePage;
+import io.github.bonigarcia.wdm.config.DriverManagerType;
+import managers.DriverManager;
 import pages.FormSubmitPage;
 import testutils.Screenshoter;
 
-public class FormSubmitStep<T extends BasePage> {
+public class FormSubmitStep {
 
-	private static final String START_URL = "https://phptravels.com/demo/";
-	private static WebDriver driver;
-
+	private static final String START_URL = "https://phptravels.com/demo";
+	private WebDriver driver;
 	public static Boolean status;
-
-
 	private final static String DEFAULT_EXTENSION = ".png";
 	private final static String DEFAULT_DESTINATION_DIRECTORY = "./target/Screenshots/";
-	private final static String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_hh_mm_ss";
+	private final static String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_HH_mm_ss";
+
+	private UserFormDTO userForm;
+	private List<UserFormDTO> userFormList;
+
+	private FormSubmitPage page;
+
+	XSSFWorkbook wb;
+	XSSFSheet sheet;
+	XSSFRow currentRow;
 
 
 	public FormSubmitStep() {
+		if (driver == null)
+			this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+			driver.manage().window().maximize();
 	}
-	
-	private static WebElement nameInput;
-	private WebElement surnameInput;
-	private WebElement businessNameInput;
-	private WebElement emailInput;
-	private WebElement enigmaExpression;
-	private WebElement numb1;
-	private WebElement numb2;
-	private WebElement solutionInput;
-	private WebElement submitButton;
-	private WebElement thankYouMessage;
-	private WebElement confirmationMailCheckMessage;
-	private FormSubmitPage page;
-	
+
 	@Before
 	public void acessaPagina() {
-		driver = WebDriverManager.getInstance("Chrome").create();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		
+
+		if (driver == null)
+			this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
 		System.out.println("Passou pelo inicializaDriver");
-		System.out.println("Passou pelo inicializaDriver");
+		System.out.println("Passou pelo inicializaPagina");
+
+		carregaInfoTOdosUsuarios();
+		page = new FormSubmitPage(driver);
+
+	}
+
+	private void carregaInfoTOdosUsuarios() {
+		try {
+			wb = new XSSFWorkbook(new FileInputStream("./src/main/resources/DATA_SPREADSHEET.xlsx"));
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		sheet = wb.getSheet("DATA_USER_FORM");
+		sheet = wb.getSheetAt(0);
+		userFormList = new ArrayList<>();
+		Iterator<Row> rowIterator = sheet.iterator();
+		rowIterator.hasNext();
+		while (rowIterator.hasNext()) {
+			Row row = rowIterator.next();
+			userFormList.add(new UserFormDTO(row));
+		}
+
+//		driver.get(START_URL);
+
+	}
+
+	@Dado("o usuário escolhido é de índice {int}")
+	public void oUsuárioEscolhidoÉDeÍndice(Integer userIndex) {
+		userForm = userFormList.get(userIndex);
 	}
 
 	@Dado("que estou na página de demonstração")
-	public void que_estou_na_página_de_demonstração() {
-		driver.get(START_URL);
+	public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
+
+		 driver.get(START_URL);
 	}
 
-	@Quando("eu insiro o nome do usuário {string}")
-	public void eu_insiro_o_nome_do_usuário(String name) {
-	
-		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		nameInput = driver.findElement(By.cssSelector("input.first_name"));
+	@E("eu insiro o nome do usuário")
+	public void euInsiroONomeDoUsuárioDeÍndice() {
 
-		nameInput.sendKeys(name);
-		Assert.assertNotNull(nameInput);
+		page.escreveNome(userForm.getName());
 	}
 
-	@E("insiro o sobrenome {string}")
-	public void insiro_o_sobrenome(String surname) {
-		surnameInput = driver.findElement(By.cssSelector("input.last_name"));
-		surnameInput.click();
-		surnameInput.sendKeys(surname);
+	@E("insiro o sobrenome")
+	public void insiroOSobrenome() {
+		page.escreveSobrenome(userForm.getSurname());
 	}
 
-	@E("insiro o e-mail {string}")
-	public void insiro_o_e_mail(String email) {
-		emailInput = driver.findElement(By.cssSelector("input.email"));
-		emailInput.sendKeys(email);
+	@E("insiro o e-mail")
+	public void insiroOEmail() {
+		page.escreveEmail(userForm.getEmail());
 	}
 
-	@E("insiro o nome de sua empresa {string}")
-	public void insiro_o_nome_de_sua_empresa(String businessName) {
-		businessNameInput = driver.findElement(By.cssSelector("input.business_name"));
-		businessNameInput.sendKeys(businessName);
+	@E("insiro o nome de sua empresa")
+	public void insiro_o_nome_de_sua_empresa() {
+		page.escreveCompania(userForm.getBusinessName());
 	}
 
-	@E("soluciono o enigma")
-	public void soluciono_o_enigma() {
-		solutionInput = driver.findElement(By.id("number"));
-		solutionInput.sendKeys(solveEnigma());
+	@Quando("soluciono o enigma")
+	public void solucionoOEnigma() {
+		page.solucionaEnigmaEEscreveOResultado();
 	}
 
 	@E("clico em submeter")
-	public void clico_em_submeter() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		submitButton = driver.findElement(By.id("demo"));
-		submitButton = submitButton.findElement(By.xpath("./../*"));
-		submitButton.click();
-//		try {
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-
+	public void clicoEmSubmeter() {
+		page.submitForm();
 	}
 
 	@Então("As informações foram enviadas com sucesso!")
-	public void as_informações_foram_enviadas_com_sucesso() {
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		confirmationMailCheckMessage = driver.findElement(By.cssSelector("p.text-center.cw"));
-		Assert.assertTrue(confirmationMailCheckMessage.isDisplayed());
-	//	testHasPassed();
-
-//		takeScreenshot();
+	public void asInformaçõesForamEnviadasComSucesso() {
+		Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
 
 	}
 
-	private String solveEnigma() {
-		Integer result = 0;
+	@Então("Um alerta é exibido com a mensagem {string}")
+	public void umAlertaÉExibidoComAMensagem(String message) {
 
-		numb1 = driver.findElement(By.id("numb1"));
-		numb2 = driver.findElement(By.id("numb2"));
+		try {
+			Assert.assertEquals(message, page.getAlertMessage());
+		} catch (Exception e) {
 
-		result += Integer.parseInt(numb1.getText());
-		result += Integer.parseInt(numb2.getText());
+			e.printStackTrace();
+		}
 
-		return result.toString();
 	}
 
 	private static String stringDaData() {
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
 	}
 
-	public static void makeScreenshot(String destination, String filename, String extension) {
-
-		File shot;
-		shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-		try {
-			FileUtils.copyFile(shot, new File((destination + filename + extension)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@After
-	public static void takeScreenshot(Scenario s) {
-		String result = (s.getStatus() == Status.PASSED ? "SUCESSO" : "FALHOU");
+	@After(order = 0)
+	public void takeScreenshot(Scenario s) throws IOException {
+		Screenshoter screenshoter = new Screenshoter(driver);
+		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
 		String id = s.getName().split(" ")[0];
 		String shotFileName = String.join("_", id, stringDaData(), result);
-		makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
+		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
+		wb.close();
+		driver.close();
+
 	}
+
 }
