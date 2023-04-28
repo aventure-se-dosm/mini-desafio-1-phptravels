@@ -10,31 +10,23 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 
 		features = { 
 				"src/test/resources/features/form-submit.feature",
-				//"src/test/resources/features/form-submit-altogether.feature" 
-		},
-		
-		glue = {
-				"steps",
-		},
-		
-		plugin = { 
-				"pretty"
 		},
 
-		tags = {
+		glue = { "steps" },
 
-		}, 
-		
+		plugin = { "pretty" },
+
+		tags = { "@ID_0001,@ID_0002", 
+		},
+
 		snippets = SnippetType.CAMELCASE,
-		
+
 		monochrome = true,
-		
+
 		dryRun = false,
-		
-		strict = true
-	)
+
+		strict = true)
 
 @RunWith(Cucumber.class)
 public class RunnerTest {
-
 }

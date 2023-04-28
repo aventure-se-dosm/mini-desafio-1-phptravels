@@ -3,17 +3,18 @@ package steps;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
@@ -31,152 +32,161 @@ import managers.DriverManager;
 import pages.FormSubmitPage;
 import testutils.Screenshoter;
 
+public class FormSubmitSteps extends Hooks{
 
-public class FormSubmitSteps {
+	private static final String START_URL = "https://phptravels.com/demo";
+    static WebDriver driver;
+	public static Boolean status;
+	private final static String DEFAULT_SCREENSHOT_EXTENSION = ".png";
 
-//	private static final String START_URL = "https://phptravels.com/demo";
-//	private WebDriver driver;
-//	public static Boolean status;
-//	private final static String DEFAULT_EXTENSION = ".png";
-//	private final static String DEFAULT_DESTINATION_DIRECTORY = "./target/Screenshots/";
-//	private final static String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_HH_mm_ss";
-//
-//	//private UserFormDTO userFormDTO;
-//	private List<UserFormDTO> userFormList;
-//
-//	private FormSubmitPage page;
-//
-//	XSSFWorkbook wb;
-//	XSSFSheet sheet;
-//	XSSFRow currentRow;
-//	private UserFormDTO userFormDTO;
-//
-//	public FormSubmitSteps() {
-//		if (driver == null)
-//			this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
-//		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-//		driver.manage().window().maximize();
-//
-//	}
-//
-//	@Before
-//	public void acessaPagina() {
-//
-//		if (driver == null)
-//			// this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
-//			this.driver = DriverManager.setNewChromeDriver();
-//		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-//		driver.manage().window().maximize();
-//		System.out.println("Passou pelo inicializaDriver");
-//		System.out.println("Passou pelo inicializaPagina");
-//
-//		carregaInfoTOdosUsuarios();
-//		page = new FormSubmitPage(driver);
-//
-//	}
-//
-//	private void carregaInfoTOdosUsuarios() {
-//		try {
-//			wb = new XSSFWorkbook(new FileInputStream("./src/main/resources/DATA_SPREADSHEET.xlsx"));
-//		} catch (FileNotFoundException e) {
-//
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//
-//			e.printStackTrace();
-//		}
-//		sheet = wb.getSheet("DATA_USER_FORM");
-//		sheet = wb.getSheetAt(0);
-//		userFormList = new ArrayList<>();
-//		Iterator<Row> rowIterator = sheet.iterator();
-//		rowIterator.hasNext();
-//		while (rowIterator.hasNext()) {
-//			Row row = rowIterator.next();
-//			userFormList.add(new UserFormDTO(row));
-//		}
-//
-//	}
-//
-//	@Dado("o usuário escolhido é de índice {int}")
-//	public void oUsuárioEscolhidoÉDeÍndice(Integer userIndex) {
-//		userFormDTO = userFormList.get(userIndex);
-//	}
-//
-//	@Dado("que estou na página de demonstração")
-//	public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
-//
-//		driver.get(START_URL);
-//	}
-//
-//	@Quando("eu insiro as informações do usuário")
-//	public void euInsiroAsInformaçõesDoUsuário() {
-//		page.preencheFormCompleto(userFormDTO);
-//		throw new cucumber.api.PendingException();
-//	}
+	private final static String OUTPUT_SCREENSHOT_FOLDER = "./evidencia/";
+	private final static String FORMATO_DATA_AVAL_1 = "dd_MM_YYYY_HH_mm_ss";
+
+	private UserFormDTO userForm;
+	private List<UserFormDTO> userFormList;
+
+	private FormSubmitPage page;
+
+	XSSFWorkbook wb;
+	XSSFSheet sheet;
+	XSSFRow currentRow;
+	UserFormDTO userFormDTO;
+
+	public FormSubmitSteps() {
+		if (driver == null)
+			this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		driver.manage().window().maximize();
+	}
+
+	@Before
+	public void acessaPagina() {
+		carregaInfoTOdosUsuarios();
+		page = new FormSubmitPage(driver);
+
+	}
+
+	private void carregaInfoTOdosUsuarios() {
+		try {
+			wb = new XSSFWorkbook(new FileInputStream(
+
+					// it should have been (though WILL be) such as a return from ConfigReader's
+					// getPetinentProperty()
+					"./src/main/resources/DATA_SPREADSHEET.xlsx"));
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		sheet = wb.getSheet("DATA_USER_FORM");
+		sheet = wb.getSheetAt(0);
+		userFormList = new ArrayList<>();
+		Iterator<Row> rowIterator = sheet.iterator();
+		// faz este next para pular o HEADER da planilha
+		// deve ter jeito melhor.
+		rowIterator.next();
+		while (rowIterator.hasNext()) {
+			Row row = rowIterator.next();
+			userFormList.add(new UserFormDTO(row));
+		}
+	}
+
+	@Dado("o usuário escolhido é de índice {int}")
+	public void oUsuárioEscolhidoÉDeÍndice(Integer userIndex) {
+		userForm = userFormList.get(userIndex);
+	}
+
+	@Dado("que estou na página de demonstração")
+	public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
+
+		driver.get(START_URL);
+	}
+
+	@Quando("eu insiro as informações do usuário")
+	public void euInsiroAsInformaçõesDoUsuário() {
+		page.preencheFormCompleto(userFormList.iterator().next());
+	}
+
+	@Quando("eu insiro as informações do usuário {int}")
+	public void euInsiroAsInformaçõesDoUsuário(Integer userFormDataIndex) {
+		page.preencheFormCompleto(userFormList.get(userFormDataIndex));
+	}
 //
 //	@E("eu insiro o nome do usuário")
 //	public void euInsiroONomeDoUsuárioDeÍndice() {
 //
-//		page.escreveNome(userFormDTO.getName());
+//		page.escreveNome(userForm.getName());
 //	}
 //
 //	@E("insiro o sobrenome")
 //	public void insiroOSobrenome() {
-//		page.escreveSobrenome(userFormDTO.getSurname());
+//		page.escreveSobrenome(userForm.getSurname());
 //	}
 //
 //	@E("insiro o e-mail")
 //	public void insiroOEmail() {
-//		page.escreveEmail(userFormDTO.getEmail());
+//		page.escreveEmail(userForm.getEmail());
 //	}
 //
 //	@E("insiro o nome de sua empresa")
 //	public void insiro_o_nome_de_sua_empresa() {
-//		page.escreveCompania(userFormDTO.getBusinessName());
+//		page.escreveCompania(userForm.getBusinessName());
 //	}
-//
-//	@E("soluciono o enigma")
-//	public void solucionoOEnigma() {
-//		page.solucionaEnigmaEEscreveOResultado();
-//	}
-//
-//	@E("clico em submeter")
-//	public void clicoEmSubmeter() {
-//		page.submitForm();
-//	}
-//
-//	@Então("As informações foram enviadas com sucesso!")
-//	public void asInformaçõesForamEnviadasComSucesso() {
-//		Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
-//
-//	}
-//
-//	@Então("Um alerta é exibido com a mensagem {string}")
-//	public void umAlertaÉExibidoComAMensagem(String message) {
-//
-//		try {
-//			Assert.assertEquals(message, page.getAlertMessage());
-//		} catch (Exception e) {
-//
-//			e.printStackTrace();
-//		}
-//
-//	}
-//
-//	private static String stringDaData() {
-//		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
-//	}
-//
-//	@After(order = 0)
-//	public void takeScreenshot(Scenario s) throws IOException {
-//		Screenshoter screenshoter = new Screenshoter(driver);
-//		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
-//		String id = s.getName().split(" ")[0];
-//		String shotFileName = String.join("_", id, stringDaData(), result);
-//		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
-//		wb.close();
-//		driver.close();
-//
-//	}
+
+	@Quando("soluciono o enigma")
+	public void solucionoOEnigma() {
+		page.solucionaEnigmaEEscreveOResultado();
+	}
+
+	@E("clico em submeter")
+	public void clicoEmSubmeter() {
+		page.submitForm();
+	}
+
+	@Então("As informações foram enviadas com sucesso!")
+	public void asInformaçõesForamEnviadasComSucesso() {
+		Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
+
+	}
+
+	@Então("Um alerta é exibido com a mensagem {string}")
+	public void umAlertaÉExibidoComAMensagem(String message) {
+
+		try {
+			Assert.assertEquals(message, page.getAlertMessage());
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		finally {
+			;
+		}
+
+	}
+
+	private static String stringDaData() {
+		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
+	}
+
+	@After()
+	public void takeScreenshot(Scenario s) throws IOException {
+		Screenshoter screenshoter = new Screenshoter(driver);
+		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
+		String id = s.getName().split(" ")[0];
+		String shotFileName = String.join("_", id, stringDaData(), result);
+		screenshoter.makeScreenshot(OUTPUT_SCREENSHOT_FOLDER, shotFileName, DEFAULT_SCREENSHOT_EXTENSION);
+		//driver.close();
+		wb.close();
+	}
+
+	public static WebDriver getDriver() {
+		return driver;
+	}
+
+
+
 
 }

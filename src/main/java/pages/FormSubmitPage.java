@@ -28,7 +28,7 @@ public class FormSubmitPage {
 		isElemClickable = new FluentWait<WebDriver>(this.driver);
 	}
 
-	@FindBys( { @FindBy(css = "input.first_name")})
+	@FindBys({ @FindBy(css = "input.first_name") })
 	public WebElement nameInput;
 
 	@FindBy(css = "input.last_name")
@@ -65,30 +65,26 @@ public class FormSubmitPage {
 	public WebElement pageLoadingPaceActivity;
 
 	public void preencheFormCompleto(UserFormDTO userFormDTO) {
-		escreveNome(userFormDTO.getName());
-		escreveSobrenome(userFormDTO.getSurname());
-		escreveCompania(userFormDTO.getBusinessName());
-        escreveEmail(userFormDTO.getEmail());	
+		
+		writeFormUserFirstName(userFormDTO.getUserFormFirstName());
+		writeFormUserLastName(userFormDTO.getUserFormLastName());
+		writeFormBusinessName(userFormDTO.getUserFormBusinessName());
+		writeFormEmailAddress(userFormDTO.getUserFormEmail());
 	}
 
-	public void escreveNome(String nome) {
-		elemIsPresent.pollingEvery(Duration.ofMillis(100)).withTimeout(Duration.ofSeconds(1))
-				.until(ExpectedConditions.visibilityOf(nameInput));
+	public void writeFormUserFirstName(String nome) {
 		nameInput.sendKeys(nome);
 	}
 
-	public void escreveSobrenome(String sobrenome) {
-
+	public void writeFormUserLastName(String sobrenome) {
 		surnameInput.sendKeys(sobrenome);
 	}
 
-	public void escreveCompania(String companhia) {
-
+	public void writeFormBusinessName(String companhia) {
 		businessNameInput.sendKeys(companhia);
 	}
 
-	public void escreveEmail(String email) {
-
+	public void writeFormEmailAddress(String email) {
 		emailInput.sendKeys(email);
 	}
 
@@ -100,7 +96,6 @@ public class FormSubmitPage {
 	}
 
 	public void submitForm() {
-
 		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
 				.until(ExpectedConditions.elementToBeClickable(submitButton));
 
@@ -129,9 +124,8 @@ public class FormSubmitPage {
 		result += Integer.parseInt(numb2.getText());
 		return result.toString();
 	}
-
 	public String getAlertMessage() throws Exception {
-		
+
 		Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
 				.ignoring(NoAlertPresentException.class).until(ExpectedConditions.alertIsPresent());
 		String alertMesage = alert.getText();

@@ -1,5 +1,6 @@
 package managers;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -47,37 +48,36 @@ public class DriverManager {
 
 	public WebDriver setDriver(DriverManagerType selectedtDriver) {
 		driver = getSelectedDriver(selectedtDriver);
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
+		driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(3));
 		return driver;
 	}
 
 	public static WebDriver getSelectedDriver(DriverManagerType driverType) {
 
 		switch (driverType) {
-		case EDGE: {
-			return new EdgeDriver();
+			case EDGE: {
+				return new EdgeDriver();
+			}
+			case FIREFOX: {
+				return new FirefoxDriver();
+			}
+			case IEXPLORER: {
+				return new InternetExplorerDriver();
+			}
+	
+			case SAFARI: {
+				return new SafariDriver();
+			}
+			case CHROME:
+			default: {
+				return new ChromeDriver();
+			}
 		}
-		case FIREFOX: {
-			return new FirefoxDriver();
-		}
-		case IEXPLORER: {
-			return new InternetExplorerDriver();
-		}
-
-		case SAFARI: {
-			return new SafariDriver();
-		}
-		case CHROME:
-		default: {
-			return new ChromeDriver();
-		}
-		}
-
 	}
 
 	public static WebDriver setNewChromeDriver() {
 		WebDriver extDriver = new ChromeDriver();
-		extDriver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
+		extDriver.manage().timeouts().implicitlyWait(Duration.ofMinutes(3));
 		return extDriver;
 	}
 }

@@ -17,19 +17,19 @@ public class UserFormDTO {
 
 	private String name, surname, businessName, email;
 
-	public String getName() {
+	public String getUserFormFirstName() {
 		return name;
 	}
 
-	public String getSurname() {
+	public String getUserFormLastName() {
 		return surname;
 	}
 
-	public String getBusinessName() {
+	public String getUserFormBusinessName() {
 		return businessName;
 	}
 
-	public String getEmail() {
+	public String getUserFormEmail() {
 		return email;
 	}
 
