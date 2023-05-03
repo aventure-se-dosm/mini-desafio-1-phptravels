@@ -5,12 +5,15 @@ import java.time.Duration;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+
+import entities.dto.UserFormDTO;
 
 public class FormSubmitPage {
 
@@ -61,10 +64,6 @@ public class FormSubmitPage {
 	@FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
 	public WebElement pageLoadingPaceActivity;
 
-	public void preencheFormCompleto() {
-
-	}
-
 	public void escreveNome(String nome) {
 		elemIsPresent.pollingEvery(Duration.ofMillis(100)).withTimeout(Duration.ofSeconds(1))
 				.until(ExpectedConditions.visibilityOf(nameInput));
@@ -86,6 +85,14 @@ public class FormSubmitPage {
 		emailInput.sendKeys(email);
 	}
 
+	public void fillUserForm(UserFormDTO udf) {
+
+		escreveNome(udf.getName());
+		escreveSobrenome(udf.getSurname());
+		escreveEmail(udf.getEmail());
+		escreveCompania(udf.getBusinessName());
+	}
+
 	public void solucionaEnigmaEEscreveOResultado() {
 
 		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
@@ -93,18 +100,31 @@ public class FormSubmitPage {
 		solutionInput.sendKeys(solveEnigma());
 	}
 
-	public void submitForm() {
+	public String submitForm() throws UnhandledAlertException {
 
+		String alertMessage = "";
 		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
 				.until(ExpectedConditions.elementToBeClickable(submitButton));
 
 		submitButton.click();
+		Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
+				.ignoring(NoAlertPresentException.class, TimeoutException.class)
+				.until(ExpectedConditions.alertIsPresent());
+		if (alert != null) {
+			try {
+				alertMessage = getAlertMessage();
+			} catch (Exception e) {
+				return alertMessage;
+			}
+
+		}
+		return alertMessage;
 	}
 
 	public boolean formHasBeenSubmitedSuccessifully() {
 
 		try {
-			elemIsPresent.pollingEvery(Duration.ofMillis(2000)).withTimeout(Duration.ofSeconds(30))
+			elemIsPresent.pollingEvery(Duration.ofMillis(2000)).withTimeout(Duration.ofSeconds(5))
 					.until(ExpectedConditions.visibilityOf(confirmationMailCheckMessage));
 			return true;
 		} catch (TimeoutException texcp) {
@@ -113,23 +133,25 @@ public class FormSubmitPage {
 	}
 
 	public String solveEnigma() {
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
 		Integer result = 0;
 		result += Integer.parseInt(numb1.getText());
 		result += Integer.parseInt(numb2.getText());
+
 		return result.toString();
 	}
 
-	public String getAlertMessage() throws Exception {
-		
-		Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
-				.ignoring(NoAlertPresentException.class).until(ExpectedConditions.alertIsPresent());
-		String alertMesage = alert.getText();
-		alert.accept();
-		return alertMesage;
+	public String getAlertMessage() {
+		String alertMesage = "";
+		try {
+			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
+					.ignoring(NoAlertPresentException.class, TimeoutException.class)
+					.until(ExpectedConditions.alertIsPresent());
+			alertMesage = alert.getText();
+			alert.dismiss();
+			return alertMesage;
+		} catch (TimeoutException t) {
+			return alertMesage;
+		}
 	}
 }
