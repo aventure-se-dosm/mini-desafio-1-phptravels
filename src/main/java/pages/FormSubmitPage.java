@@ -85,7 +85,7 @@ public class FormSubmitPage {
 		emailInput.sendKeys(email);
 	}
 
-	public void fillUserForm(UserFormDTO udf) {
+	public void fillUserForm(entities.dto.UserFormDTO udf) {
 
 		escreveNome(udf.getName());
 		escreveSobrenome(udf.getSurname());
