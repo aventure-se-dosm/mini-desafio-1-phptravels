@@ -169,10 +169,8 @@ public class FormSubmitStep {
 	public static void takeScreenshot(Scenario s) {
 		Screenshoter screenshoter = new Screenshoter(driver);
 		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
-		String id =  s.getSourceTagNames().stream().findFirst().get();
-		
-		
-		
+		String id = s.getSourceTagNames().stream().findFirst().get().replace("@", "");
+
 		String shotFileName = String.join("_", id, stringDaData(), result);
 		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
 
@@ -184,17 +182,21 @@ public class FormSubmitStep {
 	}
 
 	public static void closeDriver() {
-		getDriver().close();
+		if (driver != null) {
+			getDriver().close();
+			getDriver().quit();
+		}
+		driver = null;
 
 	}
 
 	private static WebDriver getDriver() {
-		// TODO Auto-generated method stub
+
 		return driver;
 	}
 
 	private static XSSFWorkbook getWorkBook() {
-		// TODO Auto-generated method stub
+
 		return wb;
 	}
 
@@ -202,10 +204,15 @@ public class FormSubmitStep {
 		try {
 			getWorkBook().close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void closeApllication() {
+		closeWorkBOok();
+		closeDriver();
 	}
 
 }
