@@ -1,7 +1,7 @@
 package steps;
 
 import io.cucumber.core.api.Scenario;
-import io.cucumber.java.AfterStep;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
 public class Hooks {
@@ -15,10 +15,9 @@ public class Hooks {
 
 	@Before(order = 1)
 	public static void startBrowser(Scenario scenario) {
-		// FormSubmitStep.inicializaAplicacao();
+
 		FormSubmitStep.setId(getIdFromFeatureTag(scenario));
 
-		// FormSubmitStep.inicializaAplicacao();
 	}
 
 	private static String getIdFromFeatureTag(Scenario scenario) {
@@ -26,11 +25,11 @@ public class Hooks {
 				.orElse(DEFAULT_USER_INDEX);
 	}
 
-	@AfterStep(order = 2)
-	public static void takeScreenshot(Scenario s) {
+	@After(order = 2)
 
+	public static void takeScreenshot(Scenario s) {
 		FormSubmitStep.takeScreenshot(s);
-		// FormSubmitStep.driver.close();
+
 	}
 
 }

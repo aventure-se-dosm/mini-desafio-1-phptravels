@@ -31,7 +31,7 @@ import testutils.Screenshoter;
 
 public class FormSubmitStep {
 
-	private static final String START_URL = "phptravels.com/demo";
+	private static final String START_URL = "https://phptravels.com/demo";
 
 	static WebDriver driver;
 	public static Boolean status;
@@ -52,6 +52,7 @@ public class FormSubmitStep {
 	private String currentAlert;
 
 	public FormSubmitStep() {
+
 		if (driver == null)
 			FormSubmitStep.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
 
@@ -61,9 +62,9 @@ public class FormSubmitStep {
 	}
 
 	public static void inicializaAplicacao() {
-//
+
 		if (driver == null) {
-			driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+			driver = DriverManager.getSelectedDriver(DriverManagerType.FIREFOX);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 			driver.manage().window().maximize();
 		}
@@ -194,7 +195,6 @@ public class FormSubmitStep {
 	public static void closeDriver() {
 
 		if (driver != null) {
-			getDriver().close();
 			getDriver().quit();
 		}
 		driver = null;
@@ -209,6 +209,7 @@ public class FormSubmitStep {
 	}
 
 	public static void closeWorkBOok() {
+
 		try {
 			getWorkBook().close();
 		} catch (IOException e) {
@@ -219,7 +220,9 @@ public class FormSubmitStep {
 	}
 
 	public static void closeApllication() {
+
 		closeWorkBOok();
+
 		closeDriver();
 
 	}
