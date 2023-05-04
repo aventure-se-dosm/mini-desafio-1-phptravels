@@ -114,21 +114,21 @@ public class FormSubmitStep {
 
 	@E("eu insiro o nome do usuário")
 	public void euInsiroONomeDoUsuárioDeÍndice() {
-		page.escreveNome(userForm.getName());
+		page.writeFirstName(userForm.getFirstName());
 	}
 
 	@E("insiro o sobrenome")
 	public void insiroOSobrenome() {
-		page.escreveSobrenome(userForm.getSurname());
+		page.writeLastName(userForm.getLastName());
 	}
 
 	@E("insiro o e-mail")
 	public void insiroOEmail() {
-		page.escreveEmail(userForm.getEmail());
+		page.writeEmailAddress(userForm.getEmailAddress());
 	}
 
 	@E("insiro o nome de sua empresa")
-	public void insiro_o_nome_de_sua_empresa() {
+	public void insiroONomeDeSuaEmpresa() {
 	}
 
 	@E("preencho todo o formulário")
@@ -138,7 +138,7 @@ public class FormSubmitStep {
 
 	@Quando("soluciono o enigma")
 	public void solucionoOEnigma() {
-		page.solucionaEnigmaEEscreveOResultado();
+		page.solveEnigmaAndWriteTheSolution();
 	}
 
 	@E("clico em submeter")
@@ -167,6 +167,7 @@ public class FormSubmitStep {
 	}
 
 	public static void takeScreenshot(Scenario s) {
+
 		Screenshoter screenshoter = new Screenshoter(driver);
 		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
 		String id = s.getSourceTagNames().stream().findFirst().get().replace("@", "");
@@ -182,21 +183,19 @@ public class FormSubmitStep {
 	}
 
 	public static void closeDriver() {
+
 		if (driver != null) {
 			getDriver().close();
 			getDriver().quit();
 		}
 		driver = null;
-
 	}
 
 	private static WebDriver getDriver() {
-
 		return driver;
 	}
 
 	private static XSSFWorkbook getWorkBook() {
-
 		return wb;
 	}
 
