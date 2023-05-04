@@ -15,6 +15,7 @@ public class Hooks {
 
 	@Before(order = 1)
 	public static void startBrowser(Scenario scenario) {
+
 		FormSubmitStep.setId(getIdFromFeatureTag(scenario));
 
 	}
@@ -25,6 +26,7 @@ public class Hooks {
 	}
 
 	@After(order = 2)
+
 	public static void takeScreenshot(Scenario s) {
 		FormSubmitStep.takeScreenshot(s);
 

@@ -40,8 +40,6 @@ public class DriverManager {
 	public WebDriver setDriver(DriverManagerType selectedtDriver) {
 		driver = getSelectedDriver(selectedtDriver);
 
-		// driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
-
 		return driver;
 	}
 

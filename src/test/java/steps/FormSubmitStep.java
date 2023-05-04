@@ -53,6 +53,12 @@ public class FormSubmitStep {
 
 	public FormSubmitStep() {
 
+		if (driver == null)
+			FormSubmitStep.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		driver.manage().window().maximize();
+
 	}
 
 	public static void inicializaAplicacao() {
@@ -189,7 +195,6 @@ public class FormSubmitStep {
 	public static void closeDriver() {
 
 		if (driver != null) {
-			//getDriver().close();
 			getDriver().quit();
 		}
 		driver = null;
@@ -203,7 +208,8 @@ public class FormSubmitStep {
 		return wb;
 	}
 
-	public static void closeWorkBook() {
+	public static void closeWorkBOok() {
+
 		try {
 			getWorkBook().close();
 		} catch (IOException e) {
@@ -214,7 +220,9 @@ public class FormSubmitStep {
 	}
 
 	public static void closeApllication() {
-		closeWorkBook();
+
+		closeWorkBOok();
+
 		closeDriver();
 
 	}
