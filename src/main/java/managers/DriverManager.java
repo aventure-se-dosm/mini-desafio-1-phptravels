@@ -1,6 +1,6 @@
 package managers;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -39,7 +39,9 @@ public class DriverManager {
 
 	public WebDriver setDriver(DriverManagerType selectedtDriver) {
 		driver = getSelectedDriver(selectedtDriver);
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
+
+	//	driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
+
 		return driver;
 	}
 
@@ -67,7 +69,9 @@ public class DriverManager {
 
 	public static WebDriver setNewChromeDriver() {
 		WebDriver chDriver = WebDriverManager.getInstance(DriverManagerType.CHROME).timeout(30000).getWebDriver();
-		chDriver.manage().timeouts().implicitlyWait(2, TimeUnit.MINUTES);
+
+		chDriver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
+
 		return chDriver;
 	}
 }

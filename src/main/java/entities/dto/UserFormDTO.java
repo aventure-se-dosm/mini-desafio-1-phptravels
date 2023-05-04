@@ -5,7 +5,8 @@ import org.apache.poi.ss.usermodel.Row;
 public class UserFormDTO {
 
 	private enum formFields {
-		NAME(0), SURNAME(1), BUSINESS_NAME(2), EMAIL(3);
+
+		FIRST_NAME(0), LAST_SURNAME(1), BUSINESS_NAME(2), EMAIL_ADDRESS(3);
 
 		private int index;
 
@@ -15,29 +16,31 @@ public class UserFormDTO {
 
 	}
 
-	private String name, surname, businessName, email;
+	private String firstName, lastName, businessName, emailAddress;
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public String getSurname() {
-		return surname;
+	public String getLastName() {
+		return lastName;
+
 	}
 
 	public String getBusinessName() {
 		return businessName;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
 	public UserFormDTO(Row row) {
-		this.name = row.getCell(formFields.NAME.index).getStringCellValue();
-		this.surname = row.getCell(formFields.SURNAME.index).getStringCellValue();
+		this.firstName = row.getCell(formFields.FIRST_NAME.index).getStringCellValue();
+		this.lastName = row.getCell(formFields.LAST_SURNAME.index).getStringCellValue();
 		this.businessName = row.getCell(formFields.BUSINESS_NAME.index).getStringCellValue();
-		this.email = row.getCell(formFields.EMAIL.index).getStringCellValue();
+		this.emailAddress = row.getCell(formFields.EMAIL_ADDRESS.index).getStringCellValue();
+
 	}
 
 }

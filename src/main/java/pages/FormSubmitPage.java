@@ -5,6 +5,7 @@ import java.time.Duration;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,28 +15,28 @@ import org.openqa.selenium.support.ui.FluentWait;
 
 public class FormSubmitPage {
 
-	private final WebDriver driver;
+	private static WebDriver driver;
 
 	private FluentWait<WebDriver> elemIsPresent, isElemClickable;
 
-	public FormSubmitPage(WebDriver driver) {
-		this.driver = driver;
+	public FormSubmitPage(WebDriver wdriver) {
+		driver = wdriver;
 		PageFactory.initElements(driver, this);
-		elemIsPresent = new FluentWait<WebDriver>(this.driver);
-		isElemClickable = new FluentWait<WebDriver>(this.driver);
+		elemIsPresent = new FluentWait<WebDriver>(driver);
+		isElemClickable = new FluentWait<WebDriver>(driver);
 	}
 
 	@FindBy(css = "input.first_name")
-	public WebElement nameInput;
+	public WebElement firstNameInput;
 
 	@FindBy(css = "input.last_name")
-	public WebElement surnameInput;
+	public WebElement lastNameInput;
 
 	@FindBy(css = "input.business_name")
 	public WebElement businessNameInput;
 
 	@FindBy(css = "input.email")
-	public WebElement emailInput;
+	public WebElement emailAddressInput;
 
 	@FindBy(css = "h2.mw100")
 	public WebElement enigmaExpression;
@@ -61,50 +62,70 @@ public class FormSubmitPage {
 	@FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
 	public WebElement pageLoadingPaceActivity;
 
-	public void preencheFormCompleto() {
-
-	}
-
-	public void escreveNome(String nome) {
+	public void writeFirstName(String firstName) {
 		elemIsPresent.pollingEvery(Duration.ofMillis(100)).withTimeout(Duration.ofSeconds(1))
-				.until(ExpectedConditions.visibilityOf(nameInput));
-		nameInput.sendKeys(nome);
+				.until(ExpectedConditions.visibilityOf(firstNameInput));
+		firstNameInput.sendKeys(firstName);
 	}
 
-	public void escreveSobrenome(String sobrenome) {
+	public void writeLastName(String lastName) {
 
-		surnameInput.sendKeys(sobrenome);
+		lastNameInput.sendKeys(lastName);
 	}
 
-	public void escreveCompania(String companhia) {
+	public void writeBusinessName(String businessName) {
 
-		businessNameInput.sendKeys(companhia);
+		businessNameInput.sendKeys(businessName);
 	}
 
-	public void escreveEmail(String email) {
+	public void writeEmailAddress(String emailAddress) {
 
-		emailInput.sendKeys(email);
+		emailAddressInput.sendKeys(emailAddress);
 	}
 
-	public void solucionaEnigmaEEscreveOResultado() {
+	public void fillUserForm(entities.dto.UserFormDTO udf) {
+
+		writeFirstName(udf.getFirstName());
+		writeLastName(udf.getLastName());
+		writeEmailAddress(udf.getEmailAddress());
+		writeBusinessName(udf.getBusinessName());
+	}
+
+	public void solveEnigmaAndWriteTheSolution() {
 
 		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
 				.until(ExpectedConditions.visibilityOf(solutionInput));
 		solutionInput.sendKeys(solveEnigma());
 	}
 
-	public void submitForm() {
+	public String submitForm() throws UnhandledAlertException {
 
+		String alertMessage = "";
 		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
 				.until(ExpectedConditions.elementToBeClickable(submitButton));
 
 		submitButton.click();
+		Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
+				.ignoring(NoAlertPresentException.class, TimeoutException.class)
+				.until(ExpectedConditions.alertIsPresent());
+		if (alert != null) {
+			try {
+				alertMessage = getAlertMessage();
+			} catch (Exception e) {
+				return alertMessage;
+			}
+
+		}
+		return alertMessage;
+
 	}
 
 	public boolean formHasBeenSubmitedSuccessifully() {
 
 		try {
-			elemIsPresent.pollingEvery(Duration.ofMillis(2000)).withTimeout(Duration.ofSeconds(30))
+
+			elemIsPresent.pollingEvery(Duration.ofMillis(2000)).withTimeout(Duration.ofSeconds(5))
+
 					.until(ExpectedConditions.visibilityOf(confirmationMailCheckMessage));
 			return true;
 		} catch (TimeoutException texcp) {
@@ -113,23 +134,26 @@ public class FormSubmitPage {
 	}
 
 	public String solveEnigma() {
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
 		Integer result = 0;
 		result += Integer.parseInt(numb1.getText());
 		result += Integer.parseInt(numb2.getText());
+
 		return result.toString();
 	}
 
-	public String getAlertMessage() throws Exception {
-		
-		Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
-				.ignoring(NoAlertPresentException.class).until(ExpectedConditions.alertIsPresent());
-		String alertMesage = alert.getText();
-		alert.accept();
-		return alertMesage;
+	public String getAlertMessage() {
+		String alertMesage = "";
+		try {
+			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
+					.ignoring(NoAlertPresentException.class, TimeoutException.class)
+					.until(ExpectedConditions.alertIsPresent());
+			alertMesage = alert.getText();
+			alert.dismiss();
+			return alertMesage;
+		} catch (TimeoutException t) {
+			return alertMesage;
+		}
+
 	}
 }
