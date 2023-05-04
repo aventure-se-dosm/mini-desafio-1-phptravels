@@ -15,17 +15,16 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
+import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 
+import cucumber.api.Result.Type;
+import cucumber.api.Scenario;
+import cucumber.api.java.pt.Dado;
+import cucumber.api.java.pt.E;
+import cucumber.api.java.pt.Então;
+import cucumber.api.java.pt.Quando;
 import entities.dto.UserFormDTO;
-import io.cucumber.core.api.Scenario;
-import io.cucumber.core.event.Status;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
-import io.cucumber.java.pt.Quando;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import managers.DriverManager;
 import pages.FormSubmitPage;
@@ -49,12 +48,11 @@ public class FormSubmitStep {
 	XSSFSheet sheet;
 	XSSFRow currentRow;
 
-
 	public FormSubmitStep() {
 		if (driver == null)
 			this.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
-			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-			driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
 	}
 
 	@Before
@@ -104,7 +102,7 @@ public class FormSubmitStep {
 	@Dado("que estou na página de demonstração")
 	public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
 
-		 driver.get(START_URL);
+		driver.get(START_URL);
 	}
 
 	@E("eu insiro o nome do usuário")
@@ -160,10 +158,10 @@ public class FormSubmitStep {
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
 	}
 
-	@After(order = 0)
+	@cucumber.api.java.After(order = 0)
 	public void takeScreenshot(Scenario s) throws IOException {
 		Screenshoter screenshoter = new Screenshoter(driver);
-		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
+		String result = (s.getStatus() == Type.PASSED ? "PASSOU" : "FALHOU");
 		String id = s.getName().split(" ")[0];
 		String shotFileName = String.join("_", id, stringDaData(), result);
 		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
