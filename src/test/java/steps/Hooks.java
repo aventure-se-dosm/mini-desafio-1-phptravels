@@ -26,7 +26,6 @@ public class Hooks {
 
 	@After(order = 2)
 	public static void takeScreenshot(Scenario s) {
-
 		FormSubmitStep.takeScreenshot(s);
 
 	}
