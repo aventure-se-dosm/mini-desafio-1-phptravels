@@ -83,7 +83,7 @@ public class FormSubmitPage {
 		emailAddressInput.sendKeys(emailAddress);
 	}
 
-	public void fillUserForm(entities.dto.UserFormDTO udf) {
+	public void fillUserForm(model.dtos.UserFormDTO udf) {
 
 		writeFirstName(udf.getFirstName());
 		writeLastName(udf.getLastName());

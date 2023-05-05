@@ -1,4 +1,4 @@
-package utils;
+package utils.webutils;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;

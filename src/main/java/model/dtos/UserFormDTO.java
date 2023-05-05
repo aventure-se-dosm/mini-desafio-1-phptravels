@@ -1,4 +1,4 @@
-package entities.dto;
+package model.dtos;
 
 import org.apache.poi.ss.usermodel.Row;
 

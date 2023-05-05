@@ -17,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-import entities.dto.UserFormDTO;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.core.event.Status;
 import io.cucumber.java.pt.Dado;
@@ -26,8 +25,9 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import managers.DriverManager;
+import model.dtos.UserFormDTO;
 import pages.FormSubmitPage;
-import testutils.Screenshoter;
+import utils.webutils.Screenshoter;
 
 public class FormSubmitStep {
 
