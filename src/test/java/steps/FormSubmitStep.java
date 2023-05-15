@@ -17,6 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
+import core.managers.DriverManager;
+import core.utils.webutils.Screenshoter;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.core.event.Status;
 import io.cucumber.java.pt.Dado;
@@ -24,10 +26,8 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
-import managers.DriverManager;
 import model.dtos.UserFormDTO;
-import pages.FormSubmitPage;
-import utils.webutils.Screenshoter;
+import model.pages.FormSubmitPage;
 
 public class FormSubmitStep {
 
@@ -54,7 +54,8 @@ public class FormSubmitStep {
 	public FormSubmitStep() {
 
 		if (driver == null)
-			FormSubmitStep.driver = DriverManager.getSelectedDriver(DriverManagerType.CHROME);
+			FormSubmitStep.driver = DriverManager
+			        .getSelectedDriver(DriverManagerType.CHROME);
 
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 		driver.manage().window().maximize();
@@ -79,7 +80,8 @@ public class FormSubmitStep {
 
 	static void carregaInfoTodosUsuarios() {
 		try {
-			wb = new XSSFWorkbook(new FileInputStream(".\\src\\main\\resources\\DATA_SPREADSHEET.xlsx"));
+			wb = new XSSFWorkbook(new FileInputStream(
+			        ".\\src\\main\\resources\\DATA_SPREADSHEET.xlsx"));
 
 		} catch (FileNotFoundException e) {
 
@@ -106,7 +108,8 @@ public class FormSubmitStep {
 	}
 
 	@Dado("que estou na página de demonstração")
-	public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
+	public void queEstouNaPáginaDeDemonstração()
+	        throws FileNotFoundException, IOException {
 
 		userForm = userFormList.get(getUserIndex());
 
@@ -159,7 +162,8 @@ public class FormSubmitStep {
 	}
 
 	@Então("As informações foram enviadas com sucesso!")
-	public void asInformaçõesForamEnviadasComSucesso() { // currentAlert = page.getAlertMessage();
+	public void asInformaçõesForamEnviadasComSucesso() { // currentAlert =
+	                                                     // page.getAlertMessage();
 		Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
 
 	}
@@ -173,17 +177,20 @@ public class FormSubmitStep {
 	}
 
 	private static String stringDaData() {
-		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
+		return LocalDateTime.now()
+		        .format(DateTimeFormatter.ofPattern(FORMATO_DATA_AVAL_1));
 	}
 
 	public static void takeScreenshot(Scenario s) {
 
 		Screenshoter screenshoter = new Screenshoter(driver);
 		String result = (s.getStatus() == Status.PASSED ? "PASSOU" : "FALHOU");
-		String id = s.getSourceTagNames().stream().findFirst().get().replace("@", "");
+		String id = s.getSourceTagNames().stream().findFirst().get()
+		        .replace("@", "");
 
 		String shotFileName = String.join("_", id, stringDaData(), result);
-		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName, DEFAULT_EXTENSION);
+		screenshoter.makeScreenshot(DEFAULT_DESTINATION_DIRECTORY, shotFileName,
+		        DEFAULT_EXTENSION);
 
 	}
 

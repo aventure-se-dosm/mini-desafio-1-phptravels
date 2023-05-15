@@ -5,4 +5,4 @@
  * @author MarcelodeOliveiraSan
  *
  */
-package pages;
+package core;
