@@ -1,9 +1,8 @@
 package core.managers;
 
-import java.time.Duration;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -19,9 +18,9 @@ public class DriverManager {
 	private WebDriver driver;
 
 	public DriverManager() {
-		if (this.driver == null) {
-			setDriver(DEFAULT_DRIVER);
-		}
+		 if (this.driver == null) {
+		 setDriver(DEFAULT_DRIVER);
+		 }
 	}
 
 	public static void setupWebDrivers() {
@@ -34,6 +33,7 @@ public class DriverManager {
 		if (driver == null) {
 			driver = setDriver(DEFAULT_DRIVER);
 		}
+
 		return driver;
 	}
 
@@ -44,32 +44,47 @@ public class DriverManager {
 	}
 
 	public static WebDriver getSelectedDriver(DriverManagerType driverType) {
+
 		switch (driverType) {
-		case EDGE: {
-			return new EdgeDriver();
-		}
-		case FIREFOX: {
-			return new FirefoxDriver();
-		}
-		case IEXPLORER: {
-			return new InternetExplorerDriver();
-		}
 
-		case SAFARI: {
-			return new SafariDriver();
-		}
-		case CHROME:
-		default: {
-			return new ChromeDriver();
-		}
+			case EDGE : {
+				return new EdgeDriver();
+			}
+			case FIREFOX : {
+				return new FirefoxDriver();
+			}
+			case IEXPLORER : {
+				return new InternetExplorerDriver();
+			}
+
+			case SAFARI : {
+				return new SafariDriver();
+			}
+			case CHROME :
+			default : {
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--remote-allow-origins=*");
+				return new ChromeDriver(options);
+
+			}
 		}
 	}
 
-	public static WebDriver setNewChromeDriver() {
-		WebDriver chDriver = WebDriverManager.getInstance(DriverManagerType.CHROME).timeout(30000).getWebDriver();
+	public void closeDriver() {
 
-		chDriver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
+		if (driver != null) {
+			driver.close();
+		}
 
-		return chDriver;
 	}
+
+	public void KillDriver() {
+
+		if (driver != null) {
+			driver.quit();
+		}
+
+		driver = null;
+	}
+
 }

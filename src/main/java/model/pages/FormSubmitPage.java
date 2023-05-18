@@ -3,7 +3,6 @@ package model.pages;
 import java.time.Duration;
 
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
@@ -13,10 +12,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
-public class FormSubmitPage {
+import model.dtos.UserFormDTO;
+
+public class FormSubmitPage extends Page {
+
+	// pegar pela configuração
+	private static final String START_URL = "https://phptravels.com/demo";
 
 	private static WebDriver driver;
-
 	private FluentWait<WebDriver> elemIsPresent, isElemClickable;
 
 	public FormSubmitPage(WebDriver wdriver) {
@@ -62,9 +65,21 @@ public class FormSubmitPage {
 	@FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
 	public WebElement pageLoadingPaceActivity;
 
+	public void startNavigation() {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		driver.manage().window().maximize();
+		driver.get(START_URL);
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void writeFirstName(String firstName) {
-		elemIsPresent.pollingEvery(Duration.ofMillis(100)).withTimeout(Duration.ofSeconds(1))
-				.until(ExpectedConditions.visibilityOf(firstNameInput));
+		elemIsPresent.pollingEvery(Duration.ofMillis(100))
+		        .withTimeout(Duration.ofSeconds(1))
+		        .until(ExpectedConditions.visibilityOf(firstNameInput));
 		firstNameInput.sendKeys(firstName);
 	}
 
@@ -83,7 +98,7 @@ public class FormSubmitPage {
 		emailAddressInput.sendKeys(emailAddress);
 	}
 
-	public void fillUserForm(model.dtos.UserFormDTO udf) {
+	public void fillUserForm(UserFormDTO udf) {
 
 		writeFirstName(udf.getFirstName());
 		writeLastName(udf.getLastName());
@@ -93,30 +108,23 @@ public class FormSubmitPage {
 
 	public void solveEnigmaAndWriteTheSolution() {
 
-		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
-				.until(ExpectedConditions.visibilityOf(solutionInput));
+		isElemClickable.pollingEvery(Duration.ofMillis(500))
+		        .withTimeout(Duration.ofMinutes(1))
+		        .until(ExpectedConditions.visibilityOf(solutionInput));
 		solutionInput.sendKeys(solveEnigma());
 	}
 
 	public String submitForm() throws UnhandledAlertException {
 
-		String alertMessage = "";
-		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
-				.until(ExpectedConditions.elementToBeClickable(submitButton));
+		isElemClickable.pollingEvery(Duration.ofMillis(500))
+		        .withTimeout(Duration.ofMinutes(1))
+		        .until(ExpectedConditions.and(
+		                ExpectedConditions.elementToBeClickable(submitButton),
+		                ExpectedConditions.visibilityOf(submitButton)));
 
 		submitButton.click();
-		Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
-				.ignoring(NoAlertPresentException.class, TimeoutException.class)
-				.until(ExpectedConditions.alertIsPresent());
-		if (alert != null) {
-			try {
-				alertMessage = getAlertMessage();
-			} catch (Exception e) {
-				return alertMessage;
-			}
 
-		}
-		return alertMessage;
+		return getAlertMessage();
 
 	}
 
@@ -124,9 +132,11 @@ public class FormSubmitPage {
 
 		try {
 
-			elemIsPresent.pollingEvery(Duration.ofMillis(2000)).withTimeout(Duration.ofSeconds(5))
+			elemIsPresent.pollingEvery(Duration.ofMillis(200))
+			        .withTimeout(Duration.ofSeconds(20))
 
-					.until(ExpectedConditions.visibilityOf(confirmationMailCheckMessage));
+			        .until(ExpectedConditions
+			                .visibilityOf(confirmationMailCheckMessage));
 			return true;
 		} catch (TimeoutException texcp) {
 			return false;
@@ -145,9 +155,11 @@ public class FormSubmitPage {
 	public String getAlertMessage() {
 		String alertMesage = "";
 		try {
-			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofSeconds(2))
-					.ignoring(NoAlertPresentException.class, TimeoutException.class)
-					.until(ExpectedConditions.alertIsPresent());
+
+			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500))
+			        .withTimeout(Duration.ofSeconds(2))
+			        .ignoring(TimeoutException.class)
+			        .until(ExpectedConditions.alertIsPresent());
 			alertMesage = alert.getText();
 			alert.dismiss();
 			return alertMesage;

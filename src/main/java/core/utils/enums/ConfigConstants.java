@@ -1,4 +1,4 @@
-package core.utils;
+package core.utils.enums;
 
 public class ConfigConstants {
 	enum ConfigPaths {

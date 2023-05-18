@@ -16,13 +16,20 @@ public class Screenshoter {
 		driver = webDriver;
 	}
 
-	public void makeScreenshot(String destination, String shotFileName, String defaultExtension) {
+	public void takeScreenshot(String fullFilePath) {
+
 		File shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		try {
-			FileUtils.copyFile(shot, new File((destination + shotFileName + defaultExtension)));
+			FileUtils.copyFile(shot, new File(fullFilePath));
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+	public void takeScreenshot(WebDriver webDriver, String destination,
+	        String shotFileName, String defaultExtension) {
+		takeScreenshot(destination + shotFileName + defaultExtension);
+	}
+
 }
