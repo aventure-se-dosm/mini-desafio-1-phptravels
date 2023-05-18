@@ -2,7 +2,7 @@ package core.context;
 
 import org.openqa.selenium.WebDriver;
 
-import core.dataProviders.ExcelReader;
+import core.dataProviders.ExcelXLSXReader;
 import core.managers.DriverManager;
 import core.managers.EvidenceManager;
 import core.managers.PageObjectManager;
@@ -12,14 +12,14 @@ public class TestContext {
 	private PageObjectManager pageObjectManager;
 	private DriverManager webDriverManager;
 	private ScenarioContext scenarioContext;
-	private ExcelReader excelReader;
+	private ExcelXLSXReader excelReader;
 	private EvidenceManager evidenceManager;
 
 	public TestContext() {
 		this.webDriverManager = new DriverManager();
 		this.pageObjectManager = new PageObjectManager(getDriver());
 		this.scenarioContext = new ScenarioContext();
-		this.excelReader = new ExcelReader();
+		this.excelReader = new ExcelXLSXReader();
 		this.evidenceManager = new EvidenceManager(getDriver());
 	}
 
@@ -39,12 +39,12 @@ public class TestContext {
 		return scenarioContext;
 	}
 
-	public ExcelReader getExcelReader() {
-		return excelReader;
-	}
-
 	public EvidenceManager getEvidenceManager() {
 		return evidenceManager;
+	}
+
+	public ExcelXLSXReader getExcelReader() {
+		return excelReader;
 	}
 
 }

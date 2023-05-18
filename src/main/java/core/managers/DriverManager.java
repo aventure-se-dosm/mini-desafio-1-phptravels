@@ -13,14 +13,15 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;;
 
 public class DriverManager {
 
-	private final static DriverManagerType DEFAULT_DRIVER = DriverManagerType.CHROME;
+	private final static DriverManagerType DEFAULT_DRIVER = DriverManagerType
+	        .valueOf(FileReaderManager.getDefaultWebdriverType());
 
 	private WebDriver driver;
 
 	public DriverManager() {
-		 if (this.driver == null) {
-		 setDriver(DEFAULT_DRIVER);
-		 }
+		if (this.driver == null) {
+			setDriver(DEFAULT_DRIVER);
+		}
 	}
 
 	public static void setupWebDrivers() {
@@ -56,7 +57,6 @@ public class DriverManager {
 			case IEXPLORER : {
 				return new InternetExplorerDriver();
 			}
-
 			case SAFARI : {
 				return new SafariDriver();
 			}

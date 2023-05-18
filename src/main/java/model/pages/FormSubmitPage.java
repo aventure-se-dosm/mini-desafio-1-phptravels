@@ -102,8 +102,8 @@ public class FormSubmitPage extends Page {
 
 		writeFirstName(udf.getFirstName());
 		writeLastName(udf.getLastName());
-		writeEmailAddress(udf.getEmailAddress());
 		writeBusinessName(udf.getBusinessName());
+		writeEmailAddress(udf.getEmailAddress());
 	}
 
 	public void solveEnigmaAndWriteTheSolution() {
