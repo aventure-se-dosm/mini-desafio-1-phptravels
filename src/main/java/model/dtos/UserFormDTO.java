@@ -6,7 +6,7 @@ public class UserFormDTO {
 
 	private enum formFields {
 
-		FIRST_NAME(0), LAST_SURNAME(1), BUSINESS_NAME(2), EMAIL_ADDRESS(3);
+		ID(0), FIRST_NAME(1), LAST_NAME(2), BUSINESS_NAME(3), EMAIL_ADDRESS(4);
 
 		private int index;
 
@@ -16,6 +16,7 @@ public class UserFormDTO {
 
 	}
 
+	
 	private String firstName, lastName, businessName, emailAddress;
 
 	public String getFirstName() {
@@ -37,7 +38,7 @@ public class UserFormDTO {
 
 	public UserFormDTO(Row row) {
 		this.firstName = row.getCell(formFields.FIRST_NAME.index).getStringCellValue();
-		this.lastName = row.getCell(formFields.LAST_SURNAME.index).getStringCellValue();
+		this.lastName = row.getCell(formFields.LAST_NAME.index).getStringCellValue();
 		this.businessName = row.getCell(formFields.BUSINESS_NAME.index).getStringCellValue();
 		this.emailAddress = row.getCell(formFields.EMAIL_ADDRESS.index).getStringCellValue();
 

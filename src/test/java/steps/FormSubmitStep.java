@@ -3,9 +3,7 @@ package steps;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
@@ -14,23 +12,12 @@ import io.cucumber.java.pt.Quando;
 import model.dtos.UserFormDTO;
 import model.pages.FormSubmitPage;
 
-public class FormSubmitStep extends Steps {
-
-	public static Boolean status;
+public class FormSubmitStep extends Step {
 
 	private UserFormDTO userForm;
-
 	private static FormSubmitPage page;
 
 	private String currentAlert;
-
-	public FormSubmitStep() {
-
-	}
-
-	public static WebDriver getDriver() {
-		return testContext.getDriverManager().getDriver();
-	}
 
 	@Dado("o usuário escolhido é de índice {int}")
 	public void oUsuárioEscolhidoÉDeÍndice(Integer userIndex) {
@@ -67,6 +54,7 @@ public class FormSubmitStep extends Steps {
 
 	@E("insiro o nome de sua empresa")
 	public void insiroONomeDeSuaEmpresa() {
+		page.writeBusinessName(userForm.getBusinessName());
 	}
 
 	@E("preencho todo o formulário")
@@ -88,32 +76,13 @@ public class FormSubmitStep extends Steps {
 	}
 
 	@Então("As informações foram enviadas com sucesso!")
-	public void asInformaçõesForamEnviadasComSucesso() { // currentAlert =
-	                                                     // page.getAlertMessage();
+	public void asInformaçõesForamEnviadasComSucesso() {
 		Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
-
 	}
 
 	@Então("Um alerta é exibido com a mensagem {string}")
 	public void umAlertaÉExibidoComAMensagem(String message) {
-
-		// currentAlert = page.getAlertMessage();
 		Assert.assertEquals(message, currentAlert);
-
-	}
-
-	private static XSSFWorkbook getWorkBook() {
-		return testContext.getExcelReader().getWorkBook();
-	}
-
-	public static void closeWorkBook() {
-
-		try {
-			getWorkBook().close();
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
 
 	}
 

@@ -1,5 +1,7 @@
 package steps;
 
+import org.junit.AfterClass;
+
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -29,17 +31,9 @@ public class Hooks {
 	@After(order = 1)
 
 	public void getScreenshot(Scenario s) {
-
-		// String endereco = "./evidencia/" + getIdFromFeatureTag(s) + ".png";
-
-		// String maktub.png";
-		/**
-		 * Usar o recurso EMBED pra passar os caminhos, formatos
-		 */
-		// Screenshoter.takeScreenshot(FormSubmitStep.getDriver(), endereco);
-		Steps.testContext.getEvidenceManager().createEvidence(s);
-		FormSubmitStep.closeDriver();
+		Step.testContext.getEvidenceManager().createEvidence(s);
+		Step.closeDriver();
 
 	}
-
+	
 }
