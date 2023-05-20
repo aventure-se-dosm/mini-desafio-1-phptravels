@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import model.dtos.UserFormDTO;
 
@@ -13,6 +14,10 @@ public class ExcelUtils {
 	
 	
 	
+	public ExcelUtils(XSSFWorkbook wb) {
+		// TODO Auto-generated constructor stub
+	}
+
 	//tá muito Regra de negócio pra estar no CORE
 	public static List<UserFormDTO> getAllUsersList(XSSFSheet sheet) {
 

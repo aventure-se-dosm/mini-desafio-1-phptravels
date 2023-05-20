@@ -1,7 +1,5 @@
 package steps;
 
-import org.junit.AfterClass;
-
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;

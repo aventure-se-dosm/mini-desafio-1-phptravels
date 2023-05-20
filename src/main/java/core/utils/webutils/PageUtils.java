@@ -1,8 +1,5 @@
 package core.utils.webutils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

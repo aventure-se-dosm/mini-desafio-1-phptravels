@@ -2,21 +2,10 @@ package model.dtos;
 
 import org.apache.poi.ss.usermodel.Row;
 
+import core.utils.enums.DataAttributes;
+
 public class UserFormDTO {
 
-	private enum formFields {
-
-		ID(0), FIRST_NAME(1), LAST_NAME(2), BUSINESS_NAME(3), EMAIL_ADDRESS(4);
-
-		private int index;
-
-		private formFields(int index) {
-			this.index = index;
-		}
-
-	}
-
-	
 	private String firstName, lastName, businessName, emailAddress;
 
 	public String getFirstName() {
@@ -25,7 +14,6 @@ public class UserFormDTO {
 
 	public String getLastName() {
 		return lastName;
-
 	}
 
 	public String getBusinessName() {
@@ -37,10 +25,14 @@ public class UserFormDTO {
 	}
 
 	public UserFormDTO(Row row) {
-		this.firstName = row.getCell(formFields.FIRST_NAME.index).getStringCellValue();
-		this.lastName = row.getCell(formFields.LAST_NAME.index).getStringCellValue();
-		this.businessName = row.getCell(formFields.BUSINESS_NAME.index).getStringCellValue();
-		this.emailAddress = row.getCell(formFields.EMAIL_ADDRESS.index).getStringCellValue();
+		this.firstName = row.getCell(DataAttributes.FIRST_NAME.getIndex())
+		        .getStringCellValue();
+		this.lastName = row.getCell(DataAttributes.LAST_NAME.getIndex())
+		        .getStringCellValue();
+		this.businessName = row.getCell(DataAttributes.BUSINESS_NAME.getIndex())
+		        .getStringCellValue();
+		this.emailAddress = row.getCell(DataAttributes.EMAIL_ADDRESS.getIndex())
+		        .getStringCellValue();
 
 	}
 
