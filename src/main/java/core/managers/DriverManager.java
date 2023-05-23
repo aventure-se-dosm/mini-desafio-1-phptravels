@@ -14,14 +14,18 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;;
 public class DriverManager {
 
 	private final static DriverManagerType DEFAULT_DRIVER = DriverManagerType
-	        .valueOf(FileReaderManager.getDefaultWebdriverType());
+			.valueOf(FileReaderManager.getDefaultWebdriverType());
 
 	private WebDriver driver;
 
 	public DriverManager() {
 		if (this.driver == null) {
-			setDriver(DEFAULT_DRIVER);
+			setDriver();
 		}
+	}
+
+	private void setDriver() {
+		setSelectedDriver(DEFAULT_DRIVER);
 	}
 
 	public static void setupWebDrivers() {
@@ -32,41 +36,34 @@ public class DriverManager {
 
 	public WebDriver getDriver() {
 		if (driver == null) {
-			driver = setDriver(DEFAULT_DRIVER);
+			setSelectedDriver(DEFAULT_DRIVER);
 		}
-
 		return driver;
 	}
 
-	public WebDriver setDriver(DriverManagerType selectedtDriver) {
-		driver = getSelectedDriver(selectedtDriver);
-
-		return driver;
-	}
-
-	public static WebDriver getSelectedDriver(DriverManagerType driverType) {
+	private void setSelectedDriver(DriverManagerType driverType) {
 
 		switch (driverType) {
 
-			case EDGE : {
-				return new EdgeDriver();
-			}
-			case FIREFOX : {
-				return new FirefoxDriver();
-			}
-			case IEXPLORER : {
-				return new InternetExplorerDriver();
-			}
-			case SAFARI : {
-				return new SafariDriver();
-			}
-			case CHROME :
-			default : {
-				ChromeOptions options = new ChromeOptions();
-				options.addArguments("--remote-allow-origins=*");
-				return new ChromeDriver(options);
+		case EDGE: {
+			driver = new EdgeDriver();
+		}
+		case FIREFOX: {
+			driver = new FirefoxDriver();
+		}
+		case IEXPLORER: {
+			driver = new InternetExplorerDriver();
+		}
+		case SAFARI: {
+			driver = new SafariDriver();
+		}
+		case CHROME:
+		default: {
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			driver = new ChromeDriver(options);
 
-			}
+		}
 		}
 	}
 

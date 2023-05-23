@@ -12,12 +12,14 @@ import model.dtos.UserFormDTO;
 
 public abstract class Step {
 
-	
 	protected static String userId;
 	protected static TestContext testContext;
 	protected static List<UserFormDTO> userFormList;
 	public static Boolean status;
 
+	public Step () {
+		testContext = new TestContext();
+	}
 	public static void setId(String idFromFeatureTag) {
 		userId = idFromFeatureTag;
 	}
@@ -25,8 +27,9 @@ public abstract class Step {
 	public static void startApplication(Scenario scenario) {
 
 		testContext = new TestContext();
-		
-		//vamos diminuir depois com um 'dsl' ou com o próprio UTILS, e tirar esse 0 hardão
+
+		// vamos diminuir depois com um 'dsl' ou com o próprio UTILS, e tirar esse 0
+		// hardão
 		userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getWorkBook().getSheetAt(0));
 	}
 
@@ -34,12 +37,11 @@ public abstract class Step {
 
 		testContext.getDriverManager().closeDriver();
 	}
-	
+
 	public static void KillDriver() {
 
 		testContext.getDriverManager().KillDriver();
 	}
-
 
 	private static XSSFWorkbook getWorkBook() {
 		return testContext.getExcelReader().getWorkBook();

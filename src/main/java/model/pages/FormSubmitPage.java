@@ -161,7 +161,7 @@ public class FormSubmitPage extends Page {
 			        .ignoring(TimeoutException.class)
 			        .until(ExpectedConditions.alertIsPresent());
 			alertMesage = alert.getText();
-			alert.dismiss();
+			alert.accept();
 			return alertMesage;
 		} catch (TimeoutException t) {
 			return alertMesage;
