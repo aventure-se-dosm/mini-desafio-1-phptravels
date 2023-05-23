@@ -22,6 +22,9 @@ public class FileReaderManager {
 	public static String getGlobalProperty(String propertyKey) {
 		return getConfigFileReader().getProperty(propertyKey);
 	}
+	public static String getXLSXDataSource() {
+		return getGlobalProperty("XLSX_DATA_SOURCE");
+	}
 	
 	public static String getDefaultWebdriverType() {
 		return getGlobalProperty("DEFAULT_WEBDRIVER_TYPE");
