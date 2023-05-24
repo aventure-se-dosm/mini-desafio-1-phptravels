@@ -19,7 +19,7 @@ public class FormSubmitPage extends Page {
 	// pegar pela configuração
 	private static final String START_URL = "https://phptravels.com/demo";
 
-	private static WebDriver driver;
+	private  WebDriver driver;
 	private FluentWait<WebDriver> elemIsPresent, isElemClickable;
 
 	public FormSubmitPage(WebDriver wdriver) {
