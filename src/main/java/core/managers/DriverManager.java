@@ -8,7 +8,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;;
 
 public class DriverManager {
@@ -19,19 +18,13 @@ public class DriverManager {
 	private WebDriver driver;
 
 	public DriverManager() {
-		if (this.driver == null) {
+	//	if (this.driver == null) {
 			setDriver();
-		}
+		//}
 	}
 
 	private void setDriver() {
 		setSelectedDriver(DEFAULT_DRIVER);
-	}
-
-	public static void setupWebDrivers() {
-		for (DriverManagerType dmt : DriverManagerType.values()) {
-			WebDriverManager.getInstance(dmt).setup();
-		}
 	}
 
 	public WebDriver getDriver() {
@@ -72,7 +65,7 @@ public class DriverManager {
 		if (driver != null) {
 			driver.close();
 		}
-
+		// driver = null;
 	}
 
 	public void KillDriver() {
@@ -81,7 +74,7 @@ public class DriverManager {
 			driver.quit();
 		}
 
-		driver = null;
+		// driver = null;
 	}
 
 }

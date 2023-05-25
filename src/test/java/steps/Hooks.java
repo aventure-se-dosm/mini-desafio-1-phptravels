@@ -9,8 +9,7 @@ public class Hooks {
 	@Before(order = 0)
 	public static void setupApplication(Scenario scenario) {
 
-		Step.setId(getIdFromFeatureTag(scenario));
-		Step.startApplication(scenario);
+		Step.startApplication(getIdFromFeatureTag(scenario));
 	}
 
 	private static String getIdFromFeatureTag(Scenario scenario) {
@@ -21,7 +20,7 @@ public class Hooks {
 	@After(order = 1)
 	public void getScreenshot(Scenario s) {
 		Step.testContext.getEvidenceManager().createEvidence(s);
-		Step.closeDriver();
+		//Step.closeDriver();
 	}
 
 }

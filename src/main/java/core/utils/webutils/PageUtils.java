@@ -13,7 +13,7 @@ public class PageUtils {
 	}
 
 	public void ScrollToElement(WebElement welem) {
-		jsexec.executeScript("scrollIntoView(arguments[0]);", welem);
+		jsexec.executeScript("scroll(arguments[0]);", welem);
 	}
 
 }

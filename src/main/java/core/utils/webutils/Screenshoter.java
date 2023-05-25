@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 
 public class Screenshoter {
 
-	private static WebDriver driver;
+	private  WebDriver driver;
 
 	public Screenshoter(WebDriver webDriver) {
 		driver = webDriver;

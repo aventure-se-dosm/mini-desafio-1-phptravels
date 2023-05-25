@@ -30,8 +30,8 @@ public class FormSubmitStep extends Step {
 
 	@Dado("que estou na página de demonstração")
 	public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
-		page = testContext.getPageManager().getFormSubmitPage();
 		userForm = userFormList.get(getUserIndex());
+		page = testContext.getPageManager().getFormSubmitPage();
 		page.startNavigation();
 	}
 
@@ -61,7 +61,7 @@ public class FormSubmitStep extends Step {
 	}
 
 	@E("preencho todo o formulário")
-	public void preenchoTOdoOFormulário() {
+	public void preenchoTodoOFormulário() {
 		page.fillUserForm(userForm);
 	}
 

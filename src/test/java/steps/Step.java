@@ -7,35 +7,30 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import core.context.TestContext;
 import core.utils.ExcelUtils;
-import io.cucumber.core.api.Scenario;
 import model.dtos.UserFormDTO;
 
 public abstract class Step {
 
 	protected static String userId;
-	protected static TestContext testContext;
+	protected static TestContext testContext = new TestContext();
 	protected static List<UserFormDTO> userFormList;
 	public static Boolean status;
 
-	public Step () {
-		testContext = new TestContext();
+	public Step() {
 	}
+
 	public static void setId(String idFromFeatureTag) {
 		userId = idFromFeatureTag;
 	}
 
-	public static void startApplication(Scenario scenario) {
-
-		testContext = new TestContext();
-
-		// vamos diminuir depois com um 'dsl' ou com o próprio UTILS, e tirar esse 0
-		// hardão
+	public static void startApplication(String id) {
+		setId(id);
 		userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getWorkBook().getSheetAt(0));
 	}
 
 	public static void closeDriver() {
 
-		testContext.getDriverManager().closeDriver();
+		//testContext.getDriverManager().closeDriver();
 	}
 
 	public static void KillDriver() {
@@ -60,7 +55,7 @@ public abstract class Step {
 
 	public static void closeApplication() {
 		closeWorkBook();
-		KillDriver();
+	KillDriver();
 	}
 
 }

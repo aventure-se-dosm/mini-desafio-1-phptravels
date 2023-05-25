@@ -10,23 +10,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 
+import core.managers.FileReaderManager;
 import model.dtos.UserFormDTO;
 
 public class FormSubmitPage extends Page {
 
-	// pegar pela configuração
-	private static final String START_URL = "https://phptravels.com/demo";
-
-	private  WebDriver driver;
-	private FluentWait<WebDriver> elemIsPresent, isElemClickable;
+	private WebDriver driver;
+	// private FluentWait<WebDriver> elemIsPresent, isElemClickable;
 
 	public FormSubmitPage(WebDriver wdriver) {
-		driver = wdriver;
-		PageFactory.initElements(driver, this);
-		elemIsPresent = new FluentWait<WebDriver>(driver);
-		isElemClickable = new FluentWait<WebDriver>(driver);
+		super(wdriver);
+		this.driver = wdriver;
+
 	}
 
 	@FindBy(css = "input.first_name")
@@ -56,7 +52,7 @@ public class FormSubmitPage extends Page {
 	@FindBy(id = "demo")
 	public WebElement submitButton;
 
-	@FindBy(xpath = "strong[contains(.,'Thank you!')]")
+	@FindBy(xpath = "//strong[contains(.,'Thank you!')]")
 	public WebElement thankYouMessage;
 
 	@FindBy(css = "p.text-center.cw")
@@ -66,20 +62,17 @@ public class FormSubmitPage extends Page {
 	public WebElement pageLoadingPaceActivity;
 
 	public void startNavigation() {
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+
+//		O uso e o gere. do WebDriver não deveria ser 
+//		feito por métodos do WebDriverManager?
 		driver.manage().window().maximize();
-		driver.get(START_URL);
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		PageFactory.initElements(driver, this);
+		driver.get(FileReaderManager.getDefaultStartingUrl());
 	}
 
 	public void writeFirstName(String firstName) {
-		elemIsPresent.pollingEvery(Duration.ofMillis(100))
-		        .withTimeout(Duration.ofSeconds(1))
-		        .until(ExpectedConditions.visibilityOf(firstNameInput));
+		elemIsPresent.pollingEvery(Duration.ofMillis(100)).withTimeout(Duration.ofSeconds(1))
+				.until(ExpectedConditions.visibilityOf(firstNameInput));
 		firstNameInput.sendKeys(firstName);
 	}
 
@@ -108,23 +101,22 @@ public class FormSubmitPage extends Page {
 
 	public void solveEnigmaAndWriteTheSolution() {
 
-		isElemClickable.pollingEvery(Duration.ofMillis(500))
-		        .withTimeout(Duration.ofMinutes(1))
-		        .until(ExpectedConditions.visibilityOf(solutionInput));
+//		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
+//				.until(ExpectedConditions.visibilityOf(solutionInput));
 		solutionInput.sendKeys(solveEnigma());
 	}
 
 	public String submitForm() throws UnhandledAlertException {
 
-		isElemClickable.pollingEvery(Duration.ofMillis(500))
-		        .withTimeout(Duration.ofMinutes(1))
-		        .until(ExpectedConditions.and(
-		                ExpectedConditions.elementToBeClickable(submitButton),
-		                ExpectedConditions.visibilityOf(submitButton)));
+//		isElemClickable.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1))
+//				.until(new ExpectedConditions().and(ExpectedConditions.elementToBeClickable(submitButton),
+//						ExpectedConditions.visibilityOf(submitButton)));
 
+		pageUtils.ScrollToElement(submitButton);
 		submitButton.click();
 
-		return getAlertMessage();
+		String msg = getAlertMessage();
+		return msg;
 
 	}
 
@@ -132,11 +124,9 @@ public class FormSubmitPage extends Page {
 
 		try {
 
-			elemIsPresent.pollingEvery(Duration.ofMillis(200))
-			        .withTimeout(Duration.ofSeconds(20))
+			elemIsPresent.pollingEvery(Duration.ofMillis(50)).withTimeout(Duration.ofSeconds(20))
 
-			        .until(ExpectedConditions
-			                .visibilityOf(confirmationMailCheckMessage));
+					.until(ExpectedConditions.visibilityOf(thankYouMessage));
 			return true;
 		} catch (TimeoutException texcp) {
 			return false;
@@ -156,10 +146,8 @@ public class FormSubmitPage extends Page {
 		String alertMesage = "";
 		try {
 
-			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500))
-			        .withTimeout(Duration.ofSeconds(2))
-			        .ignoring(TimeoutException.class)
-			        .until(ExpectedConditions.alertIsPresent());
+			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(50)).withTimeout(Duration.ofSeconds(2)).ignoring(Exception.class)
+					.until(ExpectedConditions.alertIsPresent());
 			alertMesage = alert.getText();
 			alert.accept();
 			return alertMesage;

@@ -9,15 +9,11 @@ import io.cucumber.core.api.Scenario;
 public class EvidenceManager {
 
 	private Screenshoter screenshoter;
-	private static WebDriver driver;
+	private WebDriver driver;
 	private TimeUtils timeUtils;
 
-	// carregar por configuration
-	private final String DEFAULT_EVIDENCE_FORMAT = ".jpg";
-	private final String DEFAULT_EVIDENCE_PATH = "./evidencia/";
-
 	public EvidenceManager(WebDriver driver) {
-		EvidenceManager.driver = driver;
+		this.driver = driver;
 		this.screenshoter = new Screenshoter(getDriver());
 		this.timeUtils = new TimeUtils();
 	}
@@ -27,7 +23,16 @@ public class EvidenceManager {
 	}
 
 	public void createEvidence(Scenario s) {
-		screenshoter.takeScreenshot(DEFAULT_EVIDENCE_PATH + getTagPrefix(s) + getDefaultFileNameOutput());
+		screenshoter
+				.takeScreenshot(getDefaultEvidencePath() + getDefaultFileNameOutput(s) + getDefaultEvidenceFormat());
+	}
+
+	private String getDefaultEvidenceFormat() {
+		return FileReaderManager.getDefaultEvidenceFormat();
+	}
+
+	private String getDefaultEvidencePath() {
+		return FileReaderManager.getDefaultEvidencePath();
 	}
 
 	private static String getTagPrefix(Scenario s) {
@@ -35,9 +40,9 @@ public class EvidenceManager {
 				.get();
 	}
 
-	private String getDefaultFileNameOutput() {
+	private String getDefaultFileNameOutput(Scenario s) {
 
-		return timeUtils.getFormattedDateTimeNow() + DEFAULT_EVIDENCE_FORMAT;
+		return String.join("_", getTagPrefix(s), timeUtils.getFormattedDateTimeNow());
 	}
 
 }
