@@ -8,65 +8,55 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;;
 
 public class DriverManager {
 
 	private final static DriverManagerType DEFAULT_DRIVER = DriverManagerType
-	        .valueOf(FileReaderManager.getDefaultWebdriverType());
+			.valueOf(FileReaderManager.getDefaultWebdriverType());
 
 	private WebDriver driver;
 
 	public DriverManager() {
-		if (this.driver == null) {
-			setDriver(DEFAULT_DRIVER);
-		}
+	//	if (this.driver == null) {
+			setDriver();
+		//}
 	}
 
-	public static void setupWebDrivers() {
-		for (DriverManagerType dmt : DriverManagerType.values()) {
-			WebDriverManager.getInstance(dmt).setup();
-		}
+	private void setDriver() {
+		setSelectedDriver(DEFAULT_DRIVER);
 	}
 
 	public WebDriver getDriver() {
 		if (driver == null) {
-			driver = setDriver(DEFAULT_DRIVER);
+			setSelectedDriver(DEFAULT_DRIVER);
 		}
-
 		return driver;
 	}
 
-	public WebDriver setDriver(DriverManagerType selectedtDriver) {
-		driver = getSelectedDriver(selectedtDriver);
-
-		return driver;
-	}
-
-	public static WebDriver getSelectedDriver(DriverManagerType driverType) {
+	private void setSelectedDriver(DriverManagerType driverType) {
 
 		switch (driverType) {
 
-			case EDGE : {
-				return new EdgeDriver();
-			}
-			case FIREFOX : {
-				return new FirefoxDriver();
-			}
-			case IEXPLORER : {
-				return new InternetExplorerDriver();
-			}
-			case SAFARI : {
-				return new SafariDriver();
-			}
-			case CHROME :
-			default : {
-				ChromeOptions options = new ChromeOptions();
-				options.addArguments("--remote-allow-origins=*");
-				return new ChromeDriver(options);
+		case EDGE: {
+			driver = new EdgeDriver();
+		}
+		case FIREFOX: {
+			driver = new FirefoxDriver();
+		}
+		case IEXPLORER: {
+			driver = new InternetExplorerDriver();
+		}
+		case SAFARI: {
+			driver = new SafariDriver();
+		}
+		case CHROME:
+		default: {
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			driver = new ChromeDriver(options);
 
-			}
+		}
 		}
 	}
 
@@ -75,7 +65,7 @@ public class DriverManager {
 		if (driver != null) {
 			driver.close();
 		}
-
+		// driver = null;
 	}
 
 	public void KillDriver() {
@@ -84,7 +74,7 @@ public class DriverManager {
 			driver.quit();
 		}
 
-		driver = null;
+		// driver = null;
 	}
 
 }

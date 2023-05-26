@@ -1,101 +1,85 @@
 package model.pages;
 
-import java.time.Duration;
-
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 
+import core.managers.FileReaderManager;
 import model.dtos.UserFormDTO;
 
 public class FormSubmitPage extends Page {
 
-	// pegar pela configuração
-	private static final String START_URL = "https://phptravels.com/demo";
-
-	private static WebDriver driver;
-	private FluentWait<WebDriver> elemIsPresent, isElemClickable;
+	private WebDriver driver;
+	// private FluentWait<WebDriver> elemIsPresent, isElemClickable;
 
 	public FormSubmitPage(WebDriver wdriver) {
-		driver = wdriver;
-		PageFactory.initElements(driver, this);
-		elemIsPresent = new FluentWait<WebDriver>(driver);
-		isElemClickable = new FluentWait<WebDriver>(driver);
+		super(wdriver);
+		this.driver = wdriver;
+
 	}
 
 	@FindBy(css = "input.first_name")
-	public WebElement firstNameInput;
+	public WebElement txtFirstNameInput;
 
 	@FindBy(css = "input.last_name")
-	public WebElement lastNameInput;
+	public WebElement txtLastNameInput;
 
 	@FindBy(css = "input.business_name")
-	public WebElement businessNameInput;
+	public WebElement txtBusinessNameInput;
 
 	@FindBy(css = "input.email")
-	public WebElement emailAddressInput;
+	public WebElement txtEmailAddressInput;
 
 	@FindBy(css = "h2.mw100")
-	public WebElement enigmaExpression;
+	public WebElement txtEnigmaExpression;
 
 	@FindBy(id = "numb1")
-	public WebElement numb1;
+	public WebElement btnArithmeticOperatior1numb1;
 
 	@FindBy(id = "numb2")
-	public WebElement numb2;
+	public WebElement btnArithmeticOperatior1numb2;
 
 	@FindBy(id = "number")
-	public WebElement solutionInput;
+	public WebElement txtSolutionInput;
 
 	@FindBy(id = "demo")
-	public WebElement submitButton;
+	public WebElement btnSubmit;
 
-	@FindBy(xpath = "strong[contains(.,'Thank you!')]")
-	public WebElement thankYouMessage;
+	@FindBy(xpath = "//strong[contains(.,'Thank you!')]")
+	public WebElement lblMsgthankYou;
 
 	@FindBy(css = "p.text-center.cw")
-	public WebElement confirmationMailCheckMessage;
+	public WebElement labMsgconfirmationMailCheck;
 
 	@FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
 	public WebElement pageLoadingPaceActivity;
 
 	public void startNavigation() {
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+
+//		O uso e o gere. do WebDriver não deveria ser 
+//		feito por métodos do WebDriverManager?
 		driver.manage().window().maximize();
-		driver.get(START_URL);
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		PageFactory.initElements(driver, this);
+		driver.get(FileReaderManager.getDefaultStartingUrl());
 	}
 
 	public void writeFirstName(String firstName) {
-		elemIsPresent.pollingEvery(Duration.ofMillis(100))
-		        .withTimeout(Duration.ofSeconds(1))
-		        .until(ExpectedConditions.visibilityOf(firstNameInput));
-		firstNameInput.sendKeys(firstName);
+		writeText(txtFirstNameInput, firstName);
 	}
 
 	public void writeLastName(String lastName) {
-
-		lastNameInput.sendKeys(lastName);
+		writeText(txtLastNameInput, lastName);
 	}
 
 	public void writeBusinessName(String businessName) {
-
-		businessNameInput.sendKeys(businessName);
+		writeText(txtBusinessNameInput, businessName);
 	}
 
 	public void writeEmailAddress(String emailAddress) {
-
-		emailAddressInput.sendKeys(emailAddress);
+		writeText(txtEmailAddressInput, emailAddress);
 	}
 
 	public void fillUserForm(UserFormDTO udf) {
@@ -107,23 +91,11 @@ public class FormSubmitPage extends Page {
 	}
 
 	public void solveEnigmaAndWriteTheSolution() {
-
-		isElemClickable.pollingEvery(Duration.ofMillis(500))
-		        .withTimeout(Duration.ofMinutes(1))
-		        .until(ExpectedConditions.visibilityOf(solutionInput));
-		solutionInput.sendKeys(solveEnigma());
+		txtSolutionInput.sendKeys(solveEnigma());
 	}
 
 	public String submitForm() throws UnhandledAlertException {
-
-		isElemClickable.pollingEvery(Duration.ofMillis(500))
-		        .withTimeout(Duration.ofMinutes(1))
-		        .until(ExpectedConditions.and(
-		                ExpectedConditions.elementToBeClickable(submitButton),
-		                ExpectedConditions.visibilityOf(submitButton)));
-
-		submitButton.click();
-
+		clickOnElement(btnSubmit);
 		return getAlertMessage();
 
 	}
@@ -132,11 +104,7 @@ public class FormSubmitPage extends Page {
 
 		try {
 
-			elemIsPresent.pollingEvery(Duration.ofMillis(200))
-			        .withTimeout(Duration.ofSeconds(20))
-
-			        .until(ExpectedConditions
-			                .visibilityOf(confirmationMailCheckMessage));
+			waits.waitUntilElementIsVisible(lblMsgthankYou);
 			return true;
 		} catch (TimeoutException texcp) {
 			return false;
@@ -146,26 +114,24 @@ public class FormSubmitPage extends Page {
 	public String solveEnigma() {
 
 		Integer result = 0;
-		result += Integer.parseInt(numb1.getText());
-		result += Integer.parseInt(numb2.getText());
+		result += Integer.parseInt(btnArithmeticOperatior1numb1.getText());
+		result += Integer.parseInt(btnArithmeticOperatior1numb2.getText());
 
 		return result.toString();
 	}
 
-	public String getAlertMessage() {
-		String alertMesage = "";
-		try {
-
-			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(500))
-			        .withTimeout(Duration.ofSeconds(2))
-			        .ignoring(TimeoutException.class)
-			        .until(ExpectedConditions.alertIsPresent());
-			alertMesage = alert.getText();
-			alert.dismiss();
-			return alertMesage;
-		} catch (TimeoutException t) {
-			return alertMesage;
-		}
-
-	}
+//	public String getAlertMessage() {
+//		String alertMesage = "";
+//		try {
+//
+//			Alert alert = elemIsPresent.pollingEvery(Duration.ofMillis(50)).withTimeout(Duration.ofMillis(50))
+//					.ignoring(Exception.class).until(ExpectedConditions.alertIsPresent());
+//			alertMesage = alert.getText();
+//			alert.accept();
+//			return alertMesage;
+//		} catch (TimeoutException t) {
+//			return alertMesage;
+//		}
+//
+//	}
 }
