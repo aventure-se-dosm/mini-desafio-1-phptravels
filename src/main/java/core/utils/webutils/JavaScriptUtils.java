@@ -4,11 +4,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class PageUtils {
+public class JavaScriptUtils {
 
+	private WebDriver driver;
 	private JavascriptExecutor jsexec;
 
-	public PageUtils(WebDriver driver) {
+	public JavaScriptUtils(WebDriver driver) {
+		this.driver = driver;
 		this.jsexec = ((JavascriptExecutor) driver);
 	}
 
