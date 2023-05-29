@@ -2,6 +2,7 @@ package core.managers;
 
 import org.openqa.selenium.WebDriver;
 
+import core.utils.enums.FileFormatConstants.ImageFormats;
 import core.utils.webutils.Screenshoter;
 import core.utils.webutils.TimeUtils;
 import io.cucumber.core.api.Scenario;
@@ -23,7 +24,7 @@ public class EvidenceManager {
     }
 
     public void createEvidence(Scenario s) {
-	screenshoter.takeScreenshot(getDefaultEvidencePath(), getDefaultFileNameOutput(s), getDefaultEvidenceFormat());
+	screenshoter.takeScreenshot(getDefaultEvidencePath(), getDefaultFileNameOutput(s), ImageFormats.valueOf(getDefaultEvidenceFormat()));
     }
 
     private String getDefaultEvidenceFormat() {

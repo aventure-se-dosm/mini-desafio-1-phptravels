@@ -4,52 +4,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import core.dataProviders.UserDataMethods;
+import core.managers.FileReaderManager;
 import core.utils.enums.UserDataAttributes;
 import core.utils.exceptions.InvalidDataAttributeException;
 import model.dtos.UserFormDTO;
 
 public class ExcelUtils implements UserDataMethods {
 
-    private Workbook wb;
     private Sheet sheet;
 
     public ExcelUtils(Workbook wb) {
-	this.wb = wb;
-	this.sheet = wb.getSheet("DATA_USER_SHEET");
-    }
 
-    public ExcelUtils() {
-
+	this.sheet = wb.getSheet(FileReaderManager.getXLSXDataSource());
     }
 
     public static List<UserFormDTO> getAllUsersList(Sheet sheet) {
-
-	List<UserFormDTO> userFormList = new ArrayList<>();
-
-	try {
-
-	    userFormList = new ArrayList<>();
-	    Iterator<Row> rowIterator = sheet.iterator();
-	    rowIterator.hasNext();
-	    while (rowIterator.hasNext()) {
-		Row row = rowIterator.next();
-		userFormList.add(new UserFormDTO(row));
-	    }
-
-	} catch (IllegalArgumentException iaexcp) {
-	    iaexcp.printStackTrace();
-	}
-	return userFormList;
-
-    }
-
-    public static List<UserFormDTO> getAllUsersList(HSSFSheet sheet) {
 
 	List<UserFormDTO> userFormList = new ArrayList<>();
 
