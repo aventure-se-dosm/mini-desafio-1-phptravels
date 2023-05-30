@@ -21,23 +21,23 @@ public class FileReaderManager {
     }
 
     public static String getXLSXDataSource() {
-	return getGlobalProperty("XLSX_DATA_SOURCE");
+	return getGlobalProperty("data.source");
     }
 
     public static String getDefaultWebdriverType() {
-	return getGlobalProperty("DEFAULT_WEBDRIVER_TYPE");
+	return getGlobalProperty("webdriver.type");
     }
 
     public static String getDefaultStartingUrl() {
-	return getGlobalProperty("DEFAULT_STARTING_URL");
+	return getGlobalProperty("starting.url");
     }
 
     public static String getDefaultEvidenceFormat() {
-	return getGlobalProperty("DEFAULT_EVIDENCE_FORMAT");
+	return getGlobalProperty("evidence.format");
     }
 
     public static String getDefaultEvidencePath() {
-	return getGlobalProperty("DEFAULT_EVIDENCE_PATH");
+	return getGlobalProperty("evidence.path");
     }
 
 }
