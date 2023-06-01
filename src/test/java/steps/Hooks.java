@@ -8,18 +8,13 @@ public class Hooks {
 
     @Before(order = 0)
     public static void setupApplication(Scenario scenario) {
+	SetupStep.startApplication(scenario);
 
-	Step.startApplication(getIdFromFeatureTag(scenario));
     }
-
-    private static String getIdFromFeatureTag(Scenario scenario) {
-	return scenario.getSourceTagNames().stream().filter(t -> t.startsWith("@ID_")).findFirst().get().replace("@",
-		"");
-    }
-
+    
     @After(order = 1)
     public void getScreenshot(Scenario s) {
-	Step.testContext.getEvidenceManager().createEvidence(s);
+	SetupStep.testContext.getEvidenceManager().createEvidence(s);
     }
 
 }

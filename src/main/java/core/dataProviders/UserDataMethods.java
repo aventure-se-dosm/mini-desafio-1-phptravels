@@ -1,6 +1,6 @@
 package core.dataProviders;
 
-import core.utils.enums.UserDataAttributes;
+import model.utils.enums.UserDataAttributes;
 
 public interface UserDataMethods {
 

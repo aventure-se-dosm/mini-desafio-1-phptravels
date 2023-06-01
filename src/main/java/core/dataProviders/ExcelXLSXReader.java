@@ -19,14 +19,14 @@ public class ExcelXLSXReader extends AbstractReader {
     }
 
     public ExcelXLSXReader() {
-	this(FileReaderManager.getXLSXDataSource());
+	this(FileReaderManager.getDataSource());
     }
 
     @Override
     protected void setupReading() {
 
 	try {
-	    wb = new XSSFWorkbook(new FileInputStream(this.readedFilePath));
+	    wb = new XSSFWorkbook(new FileInputStream(this.configPath));
 	} catch (FileNotFoundException e) {
 
 	    e.printStackTrace();
@@ -49,6 +49,12 @@ public class ExcelXLSXReader extends AbstractReader {
     public XSSFSheet getSheet() {
 	return wb.getSheetAt(0);
     }
+    
+    public XSSFSheet getSheetAt(int index) {
+	return wb.getSheetAt(0);
+    }
+
+ 
 
     @Override
     public void closeReader() {

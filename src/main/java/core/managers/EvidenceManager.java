@@ -24,7 +24,9 @@ public class EvidenceManager {
     }
 
     public void createEvidence(Scenario s) {
-	screenshoter.takeScreenshot(getDefaultEvidencePath(), getDefaultFileNameOutput(s), ImageFormats.valueOf(getDefaultEvidenceFormat()));
+
+	screenshoter.takeScreenshot(getDefaultEvidencePath(), getDefaultFileNameOutput(s),
+		ImageFormats.valueOf(getDefaultEvidenceFormat().toUpperCase()));
     }
 
     private String getDefaultEvidenceFormat() {

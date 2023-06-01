@@ -1,6 +1,7 @@
 package model.pages;
 
-import org.openqa.selenium.TimeoutException;
+import java.time.Duration;
+
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -61,6 +62,7 @@ public class FormSubmitPage extends Page {
 	driver.manage().window().maximize();
 	PageFactory.initElements(driver, this);
 	driver.get(FileReaderManager.getDefaultStartingUrl());
+	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
     }
 
     public void writeFirstName(String firstName) {
@@ -88,7 +90,7 @@ public class FormSubmitPage extends Page {
     }
 
     public void solveEnigmaAndWriteTheSolution() {
-	txtSolutionInput.sendKeys(solveEnigma());
+	writeText(txtSolutionInput, solveEnigma());
     }
 
     public String submitForm() throws UnhandledAlertException {
@@ -97,20 +99,14 @@ public class FormSubmitPage extends Page {
     }
 
     public boolean formHasBeenSubmitedSuccessifully() {
-
-	try {
-	    waits.waitUntilElementIsVisible(lblMsgthankYou);
-	    return true;
-	} catch (TimeoutException texcp) {
-	    return false;
-	}
+	return waits.waitUntilElementIsVisible(lblMsgthankYou);
     }
 
     public String solveEnigma() {
 
 	Integer result = 0;
-	result += Integer.parseInt(btnArithmeticOperatior1numb1.getText());
-	result += Integer.parseInt(btnArithmeticOperatior1numb2.getText());
+	result += Integer.parseInt(getText(btnArithmeticOperatior1numb1));
+	result += Integer.parseInt(getText(btnArithmeticOperatior1numb2));
 
 	return result.toString();
     }

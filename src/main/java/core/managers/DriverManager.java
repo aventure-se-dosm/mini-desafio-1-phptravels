@@ -8,13 +8,18 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-import io.github.bonigarcia.wdm.config.DriverManagerType;;
-
 public class DriverManager {
 
-    private final static DriverManagerType DEFAULT_DRIVER = DriverManagerType
-	    .valueOf(FileReaderManager.getDefaultWebdriverType());
+    enum DriverManagerType {
+	CHROME, EDGE, FIREFOX, IEXPLORER, SAFARI;
 
+	public String valueOf() {
+	    return this.toString().toUpperCase();
+	}
+
+    }
+
+    private static DriverManagerType DEFAULT_DRIVER;
     private WebDriver driver;
     private boolean webDriverStatus;
 
@@ -23,7 +28,13 @@ public class DriverManager {
 	webDriverStatus = false;
     }
 
+    private void setDefaultDriver() {
+	DriverManager.DEFAULT_DRIVER = DriverManagerType
+		.valueOf(FileReaderManager.getDefaultWebdriverType().toUpperCase());
+    }
+
     private void setDriver() {
+	setDefaultDriver();
 	setSelectedDriver(DEFAULT_DRIVER);
     }
 
