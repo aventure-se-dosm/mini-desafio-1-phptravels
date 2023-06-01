@@ -6,26 +6,15 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import core.context.TestContext;
-import core.utils.ExcelUtils;
 import model.dtos.UserFormDTO;
 
 public abstract class Step {
 
-    protected static String userId;
     protected static TestContext testContext = new TestContext();
     protected static List<UserFormDTO> userFormList;
     public static Boolean status;
 
     public Step() {
-    }
-
-    public static void setId(String idFromFeatureTag) {
-	userId = idFromFeatureTag;
-    }
-
-    public static void startApplication(String id) {
-	setId(id);
-	userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getSheet());
     }
 
     public static void closeDriver() {

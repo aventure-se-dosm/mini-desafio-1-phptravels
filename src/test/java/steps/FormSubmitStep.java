@@ -13,80 +13,64 @@ import model.dtos.UserFormDTO;
 import model.pages.FormSubmitPage;
 
 public class FormSubmitStep extends Step {
-	
-	public FormSubmitStep() {
-		super();
-	}
 
-	private UserFormDTO userForm;
-	private static FormSubmitPage page;
+    public FormSubmitStep() {
+	super();
+    }
 
-	private String currentAlert;
+    private UserFormDTO userForm;
+    private static FormSubmitPage page;
+    private String currentAlert;
 
-	@Dado("o usuário escolhido é de índice {int}")
-	public void oUsuárioEscolhidoÉDeÍndice(Integer userIndex) {
-		userForm = userFormList.get(userIndex);
-	}
+    @Dado("que estou na página de demonstração")
+    public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
+	userForm = userFormList.get(testContext.getUserId());
+	page = testContext.getPageManager().getFormSubmitPage();
+	page.startNavigation();
+    }
 
-	@Dado("que estou na página de demonstração")
-	public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
-		userForm = userFormList.get(getUserIndex());
-		page = testContext.getPageManager().getFormSubmitPage();
-		page.startNavigation();
-	}
+    @E("eu insiro o nome do usuário")
+    public void euInsiroONomeDoUsuárioDeÍndice() {
+	page.writeFirstName(userForm.getFirstName());
+    }
 
-	private int getUserIndex() {
-		String s = userId;
-		return Integer.valueOf(s.replace("ID_", ""));
-	}
+    @E("insiro o sobrenome")
+    public void insiroOSobrenome() {
+	page.writeLastName(userForm.getLastName());
+    }
 
-	@E("eu insiro o nome do usuário")
-	public void euInsiroONomeDoUsuárioDeÍndice() {
-		page.writeFirstName(userForm.getFirstName());
-	}
+    @E("insiro o e-mail")
+    public void insiroOEmail() {
+	page.writeEmailAddress(userForm.getEmailAddress());
+    }
 
-	@E("insiro o sobrenome")
-	public void insiroOSobrenome() {
-		page.writeLastName(userForm.getLastName());
-	}
+    @E("insiro o nome de sua empresa")
+    public void insiroONomeDeSuaEmpresa() {
+	page.writeBusinessName(userForm.getBusinessName());
+    }
 
-	@E("insiro o e-mail")
-	public void insiroOEmail() {
-		page.writeEmailAddress(userForm.getEmailAddress());
-	}
+    @E("preencho todo o formulário")
+    public void preenchoTodoOFormulário() {
+	page.fillUserForm(userForm);
+    }
 
-	@E("insiro o nome de sua empresa")
-	public void insiroONomeDeSuaEmpresa() {
-		page.writeBusinessName(userForm.getBusinessName());
-	}
+    @Quando("soluciono o enigma")
+    public void solucionoOEnigma() {
+	page.solveEnigmaAndWriteTheSolution();
+    }
 
-	@E("preencho todo o formulário")
-	public void preenchoTodoOFormulário() {
-		page.fillUserForm(userForm);
-	}
+    @E("clico em submeter")
+    public void clicoEmSubmeter() {
+	currentAlert = page.submitForm();
+    }
 
-	@Quando("soluciono o enigma")
-	public void solucionoOEnigma() {
-		page.solveEnigmaAndWriteTheSolution();
+    @Então("As informações foram enviadas com sucesso!")
+    public void asInformaçõesForamEnviadasComSucesso() {
+	Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
+    }
 
-	}
-
-	@E("clico em submeter")
-	public void clicoEmSubmeter() {
-
-		currentAlert = page.submitForm();
-
-	}
-
-	@Então("As informações foram enviadas com sucesso!")
-	public void asInformaçõesForamEnviadasComSucesso() {
-		Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
-	}
-
-	@Então("Um alerta é exibido com a mensagem {string}")
-	public void umAlertaÉExibidoComAMensagem(String message) {
-		Assert.assertEquals(message, currentAlert);
-
-	}
-
+    @Então("Um alerta é exibido com a mensagem {string}")
+    public void umAlertaÉExibidoComAMensagem(String message) {
+	Assert.assertEquals(message, currentAlert);
+    }
 }

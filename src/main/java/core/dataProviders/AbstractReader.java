@@ -1,10 +1,10 @@
 package core.dataProviders;
 
 public abstract class AbstractReader {
-    protected String readedFilePath;
+    protected String configPath;
 
     public AbstractReader(String configPath) {
-	readedFilePath = configPath;
+	this.configPath = configPath;
 	setupReading();
     }
 

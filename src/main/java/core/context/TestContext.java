@@ -47,4 +47,22 @@ public class TestContext {
 	return excelReader;
     }
 
+    public void setScenarioAndUserIds(String idFromFeatureTag) {
+	getScenarioContext().storeValue(ScenarioContextKeys.SCENARIO_ID, (Object) idFromFeatureTag.replace("@", ""));
+	getScenarioContext().storeValue(ScenarioContextKeys.USER_ID, (Object) setUserId());
+    }
+
+    private Integer setUserId() {
+	String s = getScenarioId();
+	return Integer.valueOf(s.replace("ID_", ""));
+    }
+
+    public String getScenarioId() {
+	return getScenarioContext().getStringValue(ScenarioContextKeys.SCENARIO_ID);
+    }
+
+    public Integer getUserId() {
+	return Integer.parseInt(getScenarioContext().getStringValue(ScenarioContextKeys.USER_ID));
+    }
+
 }

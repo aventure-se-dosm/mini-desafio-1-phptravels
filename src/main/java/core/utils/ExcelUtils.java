@@ -10,9 +10,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import core.dataProviders.UserDataMethods;
 import core.managers.FileReaderManager;
-import core.utils.enums.UserDataAttributes;
 import core.utils.exceptions.InvalidDataAttributeException;
 import model.dtos.UserFormDTO;
+import model.utils.enums.UserDataAttributes;
 
 public class ExcelUtils implements UserDataMethods {
 
@@ -20,7 +20,7 @@ public class ExcelUtils implements UserDataMethods {
 
     public ExcelUtils(Workbook wb) {
 
-	this.sheet = wb.getSheet(FileReaderManager.getXLSXDataSource());
+	this.sheet = wb.getSheet(FileReaderManager.getDataSource());
     }
 
     public static List<UserFormDTO> getAllUsersList(Sheet sheet) {

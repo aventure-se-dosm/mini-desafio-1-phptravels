@@ -1,6 +1,7 @@
 package core.managers;
 
 import core.dataProviders.ConfigFileReader;
+import core.utils.enums.PropertyKeys;
 
 public class FileReaderManager {
 
@@ -16,28 +17,28 @@ public class FileReaderManager {
 
     }
 
-    public static String getGlobalProperty(String propertyKey) {
+    private static String getGlobalProperty(PropertyKeys propertyKey) {
 	return getConfigFileReader().getProperty(propertyKey);
     }
 
-    public static String getXLSXDataSource() {
-	return getGlobalProperty("data.source");
+    public static String getDataSource() {
+	return getGlobalProperty(PropertyKeys.DATA_SOURCE);
     }
 
     public static String getDefaultWebdriverType() {
-	return getGlobalProperty("webdriver.type");
+	return getGlobalProperty(PropertyKeys.WEBDRIVER_TYPE);
     }
 
     public static String getDefaultStartingUrl() {
-	return getGlobalProperty("starting.url");
+	return getGlobalProperty(PropertyKeys.STARTING_URL);
     }
 
     public static String getDefaultEvidenceFormat() {
-	return getGlobalProperty("evidence.format");
+	return getGlobalProperty(PropertyKeys.EVIDENCE_FORMAT);
     }
 
     public static String getDefaultEvidencePath() {
-	return getGlobalProperty("evidence.path");
+	return getGlobalProperty(PropertyKeys.EVIDENCE_PATH);
     }
 
 }

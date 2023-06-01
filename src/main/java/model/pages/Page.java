@@ -11,51 +11,56 @@ import core.utils.webutils.Waits;
 
 public abstract class Page {
 
-	protected WebDriver driver;
-	protected FluentWait<WebDriver> isElemClickable;
-	protected FluentWait<WebDriver> elemIsPresent;
-	protected JavaScriptUtils javaScriptUtils;
-	protected Waits waits;
+    protected WebDriver driver;
+    protected FluentWait<WebDriver> isElemClickable;
+    protected FluentWait<WebDriver> elemIsPresent;
+    protected JavaScriptUtils javaScriptUtils;
+    protected Waits waits;
 
-	public Page(WebDriver wdriver) {
-		driver = wdriver;
-		this.javaScriptUtils = new JavaScriptUtils(driver);
-		this.elemIsPresent = new FluentWait<WebDriver>(driver);
-		this.isElemClickable = new FluentWait<WebDriver>(driver);
-		this.waits = new Waits(driver);
+    public Page(WebDriver wdriver) {
+	driver = wdriver;
+	this.javaScriptUtils = new JavaScriptUtils(driver);
+	this.elemIsPresent = new FluentWait<WebDriver>(driver);
+	this.isElemClickable = new FluentWait<WebDriver>(driver);
+	this.waits = new Waits(driver);
+    }
+
+    protected String getText(WebElement element) {
+	if (waits.waitUntilElementIsVisible(element)) {
+	    return element.getText();
+	} else {
+	    throw new RuntimeException(
+		    "Waiting has been failed: are 'expectedContitions' conditions correct and proper?");
+	}
+    }
+
+    protected String getAttribute(WebElement element, String attibute) {
+	return element.getAttribute(attibute);
+    }
+
+    protected void writeText(WebElement element, String text) {
+	waits.waitUntilElementIsVisible(element);
+
+	element.sendKeys(text);
+    }
+
+    protected void clickOnElement(WebElement element) {
+
+	if (waits.waitUntilElementIsClickable(element))
+	    element.click();
+    }
+
+    protected String getAlertMessage() {
+	String alertMesage = "";
+	try {
+	    Alert alert = waits.AlertWait();
+	    alertMesage = alert.getText();
+	    alert.accept();
+	    return alertMesage;
+	} catch (TimeoutException t) {
+	    return alertMesage;
 	}
 
-	protected String getText(WebElement element) {
-		return element.getText();
-	}
-
-	protected String getAttribute(WebElement element, String attibute) {
-		return element.getAttribute(attibute);
-	}
-
-	protected void writeText(WebElement element, String text) {
-		waits.waitUntilElementIsVisible(element);
-
-		element.sendKeys(text);
-	}
-
-	protected void clickOnElement(WebElement element) {
-
-		if (waits.waitUntilElementIsClickable(element))
-			element.click();
-	}
-
-	protected String getAlertMessage() {
-		String alertMesage = "";
-		try {
-			Alert alert = waits.AlertWait();
-			alertMesage = alert.getText();
-			alert.accept();
-			return alertMesage;
-		} catch (TimeoutException t) {
-			return alertMesage;
-		}
-
-	}
+    }
 
 }

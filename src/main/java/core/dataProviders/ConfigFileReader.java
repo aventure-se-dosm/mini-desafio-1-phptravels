@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import core.utils.enums.PropertyKeys;
+
 public class ConfigFileReader extends AbstractReader {
 
     private final static String CORE_CONFIG_PATH = "config/core.properties";
@@ -27,15 +29,15 @@ public class ConfigFileReader extends AbstractReader {
 	return properties;
     }
 
-    public String getProperty(String propertyKey) {
-	return getProperties().get(propertyKey).toString();
+    public String getProperty(PropertyKeys propertyKey) {
+	return getProperties().get(propertyKey.getValue()).toString();
     }
 
     @Override
     protected void setupReading() {
 	try {
 
-	    reader = new BufferedReader(new FileReader(new File(readedFilePath)));
+	    reader = new BufferedReader(new FileReader(new File(configPath)));
 	    properties = new Properties();
 
 	    properties.load(reader);

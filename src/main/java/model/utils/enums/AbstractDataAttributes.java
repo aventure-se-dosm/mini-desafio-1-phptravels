@@ -1,4 +1,4 @@
-package core.utils.enums;
+package model.utils.enums;
 
 public interface AbstractDataAttributes {
 
