@@ -21,14 +21,14 @@ public class Waits {
 	alertWait = new FluentWait<>(getDriver());
     }
 
-    public boolean waitUntilElementIsClickable(WebElement element) {
-	try {
-	    fluentWait.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1)).until(ExpectedConditions
-		    .and(ExpectedConditions.elementToBeClickable(element), ExpectedConditions.visibilityOf(element)));
+  public boolean waitUntilElementIsClickable(WebElement element) {
+      try {
+	      fluentWait.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1)).until(ExpectedConditions
+		      .and(ExpectedConditions.elementToBeClickable(element), ExpectedConditions.visibilityOf(element)));
 	    return true;
-	} catch (TimeoutException texcp) {
-	    return false;
-	}
+	    } catch (TimeoutException texcp) {
+	      return false;
+	    }
     }
 
     public boolean waitUntilElementIsVisible(WebElement element) {
@@ -57,5 +57,4 @@ public class Waits {
     private void setDriver(WebDriver driver) {
 	this.driver = driver;
     }
-
 }
