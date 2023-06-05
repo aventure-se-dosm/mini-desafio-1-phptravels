@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.CucumberOptions.SnippetType;
-import steps.Step;
+import steps.SetupStep;
 
 @CucumberOptions(
 	features = { "src/test/resources/features/form-submit.feature" },
@@ -24,7 +24,7 @@ public class RunnerTest {
 
     @AfterClass
     public static void finishApplication() {
-	Step.closeApplication();
+	SetupStep.closeApplication();
     }
 
 }
