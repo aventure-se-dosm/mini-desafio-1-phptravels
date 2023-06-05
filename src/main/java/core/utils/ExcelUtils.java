@@ -19,7 +19,7 @@ public class ExcelUtils implements UserDataMethods {
     private Sheet sheet;
 
     public ExcelUtils(Workbook wb) {
-      this.sheet = wb.getSheet(FileReaderManager.getDataSource());
+	this.sheet = wb.getSheet(FileReaderManager.getDataSource());
     }
 
     public static List<UserFormDTO> getAllUsersList(Sheet sheet) {
@@ -44,22 +44,22 @@ public class ExcelUtils implements UserDataMethods {
 
     @Override
     public String searchForIndex(String id) {
-	    return searchForAttribute(UserDataAttributes.ID, id);
+	return searchForAttribute(UserDataAttributes.ID, id);
     }
 
     @Override
     public String searchForAttribute(UserDataAttributes attribute, String value) {
 
-	    Iterator<Row> rowIterator = sheet.iterator();
-	    rowIterator.hasNext();
-	    String readString;
-	    while (rowIterator.hasNext()) {
+	Iterator<Row> rowIterator = sheet.iterator();
+	rowIterator.hasNext();
+	String readString;
+	while (rowIterator.hasNext()) {
 	    Row row = rowIterator.next();
 	    if ((readString = row.getCell(attribute.getIndex()).getStringCellValue()).equals(value))
 		return readString;
-	  }
-	  throw new InvalidDataAttributeException(attribute.toString());
-  }
+	}
+	throw new InvalidDataAttributeException(attribute.toString());
+    }
 
     @Override
     public String searchForFirstName(String firstName) {

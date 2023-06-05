@@ -1,7 +1,6 @@
 package model.pages;
 
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -29,38 +28,28 @@ public abstract class Page {
 	if (waits.waitUntilElementIsVisible(element)) {
 	    return element.getText();
 	} else {
-	    throw new RuntimeException(
-		    "Waiting has been failed: are 'expectedContitions' conditions correct and proper?");
+	    return "";
 	}
-    }
-
-    protected String getAttribute(WebElement element, String attibute) {
-	return element.getAttribute(attibute);
     }
 
     protected void writeText(WebElement element, String text) {
 	waits.waitUntilElementIsVisible(element);
-
 	element.sendKeys(text);
     }
 
     protected void clickOnElement(WebElement element) {
-
 	if (waits.waitUntilElementIsClickable(element))
 	    element.click();
     }
 
     protected String getAlertMessage() {
-	String alertMesage = "";
-	try {
-	    Alert alert = waits.AlertWait();
-	    alertMesage = alert.getText();
-	    alert.accept();
-	    return alertMesage;
-	} catch (TimeoutException t) {
-	    return alertMesage;
+
+	Alert alert = waits.AlertWait();
+	if (alert == null) {
+	    return "";
 	}
-
+	String alertMesage = alert.getText();
+	alert.accept();
+	return alertMesage;
     }
-
 }
