@@ -79,6 +79,11 @@ public class FormSubmitPage extends Page {
 	writeText(txtEmailAddressInput, emailAddress);
     }
 
+    public void fillUserForm(UserFormDTO userDataForm, String ... txtFields) {
+
+	
+    }
+    
     public void fillUserForm(UserFormDTO userDataForm) {
 
 	writeFirstName(userDataForm.getFirstName());
