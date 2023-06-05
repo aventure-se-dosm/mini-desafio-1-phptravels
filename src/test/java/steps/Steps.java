@@ -17,11 +17,6 @@ public abstract class Steps {
     public Steps() {
     }
 
-    public static void closeDriver() {
-
-	testContext.getDriverManager().closeDriver();
-    }
-
     public static void KillDriver() {
 
 	testContext.getDriverManager().KillDriver();

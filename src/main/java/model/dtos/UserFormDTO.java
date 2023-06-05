@@ -11,23 +11,7 @@ public class UserFormDTO {
     private String id, firstName, lastName, businessName, emailAddress;
     private XSSFRow row;
 
-    public String getTxtFieldValue(UserDataAttributes attribute) {
-	switch (attribute) {
-	case ID:
-	default:
-	    return getId();
-	case FIRST_NAME:
-	    return getFirstName();
-	case LAST_NAME:
-	    return getLastName();
-	case BUSINESS_NAME:
-	    return getBusinessName();
-	case EMAIL_ADDRESS:
-	    return getEmailAddress();
-	}
-    }
-
-    private String getId() {
+    public String getId() {
 	return id;
     }
 
