@@ -1,9 +1,5 @@
 package steps;
 
-import java.io.IOException;
-
-import org.apache.poi.ss.usermodel.Workbook;
-
 import core.context.TestContext;
 import core.utils.ExcelUtils;
 import io.cucumber.core.api.Scenario;
@@ -30,41 +26,6 @@ public class SetupStep extends Step {
 
     private static TestContext getTestContext() {
 	return testContext;
-    }
-
-    public static void startApplication(String id) {
-	setId(id);
-	userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getSheet());
-    }
-
-    public static void closeDriver() {
-
-	testContext.getDriverManager().closeDriver();
-    }
-
-    public static void KillDriver() {
-
-	testContext.getDriverManager().KillDriver();
-    }
-
-    private static Workbook getWorkBook() {
-	return testContext.getExcelReader().getWorkBook();
-    }
-
-    public static void closeWorkBook() {
-
-	try {
-	    getWorkBook().close();
-	} catch (IOException e) {
-
-	    e.printStackTrace();
-	}
-
-    }
-
-    public static void closeApplication() {
-	closeWorkBook();
-	KillDriver();
     }
 
 }
