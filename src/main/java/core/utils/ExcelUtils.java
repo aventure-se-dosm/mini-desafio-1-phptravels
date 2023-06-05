@@ -5,13 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import model.dtos.UserFormDTO;
 
 public class ExcelUtils {
 
-    public static List<UserFormDTO> getAllUsersList(Sheet sheet) {
+    public static List<UserFormDTO> getAllUsersList(XSSFSheet sheet) {
 
 	List<UserFormDTO> userFormList = new ArrayList<>();
 
@@ -20,7 +21,7 @@ public class ExcelUtils {
 	    Iterator<Row> rowIterator = sheet.iterator();
 	    rowIterator.hasNext();
 	    while (rowIterator.hasNext()) {
-		Row row = rowIterator.next();
+		XSSFRow row = (XSSFRow) rowIterator.next();
 		userFormList.add(new UserFormDTO(row));
 	    }
 

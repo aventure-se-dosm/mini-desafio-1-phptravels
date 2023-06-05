@@ -1,14 +1,15 @@
 package model.dtos;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 
 import model.utils.enums.UserDataAttributes;
 
 public class UserFormDTO {
 
     private String id, firstName, lastName, businessName, emailAddress;
+    private XSSFRow row;
 
     public String getTxtFieldValue(UserDataAttributes attribute) {
 	switch (attribute) {
@@ -47,7 +48,7 @@ public class UserFormDTO {
 	return emailAddress;
     }
 
-    private String getStringValue(Cell cell) {
+    private String getStringValue(XSSFCell cell) {
 	switch (cell.getCellType()) {
 	case STRING:
 	case FORMULA:
@@ -63,17 +64,42 @@ public class UserFormDTO {
 	    return getStringValue(cell);
 	}
 	}
-
     }
 
-    public UserFormDTO(Row row) {
-
-	this.id = getStringValue(row.getCell(UserDataAttributes.ID.getIndex()));
-	this.firstName = getStringValue(row.getCell(UserDataAttributes.FIRST_NAME.getIndex()));
-	this.lastName = getStringValue(row.getCell(UserDataAttributes.LAST_NAME.getIndex()));
-	this.businessName = getStringValue(row.getCell(UserDataAttributes.BUSINESS_NAME.getIndex()));
-	this.emailAddress = getStringValue(row.getCell(UserDataAttributes.EMAIL_ADDRESS.getIndex()));
-
+    private String setAttribute(UserDataAttributes attribute) {
+	return getStringValue(row.getCell(attribute.getIndex()));
     }
 
+    public UserFormDTO(XSSFRow row) {
+	this.row = row;
+	setAttributes();
+    }
+
+    private void setAttributes() {
+	setId();
+	setFirstName();
+	setLastName();
+	setBusinessName();
+	setEmailAddress();
+    }
+
+    private void setId() {
+	this.id = setAttribute(UserDataAttributes.ID);
+    }
+
+    private void setFirstName() {
+	this.firstName = setAttribute(UserDataAttributes.FIRST_NAME);
+    };
+
+    private void setLastName() {
+	this.lastName = setAttribute(UserDataAttributes.LAST_NAME);
+    };
+
+    private void setBusinessName() {
+	this.businessName = setAttribute(UserDataAttributes.BUSINESS_NAME);
+    };
+
+    private void setEmailAddress() {
+	this.emailAddress = setAttribute(UserDataAttributes.EMAIL_ADDRESS);
+    };
 }

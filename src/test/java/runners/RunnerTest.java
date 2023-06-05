@@ -12,7 +12,7 @@ import steps.SetupStep;
 	features = { "src/test/resources/features/form-submit.feature" },
 	glue = { "steps" },
 	plugin = {"pretty" },
-	tags = {"@ID_0001,@ID_0002"},
+	tags = {"@ID_0001,@ID_0002,@ID_0003,@ID_0004,@ID_0005,@ID_0006"},
 	snippets = SnippetType.CAMELCASE,
 	monochrome = true,
 	dryRun = false,
