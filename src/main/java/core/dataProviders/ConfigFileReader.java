@@ -33,6 +33,10 @@ public class ConfigFileReader extends AbstractReader {
 	return getProperties().get(propertyKey.getValue()).toString();
     }
 
+    public String getProperty(String propertyKey) {
+	return getProperties().get(propertyKey).toString();
+    }
+
     @Override
     protected void setupReading() {
 	try {

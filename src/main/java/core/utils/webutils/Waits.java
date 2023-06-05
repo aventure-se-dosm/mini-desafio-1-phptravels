@@ -1,42 +1,81 @@
 package core.utils.webutils;
 
 import java.time.Duration;
+import java.util.Collection;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+
+import core.managers.FileReaderManager;
 
 public class Waits {
 
     private WebDriver driver;
-    private FluentWait<WebDriver> fluentWait, alertWait;
+    private FluentWait<WebDriver> fluentWait;
+
+    private FluentWait<WebDriver> getFluentWait() {
+	return fluentWait;
+    }
+
+    private Duration getPollingTime() {
+	return pollingTime;
+    }
+
+    private Duration getAlertTimeout() {
+	return alertTimeout;
+    }
+
+    private Duration getTimeout() {
+	return timeout;
+    }
+
+    private Duration pollingTime;
+    private Duration alertTimeout;
+    private Duration timeout;
 
     public Waits(WebDriver driver) {
 	this.setDriver(driver);
 	fluentWait = new FluentWait<>(getDriver());
-	alertWait = new FluentWait<>(getDriver());
+	setupWaits();
     }
 
-  public boolean waitUntilElementIsClickable(WebElement element) {
-      try {
-	      fluentWait.pollingEvery(Duration.ofMillis(500)).withTimeout(Duration.ofMinutes(1)).until(ExpectedConditions
-		      .and(ExpectedConditions.elementToBeClickable(element), ExpectedConditions.visibilityOf(element)));
+    private void setupWaits() {
+	this.pollingTime = FileReaderManager.getDefaultWaitPolling();
+	this.alertTimeout = FileReaderManager.getAlertWaitTimeout();
+	this.timeout = FileReaderManager.getDomElementWaitTimeout();
+    }
+
+    public boolean executeWait(WebElement element, Duration pollingDuration, Duration timeoutDuration,
+	    Collection<Exception> ignoredExceptions, ExpectedCondition<?>[] expectedConditions) {
+	try {
+	    getFluentWait().pollingEvery(pollingDuration).withTimeout(timeoutDuration)
+		    .until(ExpectedConditions.and(expectedConditions));
 	    return true;
-	    } catch (TimeoutException texcp) {
-	      return false;
-	    }
+	} catch (TimeoutException texcp) {
+	    return false;
+	}
+    }
+
+    public boolean waitUntilElementIsClickable(WebElement element) {
+	try {
+	    getFluentWait().pollingEvery(getPollingTime()).withTimeout(getTimeout()).until(ExpectedConditions
+		    .and(ExpectedConditions.elementToBeClickable(element), ExpectedConditions.visibilityOf(element)));
+	    return true;
+	} catch (TimeoutException texcp) {
+	    return false;
+	}
     }
 
     public boolean waitUntilElementIsVisible(WebElement element) {
 	try {
-
-	    fluentWait.pollingEvery(Duration.ofMillis(50)).withTimeout(Duration.ofSeconds(20))
+	    getFluentWait().pollingEvery(getPollingTime()).withTimeout(getTimeout())
 		    .until(ExpectedConditions.visibilityOf(element));
-
 	    return true;
 	} catch (TimeoutException texcp) {
 	    return false;
@@ -45,9 +84,13 @@ public class Waits {
     }
 
     public Alert AlertWait() {
-	return alertWait.pollingEvery(Duration.ofMillis(50)).withTimeout(Duration.ofSeconds(2))
-		.ignoring(ElementNotInteractableException.class).until(ExpectedConditions.alertIsPresent());
-
+	try {
+	    return getFluentWait().pollingEvery(getPollingTime()).withTimeout(getAlertTimeout())
+		    .ignoring(ElementNotInteractableException.class, TimeoutException.class)
+		    .until(ExpectedConditions.alertIsPresent());
+	} catch (TimeoutException e) {
+	    return null;
+	}
     }
 
     private WebDriver getDriver() {

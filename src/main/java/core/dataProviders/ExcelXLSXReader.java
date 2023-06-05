@@ -49,12 +49,10 @@ public class ExcelXLSXReader extends AbstractReader {
     public XSSFSheet getSheet() {
 	return wb.getSheetAt(0);
     }
-    
+
     public XSSFSheet getSheetAt(int index) {
 	return wb.getSheetAt(0);
     }
-
- 
 
     @Override
     public void closeReader() {

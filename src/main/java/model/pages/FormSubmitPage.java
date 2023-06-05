@@ -18,7 +18,6 @@ public class FormSubmitPage extends Page {
     public FormSubmitPage(WebDriver wdriver) {
 	super(wdriver);
 	this.driver = wdriver;
-
     }
 
     @FindBy(css = "input.first_name")
@@ -58,7 +57,6 @@ public class FormSubmitPage extends Page {
     public WebElement pageLoadingPaceActivity;
 
     public void startNavigation() {
-
 	driver.manage().window().maximize();
 	PageFactory.initElements(driver, this);
 	driver.get(FileReaderManager.getDefaultStartingUrl());
