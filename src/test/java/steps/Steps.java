@@ -8,18 +8,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import core.context.TestContext;
 import model.dtos.UserFormDTO;
 
-public abstract class Step {
+public abstract class Steps {
 
     protected static TestContext testContext = new TestContext();
     protected static List<UserFormDTO> userFormList;
     public static Boolean status;
 
-    public Step() {
-    }
-
-    public static void closeDriver() {
-
-	testContext.getDriverManager().closeDriver();
+    public Steps() {
     }
 
     public static void KillDriver() {

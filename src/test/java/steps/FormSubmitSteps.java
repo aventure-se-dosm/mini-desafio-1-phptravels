@@ -12,9 +12,9 @@ import io.cucumber.java.pt.Quando;
 import model.dtos.UserFormDTO;
 import model.pages.FormSubmitPage;
 
-public class FormSubmitStep extends Step {
+public class FormSubmitSteps extends Steps {
 
-    public FormSubmitStep() {
+    public FormSubmitSteps() {
 	super();
     }
 
@@ -29,23 +29,23 @@ public class FormSubmitStep extends Step {
 	page.startNavigation();
     }
 
-    @E("eu insiro o nome do usuário")
-    public void euInsiroONomeDoUsuárioDeÍndice() {
+    @E("insiro o nome do usuário")
+    public void insiroONomeDoUsuárioDeÍndice() {
 	page.writeFirstName(userForm.getFirstName());
     }
 
-    @E("insiro o sobrenome")
-    public void insiroOSobrenome() {
+    @E("insiro o sobrenome do usuário")
+    public void insiroOSobrenomeDoUsuário() {
 	page.writeLastName(userForm.getLastName());
     }
 
-    @E("insiro o e-mail")
-    public void insiroOEmail() {
+    @E("insiro o e-mail do usuário")
+    public void insiroOEmailDoUsuário() {
 	page.writeEmailAddress(userForm.getEmailAddress());
     }
 
-    @E("insiro o nome de sua empresa")
-    public void insiroONomeDeSuaEmpresa() {
+    @E("insiro o nome da empresa do usuário")
+    public void insiroONomeDaEmpresaDoUsuário() {
 	page.writeBusinessName(userForm.getBusinessName());
     }
 

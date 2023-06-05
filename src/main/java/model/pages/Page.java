@@ -25,19 +25,22 @@ public abstract class Page {
     }
 
     protected String getText(WebElement element) {
+	String texto = null;
+	javaScriptUtils.ScrollToElement(element);
 	if (waits.waitUntilElementIsVisible(element)) {
 	    return element.getText();
-	} else {
-	    return "";
 	}
+	return texto;
     }
 
     protected void writeText(WebElement element, String text) {
+	javaScriptUtils.ScrollToElement(element);
 	waits.waitUntilElementIsVisible(element);
 	element.sendKeys(text);
     }
 
     protected void clickOnElement(WebElement element) {
+	javaScriptUtils.ScrollToElement(element);
 	if (waits.waitUntilElementIsClickable(element))
 	    element.click();
     }

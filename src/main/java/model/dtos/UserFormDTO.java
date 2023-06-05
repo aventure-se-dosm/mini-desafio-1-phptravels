@@ -1,12 +1,19 @@
 package model.dtos;
 
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 
 import model.utils.enums.UserDataAttributes;
 
 public class UserFormDTO {
 
-    private String firstName, lastName, businessName, emailAddress;
+    private String id, firstName, lastName, businessName, emailAddress;
+    private XSSFRow row;
+
+    public String getId() {
+	return id;
+    }
 
     public String getFirstName() {
 	return firstName;
@@ -25,13 +32,58 @@ public class UserFormDTO {
 	return emailAddress;
     }
 
-    public UserFormDTO(Row row) {
-
-	this.firstName = row.getCell(UserDataAttributes.FIRST_NAME.getIndex()).getStringCellValue();
-	this.lastName = row.getCell(UserDataAttributes.LAST_NAME.getIndex()).getStringCellValue();
-	this.businessName = row.getCell(UserDataAttributes.BUSINESS_NAME.getIndex()).getStringCellValue();
-	this.emailAddress = row.getCell(UserDataAttributes.EMAIL_ADDRESS.getIndex()).getStringCellValue();
-
+    private String getStringValue(XSSFCell cell) {
+	switch (cell.getCellType()) {
+	case STRING:
+	case FORMULA:
+	    return cell.getStringCellValue();
+	case BOOLEAN:
+	    return String.valueOf(cell.getBooleanCellValue());
+	case ERROR:
+	    return String.valueOf(cell.getErrorCellValue());
+	case NUMERIC:
+	    return String.valueOf(cell.getNumericCellValue());
+	default: {
+	    cell.setCellType(CellType.STRING);
+	    return getStringValue(cell);
+	}
+	}
     }
 
+    private String setAttribute(UserDataAttributes attribute) {
+	return getStringValue(row.getCell(attribute.getIndex()));
+    }
+
+    public UserFormDTO(XSSFRow row) {
+	this.row = row;
+	setAttributes();
+    }
+
+    private void setAttributes() {
+	setId();
+	setFirstName();
+	setLastName();
+	setBusinessName();
+	setEmailAddress();
+    }
+
+    private void setId() {
+	this.id = setAttribute(UserDataAttributes.ID);
+    }
+
+    private void setFirstName() {
+	this.firstName = setAttribute(UserDataAttributes.FIRST_NAME);
+    };
+
+    private void setLastName() {
+	this.lastName = setAttribute(UserDataAttributes.LAST_NAME);
+    };
+
+    private void setBusinessName() {
+	this.businessName = setAttribute(UserDataAttributes.BUSINESS_NAME);
+    };
+
+    private void setEmailAddress() {
+	this.emailAddress = setAttribute(UserDataAttributes.EMAIL_ADDRESS);
+    };
 }
