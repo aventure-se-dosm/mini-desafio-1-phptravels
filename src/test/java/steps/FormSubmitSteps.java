@@ -25,7 +25,7 @@ public class FormSubmitSteps extends Steps {
     @Dado("que estou na página de demonstração")
     public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
 	userForm = userFormList.get(testContext.getUserId());
-	page = testContext.getPageManager().getFormSubmitPage();
+	page = new FormSubmitPage(testContext.getDriver());
 	page.startNavigation();
     }
 

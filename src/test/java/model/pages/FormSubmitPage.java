@@ -1,19 +1,13 @@
 package model.pages;
 
-import java.time.Duration;
-
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import core.managers.FileReaderManager;
 import model.dtos.UserFormDTO;
 
 public class FormSubmitPage extends Page {
-
-    private WebDriver driver;
 
     public FormSubmitPage(WebDriver wdriver) {
 	super(wdriver);
@@ -21,16 +15,16 @@ public class FormSubmitPage extends Page {
     }
 
     @FindBy(css = "input.first_name")
-    public WebElement txtFirstNameInput;
+    public WebElement txtFirstName;
 
     @FindBy(css = "input.last_name")
-    public WebElement txtLastNameInput;
+    public WebElement txtLastName;
 
     @FindBy(css = "input.business_name")
-    public WebElement txtBusinessNameInput;
+    public WebElement txtBusinessName;
 
     @FindBy(css = "input.email")
-    public WebElement txtEmailAddressInput;
+    public WebElement txtEmailAddress;
 
     @FindBy(css = "h2.mw100")
     public WebElement txtEnigmaExpression;
@@ -42,7 +36,7 @@ public class FormSubmitPage extends Page {
     public WebElement btnArithmeticOperatior1numb2;
 
     @FindBy(id = "number")
-    public WebElement txtSolutionInput;
+    public WebElement txtSolution;
 
     @FindBy(id = "demo")
     public WebElement btnSubmit;
@@ -56,27 +50,20 @@ public class FormSubmitPage extends Page {
     @FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
     public WebElement pageLoadingPaceActivity;
 
-    public void startNavigation() {
-	driver.manage().window().maximize();
-	PageFactory.initElements(driver, this);
-	driver.get(FileReaderManager.getDefaultStartingUrl());
-	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-    }
-
     public void writeFirstName(String firstName) {
-	writeText(txtFirstNameInput, firstName);
+	writeText(txtFirstName, firstName);
     }
 
     public void writeLastName(String lastName) {
-	writeText(txtLastNameInput, lastName);
+	writeText(txtLastName, lastName);
     }
 
     public void writeBusinessName(String businessName) {
-	writeText(txtBusinessNameInput, businessName);
+	writeText(txtBusinessName, businessName);
     }
 
     public void writeEmailAddress(String emailAddress) {
-	writeText(txtEmailAddressInput, emailAddress);
+	writeText(txtEmailAddress, emailAddress);
     }
 
     public void fillUserForm(UserFormDTO userDataForm) {
@@ -88,7 +75,7 @@ public class FormSubmitPage extends Page {
     }
 
     public void solveEnigmaAndWriteTheSolution() {
-	writeText(txtSolutionInput, solveEnigma());
+	writeText(txtSolution, solveEnigma());
     }
 
     public String submitForm() throws UnhandledAlertException {
