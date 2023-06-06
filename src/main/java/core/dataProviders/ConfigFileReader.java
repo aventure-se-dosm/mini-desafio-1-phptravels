@@ -43,7 +43,6 @@ public class ConfigFileReader extends AbstractReader {
 
 	    reader = new BufferedReader(new FileReader(new File(configPath)));
 	    properties = new Properties();
-
 	    properties.load(reader);
 	    closeReader();
 

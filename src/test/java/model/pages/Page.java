@@ -1,10 +1,14 @@
 package model.pages;
 
+import java.time.Duration;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import core.managers.FileReaderManager;
 import core.utils.webutils.JavaScriptUtils;
 import core.utils.webutils.Waits;
 
@@ -22,6 +26,13 @@ public abstract class Page {
 	this.elemIsPresent = new FluentWait<WebDriver>(driver);
 	this.isElemClickable = new FluentWait<WebDriver>(driver);
 	this.waits = new Waits(driver);
+    }
+
+    public void startNavigation() {
+	driver.manage().window().maximize();
+	PageFactory.initElements(driver, this);
+	driver.get(FileReaderManager.getDefaultStartingUrl());
+	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
     }
 
     protected String getText(WebElement element) {

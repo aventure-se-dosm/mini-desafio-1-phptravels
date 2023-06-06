@@ -27,11 +27,9 @@ public abstract class Steps {
     }
 
     public static void closeWorkBook() {
-
 	try {
 	    getWorkBook().close();
 	} catch (IOException e) {
-
 	    e.printStackTrace();
 	}
 

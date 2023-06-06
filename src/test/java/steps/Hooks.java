@@ -9,7 +9,6 @@ public class Hooks {
     @Before(order = 0)
     public static void setupApplication(Scenario scenario) {
 	SetupStep.startApplication(scenario);
-
     }
     
     @After(order = 1)

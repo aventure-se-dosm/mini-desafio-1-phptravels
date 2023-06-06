@@ -1,4 +1,4 @@
-package core.utils;
+package model.utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,5 +31,4 @@ public class ExcelUtils {
 	return userFormList;
 
     }
-
 }
