@@ -1,19 +1,13 @@
 package model.pages;
 
-import java.time.Duration;
-
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import core.managers.FileReaderManager;
 import model.dtos.UserFormDTO;
 
 public class FormSubmitPage extends Page {
-
-    private WebDriver driver;
 
     public FormSubmitPage(WebDriver wdriver) {
 	super(wdriver);
@@ -55,13 +49,6 @@ public class FormSubmitPage extends Page {
 
     @FindBy(xpath = "//div[contains(@class,'pace-inactive')]")
     public WebElement pageLoadingPaceActivity;
-
-    public void startNavigation() {
-	driver.manage().window().maximize();
-	PageFactory.initElements(driver, this);
-	driver.get(FileReaderManager.getDefaultStartingUrl());
-	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-    }
 
     public void writeFirstName(String firstName) {
 	writeText(txtFirstName, firstName);
