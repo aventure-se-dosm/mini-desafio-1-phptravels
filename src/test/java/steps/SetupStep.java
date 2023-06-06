@@ -1,8 +1,8 @@
 package steps;
 
 import core.context.TestContext;
-import core.utils.ExcelUtils;
 import io.cucumber.core.api.Scenario;
+import model.utils.ExcelUtils;
 
 public class SetupStep extends Steps {
     public static Boolean status;
