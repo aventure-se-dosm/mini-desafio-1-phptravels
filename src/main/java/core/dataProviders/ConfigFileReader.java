@@ -5,9 +5,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 
+import core.utils.enums.ConfigKeys;
 import core.utils.enums.PropertyKeys;
+import core.utils.enums.WaitKeys;
 
 public class ConfigFileReader extends AbstractReader {
 
@@ -16,9 +20,13 @@ public class ConfigFileReader extends AbstractReader {
     private BufferedReader reader;
 
     private Properties properties;
+    
+    private static String getConfigPath() {
+	return CORE_CONFIG_PATH;
+    }
 
     public ConfigFileReader() {
-	super(CORE_CONFIG_PATH);
+	super(getConfigPath());
     }
 
     public ConfigFileReader(String readedFilePath) {
@@ -35,6 +43,51 @@ public class ConfigFileReader extends AbstractReader {
 
     public String getProperty(String propertyKey) {
 	return getProperties().get(propertyKey).toString();
+    }
+
+    public Long getWaitNumrericalValue(String AttributeKey) {
+	return Long.parseLong(AttributeKey);
+    }
+
+    public String getDataSource() {
+	return getProperty(ConfigKeys.DATA_SOURCE);
+    }
+
+    public String getDefaultWebdriverType() {
+	return getProperty(ConfigKeys.WEBDRIVER_TYPE);
+    }
+
+    public String getDefaultStartingUrl() {
+	return getProperty(ConfigKeys.STARTING_URL);
+    }
+
+    public String getDefaultEvidenceFormat() {
+	return getProperty(ConfigKeys.EVIDENCE_FORMAT);
+    }
+
+    public String getDefaultEvidencePath() {
+	return getProperty(ConfigKeys.EVIDENCE_PATH);
+    }
+
+    Duration getDefaultWaitPropertyDuration(WaitKeys waitKey) {
+	return Duration.of(getWaitNumrericalValue(getProperty(waitKey.getNumericalValue())),
+		ChronoUnit.valueOf((getProperty(waitKey.getTimeUnit())).toUpperCase()));
+    }
+
+    public Duration getDefaultWaitPolling() {
+	return getDefaultWaitPropertyDuration(WaitKeys.WAIT_POLLING);
+    }
+
+    public Duration getAlertWaitTimeout() {
+	return getDefaultWaitPropertyDuration(WaitKeys.WAIT_OUTFLOW_ALERT_TIMEOUT);
+    }
+
+    public Duration getDomElementWaitTimeout() {
+	return getDefaultWaitPropertyDuration(WaitKeys.WAIT_DOM_TIMEOUT_TIMEUNIT);
+    }
+    
+    public String getDefaulSheetName() {
+   	return getProperty(ConfigKeys.DEFAULT_SHEET_NAME);
     }
 
     @Override
@@ -65,4 +118,5 @@ public class ConfigFileReader extends AbstractReader {
 	}
 
     }
+
 }

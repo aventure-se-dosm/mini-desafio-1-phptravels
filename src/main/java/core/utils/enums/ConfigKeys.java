@@ -1,6 +1,6 @@
 package core.utils.enums;
 
-public enum ConfigKeys implements PropertyKeys{
+public enum ConfigKeys implements PropertyKeys {
 
     DATA_SOURCE("data.source"),
 
@@ -8,7 +8,7 @@ public enum ConfigKeys implements PropertyKeys{
 
     EVIDENCE_PATH("evidence.path"), EVIDENCE_FORMAT("evidence.format"),
 
-    WEBDRIVER_TYPE("webdriver.type"), WINDOW_MAXIMIZE("window.maximize");
+    WEBDRIVER_TYPE("webdriver.type"), WINDOW_MAXIMIZE("window.maximize"), DEFAULT_SHEET_NAME("data.source.entity");
 
     private String value;
 

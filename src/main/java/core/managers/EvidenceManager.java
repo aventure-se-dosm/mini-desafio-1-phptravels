@@ -30,11 +30,11 @@ public class EvidenceManager {
     }
 
     private String getDefaultEvidenceFormat() {
-	return FileReaderManager.getDefaultEvidenceFormat();
+	return FileReaderManager.getConfigFileReader().getDefaultEvidenceFormat();
     }
 
     private String getDefaultEvidencePath() {
-	return FileReaderManager.getDefaultEvidencePath();
+	return FileReaderManager.getConfigFileReader().getDefaultEvidencePath();
     }
 
     private static String getTagPrefix(Scenario s) {
