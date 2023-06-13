@@ -84,7 +84,7 @@ public class DriverManager {
 	}
     }
 
-    public void KillDriver() {
+    public void killDriver() {
 
 	if (driver != null || isWebDriverClosed()) {
 	    driver.close();

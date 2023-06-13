@@ -5,7 +5,6 @@ import io.cucumber.core.api.Scenario;
 import model.utils.ExcelUtils;
 
 public class SetupStep extends Steps {
-    public static Boolean status;
 
     public SetupStep() {
     }

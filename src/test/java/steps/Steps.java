@@ -14,13 +14,13 @@ public abstract class Steps {
     public Steps() {
     }
 
-    public static void KillDriver() {
+    public static void killDriver() {
 
-	testContext.getDriverManager().KillDriver();
+	testContext.getDriverManager().killDriver();
     }
 
     public static void closeApplication() {
-	KillDriver();
+	killDriver();
     }
 
 }
