@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Collection;
 
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
-import core.managers.FileReaderManager;
+import core.context.TestContext;
 
 public class Waits {
 
@@ -46,9 +46,9 @@ public class Waits {
     }
 
     private void setupWaits() {
-	this.pollingTime = FileReaderManager.getConfigFileReader().getDefaultWaitPolling();
-	this.alertTimeout = FileReaderManager.getConfigFileReader().getAlertWaitTimeout();
-	this.timeout = FileReaderManager.getConfigFileReader().getDomElementWaitTimeout();
+	this.pollingTime = TestContext.getConfigFileReader().getDefaultWaitPolling();
+	this.alertTimeout = TestContext.getConfigFileReader().getAlertWaitTimeout();
+	this.timeout = TestContext.getConfigFileReader().getDomElementWaitTimeout();
     }
 
     public boolean executeWait(WebElement element, Duration pollingDuration, Duration timeoutDuration,
@@ -86,7 +86,7 @@ public class Waits {
     public Alert alertWait() {
 	try {
 	    return getFluentWait().pollingEvery(getPollingTime()).withTimeout(getAlertTimeout())
-		    .ignoring(ElementNotInteractableException.class, TimeoutException.class)
+		    .ignoring(NoAlertPresentException.class, TimeoutException.class)
 		    .until(ExpectedConditions.alertIsPresent());
 	} catch (TimeoutException e) {
 	    return null;

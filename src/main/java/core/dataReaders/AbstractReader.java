@@ -1,4 +1,4 @@
-package core.dataProviders;
+package core.dataReaders;
 
 public abstract class AbstractReader {
     protected String configPath;

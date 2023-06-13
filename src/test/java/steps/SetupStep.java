@@ -1,12 +1,12 @@
 package steps;
 
-import core.context.TestContext;
 import io.cucumber.core.api.Scenario;
 import model.utils.ExcelUtils;
 
 public class SetupStep extends Steps {
 
     public SetupStep() {
+	
     }
 
     private static String getIdFromFeatureTag(Scenario scenario) {
@@ -16,16 +16,12 @@ public class SetupStep extends Steps {
 
     public static void startApplication(Scenario scenario) {
 	setId(getIdFromFeatureTag(scenario));
-	userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getSheet());
+	userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getConfigSettingSheet());
 	testContext.getExcelReader().closeReader();
     }
 
     public static void setId(String idFromFeatureTag) {
 	getTestContext().setScenarioAndUserIds(idFromFeatureTag);
-    }
-
-    private static TestContext getTestContext() {
-	return testContext;
     }
 
 }

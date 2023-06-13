@@ -8,6 +8,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
+import core.context.TestContext;
+
 public class DriverManager {
 
     enum DriverManagerType {
@@ -30,7 +32,7 @@ public class DriverManager {
 
     private void setDefaultDriver() {
 	DriverManager.DEFAULT_DRIVER = DriverManagerType
-		.valueOf(FileReaderManager.getConfigFileReader().getDefaultWebdriverType().toUpperCase());
+		.valueOf(TestContext.getConfigFileReader().getDefaultWebdriverType().toUpperCase());
     }
 
     private void setDriver() {
@@ -47,7 +49,7 @@ public class DriverManager {
     }
 
     public WebDriver getDriver() {
-	if (driver == null || isWebDriverClosed()) {
+	if (driver == null) {
 	    setSelectedDriver(DEFAULT_DRIVER);
 	}
 	return driver;
@@ -87,7 +89,6 @@ public class DriverManager {
     public void killDriver() {
 
 	if (driver != null || isWebDriverClosed()) {
-	    driver.close();
 	    driver.quit();
 	    changeWebDriverStatus();
 	}

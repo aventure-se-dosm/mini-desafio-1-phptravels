@@ -8,11 +8,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
-import core.managers.FileReaderManager;
+import core.context.TestContext;
 import core.utils.webutils.JavaScriptUtils;
 import core.utils.webutils.Waits;
 
-public abstract class Page {
+public abstract class AbstractPage {
 
     protected WebDriver driver;
     protected FluentWait<WebDriver> isElemClickable;
@@ -20,7 +20,7 @@ public abstract class Page {
     protected JavaScriptUtils javaScriptUtils;
     protected Waits waits;
 
-    public Page(WebDriver wdriver) {
+    public AbstractPage(WebDriver wdriver) {
 	driver = wdriver;
 	this.javaScriptUtils = new JavaScriptUtils(driver);
 	this.elemIsPresent = new FluentWait<WebDriver>(driver);
@@ -31,7 +31,7 @@ public abstract class Page {
     public void startNavigation() {
 	driver.manage().window().maximize();
 	PageFactory.initElements(driver, this);
-	driver.get(FileReaderManager.getConfigFileReader().getDefaultStartingUrl());
+	driver.get(TestContext.getConfigFileReader().getDefaultStartingUrl());
 	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
     }
 

@@ -2,7 +2,8 @@ package core.context;
 
 import org.openqa.selenium.WebDriver;
 
-import core.dataProviders.ExcelXLSXReader;
+import core.dataReaders.ConfigFileReader;
+import core.dataReaders.ExcelXLSXReader;
 import core.managers.DriverManager;
 import core.managers.EvidenceManager;
 
@@ -12,12 +13,19 @@ public class TestContext {
     private ScenarioContext scenarioContext;
     private ExcelXLSXReader excelReader;
     private EvidenceManager evidenceManager;
+    private static ConfigFileReader configFileReader = new ConfigFileReader();;
 
     public TestContext() {
 	this.webDriverManager = new DriverManager();
 	this.scenarioContext = new ScenarioContext();
+	TestContext.configFileReader = new ConfigFileReader();
+
 	this.excelReader = new ExcelXLSXReader();
 	this.evidenceManager = new EvidenceManager(getDriver());
+    }
+
+    public static ConfigFileReader getConfigFileReader() {
+	return configFileReader;
     }
 
     public DriverManager getDriverManager() {
@@ -39,7 +47,6 @@ public class TestContext {
     public ExcelXLSXReader getExcelReader() {
 	return excelReader;
     }
-
 
     public void setScenarioAndUserIds(String idFromFeatureTag) {
 	getScenarioContext().storeValue(ScenarioContextKeys.SCENARIO_ID, (Object) idFromFeatureTag.replace("@", ""));
