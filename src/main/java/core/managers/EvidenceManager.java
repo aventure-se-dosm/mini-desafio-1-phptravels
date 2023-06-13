@@ -42,9 +42,23 @@ public class EvidenceManager {
 		.get();
     }
 
-    private String getDefaultFileNameOutput(Scenario s) {
+    private CharSequence getStatus(Scenario scenario) {
 
-	return String.join("_", getTagPrefix(s), timeUtils.getFormattedDateTimeNow());
+	String status;
+	switch (scenario.getStatus()) {
+	case PASSED:
+	    status = "PASSOU";
+	    break;
+	case FAILED:
+	default:
+	    status = "FALHOU";
+	}
+	return status;
+    }
+
+    private String getDefaultFileNameOutput(Scenario scenario) {
+
+	return String.join("_", getTagPrefix(scenario), timeUtils.getFormattedDateTimeNow(), getStatus(scenario));
     }
 
 }
