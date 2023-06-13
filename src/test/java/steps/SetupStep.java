@@ -6,6 +6,7 @@ import model.utils.ExcelUtils;
 public class SetupStep extends Steps {
 
     public SetupStep() {
+	
     }
 
     private static String getIdFromFeatureTag(Scenario scenario) {
@@ -15,7 +16,7 @@ public class SetupStep extends Steps {
 
     public static void startApplication(Scenario scenario) {
 	setId(getIdFromFeatureTag(scenario));
-	userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getSheet());
+	userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getConfigSettingSheet());
 	testContext.getExcelReader().closeReader();
     }
 

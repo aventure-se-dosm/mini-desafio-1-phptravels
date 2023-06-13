@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
-import core.managers.FileReaderManager;
+import core.context.TestContext;
 
 public class Waits {
 
@@ -46,9 +46,9 @@ public class Waits {
     }
 
     private void setupWaits() {
-	this.pollingTime = FileReaderManager.getConfigFileReader().getDefaultWaitPolling();
-	this.alertTimeout = FileReaderManager.getConfigFileReader().getAlertWaitTimeout();
-	this.timeout = FileReaderManager.getConfigFileReader().getDomElementWaitTimeout();
+	this.pollingTime = TestContext.getConfigFileReader().getDefaultWaitPolling();
+	this.alertTimeout = TestContext.getConfigFileReader().getAlertWaitTimeout();
+	this.timeout = TestContext.getConfigFileReader().getDomElementWaitTimeout();
     }
 
     public boolean executeWait(WebElement element, Duration pollingDuration, Duration timeoutDuration,

@@ -13,5 +13,4 @@ public class FileFormatConstants {
 	public enum ReportFormats {
 		HTML, JSON, XML
 	}
-	
 }

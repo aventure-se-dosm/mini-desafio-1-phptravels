@@ -2,6 +2,7 @@ package core.managers;
 
 import org.openqa.selenium.WebDriver;
 
+import core.context.TestContext;
 import core.utils.enums.FileFormatConstants.ImageFormats;
 import core.utils.webutils.Screenshoter;
 import core.utils.webutils.TimeUtils;
@@ -30,11 +31,11 @@ public class EvidenceManager {
     }
 
     private String getDefaultEvidenceFormat() {
-	return FileReaderManager.getConfigFileReader().getDefaultEvidenceFormat();
+	return TestContext.getConfigFileReader().getDefaultEvidenceFormat();
     }
 
     private String getDefaultEvidencePath() {
-	return FileReaderManager.getConfigFileReader().getDefaultEvidencePath();
+	return TestContext.getConfigFileReader().getDefaultEvidencePath();
     }
 
     private static String getTagPrefix(Scenario s) {

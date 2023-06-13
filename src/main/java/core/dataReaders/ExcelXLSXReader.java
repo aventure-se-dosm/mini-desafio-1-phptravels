@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import core.managers.FileReaderManager;
+import core.context.TestContext;
 
 public class ExcelXLSXReader extends AbstractReader {
 
@@ -18,9 +18,10 @@ public class ExcelXLSXReader extends AbstractReader {
 	super(xlsDataSourcePath);
 	this.setupReading();
     }
+    
 
     public ExcelXLSXReader() {
-	this(FileReaderManager.getConfigFileReader().getDataSource());
+	this(TestContext.getConfigFileReader().getDataSource());
     }
 
     @Override
@@ -47,8 +48,8 @@ public class ExcelXLSXReader extends AbstractReader {
 	return wb.getSheet(sheetName);
     }
 
-    public XSSFSheet getSheet() {
-	return wb.getSheet(FileReaderManager.getConfigFileReader().getDefaulSheetName());
+    public XSSFSheet getConfigSettingSheet() {
+	return wb.getSheet(TestContext.getConfigFileReader().getDefaulSheetName());
     }
 
     public XSSFSheet getSheetAt(int index) {
