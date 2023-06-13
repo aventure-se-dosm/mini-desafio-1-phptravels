@@ -20,7 +20,7 @@ public class ScenarioContext {
     }
 
     String getStringValue(ScenarioContextKeys key) {
-	return getValue(key).toString();
+ 	return getValue(key).toString();
     }
 
 }

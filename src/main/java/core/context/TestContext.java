@@ -2,7 +2,7 @@ package core.context;
 
 import org.openqa.selenium.WebDriver;
 
-import core.dataProviders.ExcelXLSXReader;
+import core.dataReaders.ExcelXLSXReader;
 import core.managers.DriverManager;
 import core.managers.EvidenceManager;
 

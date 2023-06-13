@@ -1,11 +1,9 @@
 package steps;
 
-import core.context.TestContext;
 import io.cucumber.core.api.Scenario;
 import model.utils.ExcelUtils;
 
 public class SetupStep extends Steps {
-    public static Boolean status;
 
     public SetupStep() {
     }
@@ -23,10 +21,6 @@ public class SetupStep extends Steps {
 
     public static void setId(String idFromFeatureTag) {
 	getTestContext().setScenarioAndUserIds(idFromFeatureTag);
-    }
-
-    private static TestContext getTestContext() {
-	return testContext;
     }
 
 }

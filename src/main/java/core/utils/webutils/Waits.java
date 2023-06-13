@@ -83,7 +83,7 @@ public class Waits {
 
     }
 
-    public Alert AlertWait() {
+    public Alert alertWait() {
 	try {
 	    return getFluentWait().pollingEvery(getPollingTime()).withTimeout(getAlertTimeout())
 		    .ignoring(ElementNotInteractableException.class, TimeoutException.class)

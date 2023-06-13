@@ -47,7 +47,7 @@ public class DriverManager {
     }
 
     public WebDriver getDriver() {
-	if (driver == null || isWebDriverClosed()) {
+	if (driver == null) {
 	    setSelectedDriver(DEFAULT_DRIVER);
 	}
 	return driver;
@@ -84,10 +84,9 @@ public class DriverManager {
 	}
     }
 
-    public void KillDriver() {
+    public void killDriver() {
 
 	if (driver != null || isWebDriverClosed()) {
-	    driver.close();
 	    driver.quit();
 	    changeWebDriverStatus();
 	}

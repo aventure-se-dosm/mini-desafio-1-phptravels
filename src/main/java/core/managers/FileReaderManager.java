@@ -1,7 +1,11 @@
 package core.managers;
 
-import core.dataProviders.ConfigFileReader;
-import core.utils.enums.PropertyKeys;
+import core.dataReaders.ConfigFileReader;
+
+
+//Acabar com essa classe: eis a questão...
+
+
 
 public class FileReaderManager {
 
@@ -11,12 +15,5 @@ public class FileReaderManager {
 	return (configFileReader == null ? configFileReader = new ConfigFileReader() : configFileReader);
     }
 
-    static String getGlobalProperty(PropertyKeys propertyKey) {
-	return getConfigFileReader().getProperty(propertyKey);
-    }
-
-    static String getGlobalProperty(String attributeyKey) {
-	return getConfigFileReader().getProperty(attributeyKey);
-    }
 
 }

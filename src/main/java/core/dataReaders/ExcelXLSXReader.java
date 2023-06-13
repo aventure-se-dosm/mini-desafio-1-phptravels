@@ -1,4 +1,4 @@
-package core.dataProviders;
+package core.dataReaders;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
