@@ -12,7 +12,7 @@ public class JavaScriptUtils {
 	this.jsexec = ((JavascriptExecutor) driver);
     }
 
-    public void ScrollToElement(WebElement welem) {
+    public void scrollToElement(WebElement welem) {
 	jsexec.executeScript("scroll(arguments[0]);", welem);
     }
 
