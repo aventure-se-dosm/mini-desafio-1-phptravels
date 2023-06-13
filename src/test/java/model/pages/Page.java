@@ -31,7 +31,7 @@ public abstract class Page {
     public void startNavigation() {
 	driver.manage().window().maximize();
 	PageFactory.initElements(driver, this);
-	driver.get(FileReaderManager.getDefaultStartingUrl());
+	driver.get(FileReaderManager.getConfigFileReader().getDefaultStartingUrl());
 	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
     }
 

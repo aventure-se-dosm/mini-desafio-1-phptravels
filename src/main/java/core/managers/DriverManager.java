@@ -30,7 +30,7 @@ public class DriverManager {
 
     private void setDefaultDriver() {
 	DriverManager.DEFAULT_DRIVER = DriverManagerType
-		.valueOf(FileReaderManager.getDefaultWebdriverType().toUpperCase());
+		.valueOf(FileReaderManager.getConfigFileReader().getDefaultWebdriverType().toUpperCase());
     }
 
     private void setDriver() {

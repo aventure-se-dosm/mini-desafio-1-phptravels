@@ -46,9 +46,9 @@ public class Waits {
     }
 
     private void setupWaits() {
-	this.pollingTime = FileReaderManager.getDefaultWaitPolling();
-	this.alertTimeout = FileReaderManager.getAlertWaitTimeout();
-	this.timeout = FileReaderManager.getDomElementWaitTimeout();
+	this.pollingTime = FileReaderManager.getConfigFileReader().getDefaultWaitPolling();
+	this.alertTimeout = FileReaderManager.getConfigFileReader().getAlertWaitTimeout();
+	this.timeout = FileReaderManager.getConfigFileReader().getDomElementWaitTimeout();
     }
 
     public boolean executeWait(WebElement element, Duration pollingDuration, Duration timeoutDuration,

@@ -12,6 +12,7 @@ import core.managers.FileReaderManager;
 public class ExcelXLSXReader extends AbstractReader {
 
     XSSFWorkbook wb;
+    private static final int FIRST_SHEET_INDEX = 0;
 
     public ExcelXLSXReader(String xlsDataSourcePath) {
 	super(xlsDataSourcePath);
@@ -19,7 +20,7 @@ public class ExcelXLSXReader extends AbstractReader {
     }
 
     public ExcelXLSXReader() {
-	this(FileReaderManager.getDataSource());
+	this(FileReaderManager.getConfigFileReader().getDataSource());
     }
 
     @Override
@@ -47,11 +48,11 @@ public class ExcelXLSXReader extends AbstractReader {
     }
 
     public XSSFSheet getSheet() {
-	return wb.getSheetAt(0);
+	return wb.getSheet(FileReaderManager.getConfigFileReader().getDefaulSheetName());
     }
 
     public XSSFSheet getSheetAt(int index) {
-	return wb.getSheetAt(0);
+	return wb.getSheetAt(FIRST_SHEET_INDEX);
     }
 
     @Override

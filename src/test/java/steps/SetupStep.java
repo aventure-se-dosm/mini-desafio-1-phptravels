@@ -18,6 +18,7 @@ public class SetupStep extends Steps {
     public static void startApplication(Scenario scenario) {
 	setId(getIdFromFeatureTag(scenario));
 	userFormList = ExcelUtils.getAllUsersList(testContext.getExcelReader().getSheet());
+	testContext.getExcelReader().closeReader();
     }
 
     public static void setId(String idFromFeatureTag) {
