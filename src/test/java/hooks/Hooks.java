@@ -1,5 +1,7 @@
 package hooks;
 
+import org.junit.AfterClass;
+
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -15,6 +17,11 @@ public class Hooks {
     @After(order = 1)
     public void getScreenshot(Scenario s) {
 	SetupStep.getTestContext().getEvidenceManager().createEvidence(s);
+    }
+
+    @AfterClass
+    public static void finishApplication() {
+	SetupStep.closeApplication();
     }
 
 }

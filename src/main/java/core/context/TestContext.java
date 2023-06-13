@@ -15,22 +15,11 @@ public class TestContext {
     private EvidenceManager evidenceManager;
     private static ConfigFileReader configFileReader = new ConfigFileReader();;
 
-
     public TestContext() {
 	this.webDriverManager = new DriverManager();
 	this.scenarioContext = new ScenarioContext();
-	//TestContext.configFileReader = new ConfigFileReader();
-	
-	// Passar isso para o "FileReaderManager" --> vai mudar de nome?
-	// ou deleta classe?
-	// deixa aqui nos livra do static do Reader
-	// talvez desobrigue-nos duma classe Setup de step.
-	// mas onde ficará o método estático?
+	TestContext.configFileReader = new ConfigFileReader();
 
-	// ou
-
-	// Usar o FileReaderManager para comportar
-	// também o(s) Excel...Reader(s)?
 	this.excelReader = new ExcelXLSXReader();
 	this.evidenceManager = new EvidenceManager(getDriver());
     }
@@ -38,10 +27,7 @@ public class TestContext {
     public static ConfigFileReader getConfigFileReader() {
 	return configFileReader;
     }
-    
-//    private void setConfigFileReader(ConfigFileReader configFileReader) {
-//	this.configFileReader = configFileReader;
-//    }
+
     public DriverManager getDriverManager() {
 	return webDriverManager;
     }
@@ -61,7 +47,6 @@ public class TestContext {
     public ExcelXLSXReader getExcelReader() {
 	return excelReader;
     }
-
 
     public void setScenarioAndUserIds(String idFromFeatureTag) {
 	getScenarioContext().storeValue(ScenarioContextKeys.SCENARIO_ID, (Object) idFromFeatureTag.replace("@", ""));

@@ -3,7 +3,7 @@ package steps;
 import java.util.List;
 
 import core.context.TestContext;
-import model.dtos.UserFormDTO;
+import model.formsubmit.UserFormDTO;
 
 public abstract class Steps {
 
