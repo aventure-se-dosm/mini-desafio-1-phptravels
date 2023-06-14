@@ -9,17 +9,19 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import core.context.TestContext;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.config.DriverManagerType;
 
 public class DriverManager {
 
-    enum DriverManagerType {
-	CHROME, EDGE, FIREFOX, IEXPLORER, SAFARI;
-
-	public String valueOf() {
-	    return this.toString().toUpperCase();
-	}
-
-    }
+//    enum DriverManagerType {
+//	CHROME, EDGE, FIREFOX, IEXPLORER, SAFARI;
+//
+//	public String valueOf() {
+//	    return this.toString().toUpperCase();
+//	}
+//
+//    }
 
     private static DriverManagerType DEFAULT_DRIVER;
     private WebDriver driver;
@@ -36,6 +38,7 @@ public class DriverManager {
     }
 
     private void setDriver() {
+	setupDrivers();
 	setDefaultDriver();
 	setSelectedDriver(DEFAULT_DRIVER);
     }
@@ -50,9 +53,17 @@ public class DriverManager {
 
     public WebDriver getDriver() {
 	if (driver == null) {
+	    setDriver();
 	    setSelectedDriver(DEFAULT_DRIVER);
 	}
 	return driver;
+    }
+
+    private void setupDrivers() {
+	WebDriverManager.chromedriver().setup();
+	WebDriverManager.edgedriver().setup();
+	WebDriverManager.firefoxdriver().setup();
+	WebDriverManager.safaridriver().setup();
     }
 
     private void setSelectedDriver(DriverManagerType driverType) {
@@ -73,6 +84,7 @@ public class DriverManager {
 	}
 	case CHROME:
 	default: {
+
 	    driver = new ChromeDriver(new ChromeOptions().addArguments("--remote-allow-origins=*"));
 	}
 	}
