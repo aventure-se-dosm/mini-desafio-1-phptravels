@@ -14,7 +14,6 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;
 
 public class DriverManager {
 
-
     private static DriverManagerType DEFAULT_DRIVER;
     private WebDriver driver;
     private boolean webDriverStatus;
