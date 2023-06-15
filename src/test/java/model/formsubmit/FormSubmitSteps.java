@@ -1,4 +1,4 @@
-package steps;
+package model.formsubmit;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,8 +9,7 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
-import model.dtos.UserFormDTO;
-import model.pages.FormSubmitPage;
+import steps.Steps;
 
 public class FormSubmitSteps extends Steps {
 

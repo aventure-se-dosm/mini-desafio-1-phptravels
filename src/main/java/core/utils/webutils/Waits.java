@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Collection;
 
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -86,7 +86,7 @@ public class Waits {
     public Alert alertWait() {
 	try {
 	    return getFluentWait().pollingEvery(getPollingTime()).withTimeout(getAlertTimeout())
-		    .ignoring(ElementNotInteractableException.class, TimeoutException.class)
+		    .ignoring(NoAlertPresentException.class, TimeoutException.class)
 		    .until(ExpectedConditions.alertIsPresent());
 	} catch (TimeoutException e) {
 	    return null;

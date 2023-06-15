@@ -1,5 +1,3 @@
-package model.utils;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +11,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import model.formsubmit.UserFormDTO;
 
 public class ExcelUtils {
+
+    public ExcelUtils() {
+    };
 
     public static List<UserFormDTO> getAllUsersList(XSSFSheet sheet) {
 

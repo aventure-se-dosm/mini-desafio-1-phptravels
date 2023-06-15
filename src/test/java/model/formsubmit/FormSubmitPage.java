@@ -1,13 +1,13 @@
-package model.pages;
+package model.formsubmit;
 
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import model.dtos.UserFormDTO;
+import model.pages.AbstractPage;
 
-public class FormSubmitPage extends Page {
+public class FormSubmitPage extends AbstractPage {
 
     public FormSubmitPage(WebDriver wdriver) {
 	super(wdriver);
