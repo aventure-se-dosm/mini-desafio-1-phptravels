@@ -66,17 +66,4 @@ public class TestContext {
 	return Integer.parseInt(getScenarioContext().getStringValue(ScenarioContextKeys.USER_ID));
     }
 
-//    public void startApplication(Scenario scenario) {
-//	List<AbstractDTO> dtoList = new ArrayList<>();
-//	setId(getIdFromFeatureTag(scenario));
-//
-//	// dtoList =
-//	// ExcelUtils.getAllUsersList(getExcelReader().getConfigSettingSheet());
-//	getExcelReader().closeReader();
-//    }
-//
-//    public void setId(String idFromFeatureTag) {
-//	setScenarioAndUserIds(idFromFeatureTag);
-//    }
-
 }

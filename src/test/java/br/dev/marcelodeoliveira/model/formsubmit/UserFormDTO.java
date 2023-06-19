@@ -9,7 +9,6 @@ import br.dev.marcelodeoliveira.model.utils.enums.UserDataAttributes;
 public class UserFormDTO extends AbstractDTO {
 
     private String id, firstName, lastName, businessName, emailAddress;
-    // private XSSFRow row;
 
     public UserFormDTO(Row row) {
 	super(row);

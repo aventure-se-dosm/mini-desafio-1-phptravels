@@ -1,7 +1,5 @@
 package br.dev.marcelodeoliveira.hooks;
 
-import org.junit.AfterClass;
-
 import br.dev.marcelodeoliveira.steps.SetupStep;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
