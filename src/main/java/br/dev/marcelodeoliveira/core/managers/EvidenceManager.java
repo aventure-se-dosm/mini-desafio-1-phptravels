@@ -29,6 +29,8 @@ public class EvidenceManager {
 	screenshoter.takeScreenshot(getDefaultEvidencePath(), getDefaultFileNameOutput(s),
 		ImageFormats.valueOf(getDefaultEvidenceFormat().toUpperCase()));
     }
+    
+    
 
     private String getDefaultEvidenceFormat() {
 	return TestContext.getConfigFileReader().getDefaultEvidenceFormat();

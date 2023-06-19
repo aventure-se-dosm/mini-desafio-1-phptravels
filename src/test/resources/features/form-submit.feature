@@ -1,5 +1,5 @@
 #language:pt
-Funcionalidade: 
+Funcionalidade: Requisitar demonstração do site
   Enviar formulário
   Como um usuário
   Eu desejo preencher o formuário da página
