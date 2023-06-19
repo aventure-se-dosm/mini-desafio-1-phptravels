@@ -13,8 +13,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 	glue = { "br.dev.marcelodeoliveira.model.formsubmit" , "br.dev.marcelodeoliveira.hooks" },
 	plugin = {"summary", "pretty" },
 	tags = {
-	"@ID_0001",
-		//    "@ID_0001 or @ID_0002 or @ID_0003 or @ID_0004 or @ID_0005 or @ID_0006"
+		"@ID_0001 or @ID_0002 or @ID_0003 or @ID_0004 or @ID_0005 or @ID_0006"
 	},
 	snippets = SnippetType.CAMELCASE,
 	monochrome = true,
