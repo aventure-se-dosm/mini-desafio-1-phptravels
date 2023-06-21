@@ -1,8 +1,5 @@
 package br.dev.marcelodeoliveira.model.formsubmit;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import br.dev.marcelodeoliveira.steps.Steps;
@@ -13,63 +10,63 @@ import io.cucumber.java.pt.Quando;
 
 public class FormSubmitSteps extends Steps {
 
-    public FormSubmitSteps() {
-	super();
-    }
+	public FormSubmitSteps() {
+		super();
+	}
 
-    private UserFormDTO userForm;
-    private static FormSubmitPage page;
-    private String currentAlert;
+	private UserFormDTO userForm;
+	private static FormSubmitPage page;
+	private String currentAlert;
 
-    @Dado("que estou na página de demonstração")
-    public void queEstouNaPáginaDeDemonstração() throws FileNotFoundException, IOException {
-	userForm = userFormList.get(testContext.getUserId());
-	page = new FormSubmitPage(testContext.getDriver());
-	page.startNavigation();
-    }
+	@Dado("que estou na página {string}")
+	public void queEstouNaPágina(String string) {
+		userForm = userFormList.get(testContext.getUserId());
+		page = new FormSubmitPage(testContext.getDriver());
+		page.startNavigation();
+	}
 
-    @E("insiro o nome do usuário")
-    public void insiroONomeDoUsuárioDeÍndice() {
-	page.writeFirstName(userForm.getFirstName());
-    }
+	@Dado("insiro o nome do usuário no campo {string}")
+	public void insiroONomeDoUsuárioNoCampo(String string) {
+		page.writeFirstName(userForm.getFirstName());
+	}
 
-    @E("insiro o sobrenome do usuário")
-    public void insiroOSobrenomeDoUsuário() {
-	page.writeLastName(userForm.getLastName());
-    }
+	@Dado("insiro o sobrenome do usuário no campo {string}")
+	public void insiroOSobrenomeDoUsuárioNoCampo(String string) {
+		page.writeLastName(userForm.getLastName());
+	}
 
-    @E("insiro o e-mail do usuário")
-    public void insiroOEmailDoUsuário() {
-	page.writeEmailAddress(userForm.getEmailAddress());
-    }
+	@Dado("insiro o nome da empresa do usuário no campo {string}")
+	public void insiroONomeDaEmpresaDoUsuárioNoCampo(String string) {
+		page.writeBusinessName(userForm.getBusinessName());
+	}
 
-    @E("insiro o nome da empresa do usuário")
-    public void insiroONomeDaEmpresaDoUsuário() {
-	page.writeBusinessName(userForm.getBusinessName());
-    }
+	@Dado("insiro o e-mail do usuário no campo {string}")
+	public void insiroOEMailDoUsuárioNoCampo(String string) {
+		page.writeEmailAddress(userForm.getEmailAddress());
+	}
 
-    @E("preencho todo o formulário")
-    public void preenchoTodoOFormulário() {
-	page.fillUserForm(userForm);
-    }
+	@Dado("clico no botão {string}")
+	public void clicoNoBotão(String string) {
+		currentAlert = page.submitForm();
+	}
 
-    @Quando("soluciono o enigma")
-    public void solucionoOEnigma() {
-	page.solveEnigmaAndWriteTheSolution();
-    }
+	@E("preencho todo o formulário")
+	public void preenchoTodoOFormulário() {
+		page.fillUserForm(userForm);
+	}
 
-    @E("clico em submeter")
-    public void clicoEmSubmeter() {
-	currentAlert = page.submitForm();
-    }
+	@Quando("soluciono o enigma")
+	public void solucionoOEnigma() {
+		page.solveEnigmaAndWriteTheSolution();
+	}
 
-    @Então("As informações foram enviadas com sucesso!")
-    public void asInformaçõesForamEnviadasComSucesso() {
-	Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
-    }
+	@Então("As informações foram enviadas com sucesso!")
+	public void asInformaçõesForamEnviadasComSucesso() {
+		Assert.assertTrue(page.formHasBeenSubmitedSuccessifully());
+	}
 
-    @Então("Um alerta é exibido com a mensagem {string}")
-    public void umAlertaÉExibidoComAMensagem(String message) {
-	Assert.assertEquals(message, currentAlert);
-    }
+	@Então("Um alerta é exibido com a mensagem {string}")
+	public void umAlertaÉExibidoComAMensagem(String message) {
+		Assert.assertEquals(message, currentAlert);
+	}
 }
