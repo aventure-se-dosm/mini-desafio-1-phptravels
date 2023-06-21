@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import br.dev.marcelodeoliveira.core.utils.FormularioDTO;
 import br.dev.marcelodeoliveira.model.pages.AbstractPage;
 
 public class FormSubmitPage extends AbstractPage {
@@ -66,12 +67,12 @@ public class FormSubmitPage extends AbstractPage {
 	writeText(txtEmailAddress, emailAddress);
     }
 
-    public void fillUserForm(UserFormDTO userDataForm) {
+	public void fillUserForm(FormularioDTO userForm) {
 
-	writeFirstName(userDataForm.getFirstName());
-	writeLastName(userDataForm.getLastName());
-	writeBusinessName(userDataForm.getBusinessName());
-	writeEmailAddress(userDataForm.getEmailAddress());
+	writeFirstName(userForm.getFirstName());
+	writeLastName(userForm.getLastName());
+	writeBusinessName(userForm.getBusinessName());
+	writeEmailAddress(userForm.getEmailAddress());
     }
 
     public void solveEnigmaAndWriteTheSolution() {

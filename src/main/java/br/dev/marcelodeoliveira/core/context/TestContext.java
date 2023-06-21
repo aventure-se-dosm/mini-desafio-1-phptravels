@@ -1,69 +1,115 @@
 package br.dev.marcelodeoliveira.core.context;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.openqa.selenium.WebDriver;
 
-import br.dev.marcelodeoliveira.core.dataReaders.ConfigFileReader;
-import br.dev.marcelodeoliveira.core.dataReaders.ExcelReader;
+import br.dev.marcelodeoliveira.core.data_readers.ConfigFileReader;
+import br.dev.marcelodeoliveira.core.data_readers.ExcelReader;
 import br.dev.marcelodeoliveira.core.managers.DriverManager;
 import br.dev.marcelodeoliveira.core.managers.EvidenceManager;
+import io.cucumber.java.Scenario;
 
 public class TestContext {
 
-    private DriverManager webDriverManager;
-    private ScenarioContext scenarioContext;
-    private ExcelReader excelReader;
-    private EvidenceManager evidenceManager;
-    private static ConfigFileReader configFileReader = new ConfigFileReader();;
+	private static DriverManager webDriverManager;
+	private static ScenarioContext scenarioContext;
+	private static ExcelReader excelReader;
+	private static EvidenceManager evidenceManager;
+	private static ConfigFileReader configFileReader;
+	private static Row dataRow;
 
-    public TestContext() {
-	this.webDriverManager = new DriverManager();
-	this.scenarioContext = new ScenarioContext();
-	TestContext.configFileReader = new ConfigFileReader();
+	private static void setWebDriverManager() {
+		TestContext.webDriverManager = new DriverManager();
+	}
 
-	this.excelReader = new ExcelReader();
-	this.evidenceManager = new EvidenceManager(getDriver());
-    }
+	private static void setScenarioContext() {
+		TestContext.scenarioContext = new ScenarioContext();
+	}
 
-    public static ConfigFileReader getConfigFileReader() {
-	return configFileReader;
-    }
+	private static void setExcelReader() {
+		TestContext.excelReader = new ExcelReader();
+	}
 
-    public DriverManager getDriverManager() {
-	return webDriverManager;
-    }
+	private static void setEvidenceManager(WebDriver driver) {
+		TestContext.evidenceManager = new EvidenceManager(driver);
+	}
 
-    public WebDriver getDriver() {
-	return webDriverManager.getDriver();
-    }
+	private static void setConfigFileReader() {
+		TestContext.configFileReader = new ConfigFileReader();
+	}
 
-    public ScenarioContext getScenarioContext() {
-	return scenarioContext;
-    }
+	public static ConfigFileReader getConfigFileReader() {
+		if (configFileReader == null)
+			setConfigFileReader();
+		return configFileReader;
+	}
 
-    public EvidenceManager getEvidenceManager() {
-	return evidenceManager;
-    }
+	public static DriverManager getDriverManager() {
+		if (webDriverManager == null)
+			setWebDriverManager();
+		return webDriverManager;
+	}
 
-    public ExcelReader getExcelReader() {
-	return excelReader;
-    }
+	public static ScenarioContext getScenarioContext() {
+		if (scenarioContext == null)
+			setScenarioContext();
+		return scenarioContext;
+	}
 
-    public void setScenarioAndUserIds(String idFromFeatureTag) {
-	getScenarioContext().storeValue(ScenarioContextKeys.SCENARIO_ID, (Object) idFromFeatureTag.replace("@", ""));
-	getScenarioContext().storeValue(ScenarioContextKeys.USER_ID, (Object) setUserId());
-    }
+	public static EvidenceManager getEvidenceManager() {
+		if (evidenceManager == null)
+			setEvidenceManager(getDriver());
+		return evidenceManager;
+	}
 
-    private Integer setUserId() {
-	String s = getScenarioId();
-	return Integer.valueOf(s.replace("ID_", ""));
-    }
+	public static WebDriver getDriver() {
+		return getDriverManager().getDriver();
+	}
 
-    public String getScenarioId() {
-	return getScenarioContext().getStringValue(ScenarioContextKeys.SCENARIO_ID);
-    }
+	public static ExcelReader getExcelReader() {
+		if (excelReader == null)
+			setExcelReader();
+		return excelReader;
+	}
 
-    public Integer getUserId() {
-	return Integer.parseInt(getScenarioContext().getStringValue(ScenarioContextKeys.USER_ID));
-    }
+	public static void setScenarioAndUserIds(String idFromFeatureTag) {
+		getScenarioContext().storeValue(ScenarioContextKeys.SCENARIO_ID, ((Object) idFromFeatureTag.replace("@", "")));
+		getScenarioContext().storeValue(ScenarioContextKeys.USER_ID, (Object) setUserId());
+	}
+
+	private static Integer setUserId() {
+		return Integer.valueOf(getScenarioId().replace("ID_", ""));
+	}
+
+	public static String getScenarioId() {
+		return getScenarioContext().getStringValue(ScenarioContextKeys.SCENARIO_ID);
+	}
+
+	public static Integer getUserId() {
+		return Integer.parseInt(getScenarioContext().getStringValue(ScenarioContextKeys.USER_ID));
+	}
+
+	private static String getIdFromFeatureTag(Scenario scenario) {
+		return scenario.getSourceTagNames().stream().filter(t -> t.startsWith("@ID_")).findFirst().get().replace("@",
+				"");
+	}
+
+	public static void startApplication(Scenario scenario) {
+		setId(getIdFromFeatureTag(scenario));
+		setDataRow(getExcelReader().getConfigSettingSheet().getRow(getUserId()));
+		getExcelReader().closeReader();
+	}
+
+	private static void setDataRow(Row row) {
+		dataRow = row;
+	}
+
+	public static Row getDataRow() {
+		return dataRow;
+	}
+
+	public static void setId(String idFromFeatureTag) {
+		setScenarioAndUserIds(idFromFeatureTag);
+	}
 
 }

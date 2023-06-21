@@ -1,4 +1,4 @@
-package br.dev.marcelodeoliveira.core.dataReaders;
+package br.dev.marcelodeoliveira.core.data_readers;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

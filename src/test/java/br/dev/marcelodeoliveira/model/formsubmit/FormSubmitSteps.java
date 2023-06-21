@@ -2,6 +2,8 @@ package br.dev.marcelodeoliveira.model.formsubmit;
 
 import org.junit.Assert;
 
+import br.dev.marcelodeoliveira.core.context.TestContext;
+import br.dev.marcelodeoliveira.core.utils.FormularioDTO;
 import br.dev.marcelodeoliveira.steps.Steps;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
@@ -12,15 +14,15 @@ public class FormSubmitSteps extends Steps {
 
 	public FormSubmitSteps() {
 		super();
+		userForm = new FormularioDTO(TestContext.getDataRow());
 	}
 
-	private UserFormDTO userForm;
+	private FormularioDTO userForm;
 	private static FormSubmitPage page;
 	private String currentAlert;
 
 	@Dado("que estou na página {string}")
 	public void queEstouNaPágina(String string) {
-		userForm = userFormList.get(testContext.getUserId());
 		page = new FormSubmitPage(testContext.getDriver());
 		page.startNavigation();
 	}

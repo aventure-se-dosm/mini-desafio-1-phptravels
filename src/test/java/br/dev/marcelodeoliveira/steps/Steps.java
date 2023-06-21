@@ -8,7 +8,6 @@ import br.dev.marcelodeoliveira.model.formsubmit.UserFormDTO;
 public abstract class Steps {
 
     protected static TestContext testContext = new TestContext();
-    protected static List<UserFormDTO> userFormList;
     public static Boolean status;
 
     public Steps() {

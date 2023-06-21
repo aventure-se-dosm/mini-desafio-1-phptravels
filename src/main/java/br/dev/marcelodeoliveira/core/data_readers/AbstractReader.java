@@ -1,4 +1,4 @@
-package br.dev.marcelodeoliveira.core.dataReaders;
+package br.dev.marcelodeoliveira.core.data_readers;
 
 public abstract class AbstractReader {
     protected String configPath;
