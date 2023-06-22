@@ -1,3 +1,4 @@
+
 package br.dev.marcelodeoliveira.core.utils;
 
 import org.apache.poi.ss.format.CellFormatType;
@@ -108,4 +109,5 @@ public class FormularioDTO extends AbstractDTO {
 		}
 		}
 	}
+
 }
