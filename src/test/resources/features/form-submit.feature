@@ -1,20 +1,10 @@
 #language: pt
-#Features: contextualizar com nome de elemento entre aspas simples;
-#...bem como referenciar a Page a qual é pertinente;
-#Defina OU declarativo OU imperativo.
 Funcionalidade: Requisitar denonstração do site
   Enviar formulário
   Como um usuário
-  Eu desejo preencher o formuário da página
+  Eu desejo preencher o formuário da págin
   Para enviar as informações com sucesso
 
-  #@ID_0001
-  #Cenário: envio as informações com sucesso
-  #Dado que estou na página 'demo'
-  #E preencho todo o formulário
-  #E soluciono o enigma
-  #E clico no botão 'Submit'
-  #Então As informações foram enviadas com sucesso!
   @ID_0001
   Cenário: envio as informações com sucesso
     Dado que estou na página 'demo'

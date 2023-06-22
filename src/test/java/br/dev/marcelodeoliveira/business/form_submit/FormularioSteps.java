@@ -1,29 +1,28 @@
-package br.dev.marcelodeoliveira.model.formsubmit;
+package br.dev.marcelodeoliveira.business.form_submit;
 
 import org.junit.Assert;
 
+import br.dev.marcelodeoliveira.core.abstractions.AbstractSteps;
 import br.dev.marcelodeoliveira.core.context.TestContext;
-import br.dev.marcelodeoliveira.core.utils.FormularioDTO;
-import br.dev.marcelodeoliveira.steps.Steps;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 
-public class FormSubmitSteps extends Steps {
+public class FormularioSteps extends AbstractSteps {
 
-	public FormSubmitSteps() {
+	public FormularioSteps() {
 		super();
 		userForm = new FormularioDTO(TestContext.getDataRow());
 	}
 
 	private FormularioDTO userForm;
-	private static FormSubmitPage page;
+	private static FormularioPage page;
 	private String currentAlert;
 
 	@Dado("que estou na página {string}")
 	public void queEstouNaPágina(String string) {
-		page = new FormSubmitPage(testContext.getDriver());
+		page = new FormularioPage(TestContext.getDriver());
 		page.startNavigation();
 	}
 

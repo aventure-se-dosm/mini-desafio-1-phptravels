@@ -1,11 +1,10 @@
 
-package br.dev.marcelodeoliveira.core.utils;
+package br.dev.marcelodeoliveira.business.form_submit;
 
-import org.apache.poi.ss.format.CellFormatType;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 
+import br.dev.marcelodeoliveira.core.abstractions.AbstractDTO;
 import br.dev.marcelodeoliveira.model.utils.enums.UserDataAttributes;
 
 public class FormularioDTO extends AbstractDTO {
@@ -89,25 +88,5 @@ public class FormularioDTO extends AbstractDTO {
 	private void setEmailAddress() {
 		this.emailAddress = setAttribute(UserDataAttributes.EMAIL_ADDRESS);
 	};
-
-	public String getStringCellValue(Cell cell) {
-		switch (cell.getCellType()) {
-		case FORMULA:
-			return cell.getStringCellValue();
-		case BOOLEAN:
-			return String.valueOf(cell.getBooleanCellValue());
-		case ERROR:
-			return String.valueOf(cell.getErrorCellValue());
-		case NUMERIC:
-			return String.valueOf(cell.getNumericCellValue());
-		case STRING:
-		case BLANK:
-		case _NONE:
-		default: {
-			cell.setCellStyle((CellStyle) CellFormatType.TEXT);
-			return cell.getStringCellValue();
-		}
-		}
-	}
 
 }

@@ -1,4 +1,4 @@
-package br.dev.marcelodeoliveira.core.utils;
+package br.dev.marcelodeoliveira.core.abstractions;
 
 import org.apache.poi.ss.usermodel.Row;
 

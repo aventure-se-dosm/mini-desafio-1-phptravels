@@ -1,16 +1,13 @@
-package br.dev.marcelodeoliveira.steps;
-
-import java.util.List;
+package br.dev.marcelodeoliveira.core.abstractions;
 
 import br.dev.marcelodeoliveira.core.context.TestContext;
-import br.dev.marcelodeoliveira.model.formsubmit.UserFormDTO;
 
-public abstract class Steps {
+public abstract class AbstractSteps {
 
     protected static TestContext testContext = new TestContext();
     public static Boolean status;
 
-    public Steps() {
+    public AbstractSteps() {
     }
 
     public static TestContext getTestContext() {
@@ -19,7 +16,7 @@ public abstract class Steps {
 
     public static void killDriver() {
 
-	testContext.getDriverManager().killDriver();
+		TestContext.getDriverManager().killDriver();
     }
 
     public static void closeApplication() {

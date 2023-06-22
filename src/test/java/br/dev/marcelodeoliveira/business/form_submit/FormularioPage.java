@@ -1,16 +1,15 @@
-package br.dev.marcelodeoliveira.model.formsubmit;
+package br.dev.marcelodeoliveira.business.form_submit;
 
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import br.dev.marcelodeoliveira.core.utils.FormularioDTO;
-import br.dev.marcelodeoliveira.model.pages.AbstractPage;
+import br.dev.marcelodeoliveira.core.abstractions.AbstractPage;
 
-public class FormSubmitPage extends AbstractPage {
+public class FormularioPage extends AbstractPage {
 
-    public FormSubmitPage(WebDriver wdriver) {
+    public FormularioPage(WebDriver wdriver) {
 	super(wdriver);
 	this.driver = wdriver;
     }

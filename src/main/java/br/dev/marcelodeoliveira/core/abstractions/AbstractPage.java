@@ -1,4 +1,4 @@
-package br.dev.marcelodeoliveira.model;
+package br.dev.marcelodeoliveira.core.abstractions;
 
 import java.time.Duration;
 
